@@ -16,7 +16,7 @@ window.LOKGAM = (function () {
   L.TIPO = { launch: 'Lançamento', dmca_notice: 'Notificação de direitos autorais', removal: 'Remoção', outage: 'Queda', restored: 'Voltou ao ar', model_change: 'Mudou de modelo' };
   L.TECNICA = {
     native_web: 'Feito para a web',
-    source_port: 'Compilado do código-fonte aberto',
+    source_port: 'Compilado a partir do código-fonte',
     reimplementation: 'Motor reescrito do zero',
     decompilation: 'Código reconstruído por engenharia reversa',
     recompilation: 'Recompilação estática do código original',

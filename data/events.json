@@ -152,5 +152,129 @@
         "url": "https://pbxscience.com/?p=24442"
       }
     ]
+  },
+  {
+    "id": "2021-05-21-driver-2-web",
+    "port_id": "driver-2-redriver2",
+    "date": "2021-05-21",
+    "date_basis": "reported",
+    "kind": "launch",
+    "actor": null,
+    "summary": "O REDRIVER2 chegou à versão beta já com uma versão de navegador, que rodava com a demonstração do jogo.",
+    "sources": [
+      {
+        "title": "GamingOnLinux",
+        "url": "https://www.gamingonlinux.com/2021/05/reverse-engineered-playstation-classic-driver-2-reimplementation-has-a-beta-out-now"
+      }
+    ]
+  },
+  {
+    "id": "2022-02-23-play-js-launch",
+    "port_id": "ps2-play-js",
+    "date": "2022-02-23",
+    "date_basis": "reported",
+    "kind": "launch",
+    "actor": null,
+    "summary": "O emulador Play! ganhou uma versão experimental que roda no navegador e abre a imagem de disco do próprio jogador.",
+    "sources": [
+      {
+        "title": "Chrome Unboxed",
+        "url": "https://chromeunboxed.com/web-based-playstation-2-game-emulator"
+      }
+    ]
+  },
+  {
+    "id": "2023-08-10-wipeout-rewrite-launch",
+    "port_id": "wipeout-rewrite",
+    "date": "2023-08-10",
+    "date_basis": "occurred",
+    "kind": "launch",
+    "actor": null,
+    "summary": "Dominic Szablewski publicou a reescrita do jogo, feita a partir do código vazado em 2022, com uma versão jogável no navegador.",
+    "sources": [
+      {
+        "title": "PC Gamer",
+        "url": "https://www.pcgamer.com/wipeouts-now-remastered-and-playable-in-a-browser-coder-tells-sony-to-either-let-it-be-or-get-a-real-remaster-going"
+      },
+      {
+        "title": "Kotaku",
+        "url": "https://kotaku.com/sony-playstation-wipeout-remaster-free-pc-port-ps-plus-1850728999"
+      }
+    ]
+  },
+  {
+    "id": "2026-10-07-pes-6-launch",
+    "port_id": "pes-6-optijuegos",
+    "date": "2026-10-07",
+    "date_basis": "reported",
+    "kind": "launch",
+    "actor": null,
+    "summary": "A versão de navegador do PES 6, feita a partir da edição de PSP, começou a circular.",
+    "sources": [
+      {
+        "title": "Tecnobits",
+        "url": "https://tecnobits.com/en/Play-PES-6-in-your-browser/"
+      }
+    ]
+  },
+  {
+    "id": "2026-10-12-gran-turismo-4-recomp",
+    "port_id": "gran-turismo-4-ps2-web-recomp",
+    "date": "2026-10-12",
+    "date_basis": "reported",
+    "kind": "launch",
+    "actor": null,
+    "summary": "O projeto ps2-web-recomp mostrou o Gran Turismo 4 rodando no Chrome, da abertura às corridas, a partir do disco do próprio jogador.",
+    "sources": [
+      {
+        "title": "DigiTechBytes",
+        "url": "https://digitechbytes.com/technology-news-gadgets/show-hn-ps2-games-statically-recompiled-to-webassembly/"
+      }
+    ]
+  },
+  {
+    "id": "2026-10-12-god-of-war-2-recomp",
+    "port_id": "god-of-war-2-ps2-web-recomp",
+    "date": "2026-10-12",
+    "date_basis": "reported",
+    "kind": "launch",
+    "actor": null,
+    "summary": "O projeto ps2-web-recomp mostrou o God of War II rodando no Chrome, a partir do disco do próprio jogador.",
+    "sources": [
+      {
+        "title": "DigiTechBytes",
+        "url": "https://digitechbytes.com/technology-news-gadgets/show-hn-ps2-games-statically-recompiled-to-webassembly/"
+      }
+    ]
+  },
+  {
+    "id": "2026-10-13-sm64-sauter-notice",
+    "port_id": "super-mario-64-multijogador-sauter",
+    "date": "2026-10-13",
+    "date_basis": "reported",
+    "kind": "dmca_notice",
+    "actor": null,
+    "summary": "Parte do port foi desativada em resposta a uma denúncia do dono dos direitos, segundo aviso publicado no X. A reportagem não diz quem denunciou, e a página do port seguia no ar.",
+    "sources": [
+      {
+        "title": "Kotaku",
+        "url": "https://kotaku.com/the-vibe-coders-have-come-for-nintendo-and-obviously-this-wont-end-well-2000745258"
+      }
+    ]
+  },
+  {
+    "id": "2026-10-28-budokai-web-launch",
+    "port_id": "dbz-budokai-web-online",
+    "date": "2026-10-28",
+    "date_basis": "reported",
+    "kind": "launch",
+    "actor": null,
+    "summary": "A versão de navegador do primeiro Budokai foi noticiada, com modo online e suporte a celular.",
+    "sources": [
+      {
+        "title": "Insider Gaming",
+        "url": "https://insider-gaming.com/dragon-ball-z-budokai-now-playable-through-your-browser/"
+      }
+    ]
   }
 ]

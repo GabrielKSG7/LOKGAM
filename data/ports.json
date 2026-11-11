@@ -621,8 +621,15 @@
       "content_license": null,
       "summary": "Pedia os arquivos ou a chave da cópia original para liberar o jogo completo."
     },
-    "requirements": { "user_files": [], "controls": [] },
-    "links": { "play": null, "project": null, "source": null },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
     "curation": {
       "state": "rejected",
       "risk": null,
@@ -634,7 +641,9 @@
           "url": "https://www.generationamiga.com/2025/12/27/take-twos-dmca-hammer-falls-on-fan-made-gta-browser-revival/"
         }
       ]
-    }
+    },
+    "own_copy_route": "ps2-play-js",
+    "label": { "shape": "disc", "color": "chiclete", "pattern": "barras" }
   },
   {
     "id": "pso-reborn",
@@ -646,14 +655,25 @@
       "developer": "Sonic Team",
       "rights_holder": "Sega"
     },
-    "port": { "name": "PSO Reborn", "technique": "unknown", "code_license": null },
+    "port": {
+      "name": "PSO Reborn",
+      "technique": "unknown",
+      "code_license": null
+    },
     "rights": {
       "status": "unknown",
       "content_license": null,
       "summary": "Port de navegador feito por fãs."
     },
-    "requirements": { "user_files": [], "controls": [] },
-    "links": { "play": null, "project": null, "source": null },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
     "curation": {
       "state": "rejected",
       "risk": null,
@@ -665,7 +685,8 @@
           "url": "https://powerupgaming.co.uk/2026/09/24/phantasy-star-browser-port-pso-reborn-hit-with-sega-dmca-notice/"
         }
       ]
-    }
+    },
+    "label": { "shape": "disc", "color": "ceu", "pattern": "aneis" }
   },
   {
     "id": "cod-black-ops-2-web",
@@ -688,8 +709,15 @@
       "content_license": null,
       "summary": "Segundo os relatos, reaproveitava mapas, modelos e animações tirados do jogo de PC."
     },
-    "requirements": { "user_files": [], "controls": [] },
-    "links": { "play": null, "project": null, "source": null },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
     "curation": {
       "state": "rejected",
       "risk": null,
@@ -701,7 +729,8 @@
           "url": "https://www.tweaktown.com/news/114029/activision-takes-down-ai-made-black-ops-2-browser-ports/index.html"
         }
       ]
-    }
+    },
+    "label": { "shape": "disc", "color": "grafite", "pattern": "grade" }
   },
   {
     "id": "celeste-wasm",
@@ -713,14 +742,25 @@
       "developer": "Maddy Makes Games",
       "rights_holder": "Maddy Makes Games"
     },
-    "port": { "name": "celeste-wasm", "technique": "decompilation", "code_license": null },
+    "port": {
+      "name": "celeste-wasm",
+      "technique": "decompilation",
+      "code_license": null
+    },
     "rights": {
       "status": "bundled",
       "content_license": null,
       "summary": "O repositório trazia os dados comerciais do jogo."
     },
-    "requirements": { "user_files": [], "controls": [] },
-    "links": { "play": null, "project": null, "source": null },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
     "curation": {
       "state": "rejected",
       "risk": null,
@@ -732,7 +772,8 @@
           "url": "https://pbxscience.com/?p=24442"
         }
       ]
-    }
+    },
+    "label": { "shape": "web", "color": "uva", "pattern": "triangulos" }
   },
   {
     "id": "gta-v-playgta5",
@@ -744,14 +785,25 @@
       "developer": "Rockstar North",
       "rights_holder": "Take-Two Interactive"
     },
-    "port": { "name": "playgta5.com", "technique": "unknown", "code_license": null },
+    "port": {
+      "name": "playgta5.com",
+      "technique": "unknown",
+      "code_license": null
+    },
     "rights": {
       "status": "unknown",
       "content_license": null,
       "summary": "Versão de navegador publicada em um site não oficial."
     },
-    "requirements": { "user_files": [], "controls": [] },
-    "links": { "play": null, "project": null, "source": null },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
     "curation": {
       "state": "rejected",
       "risk": null,
@@ -763,7 +815,8 @@
           "url": "https://xenospectrum.com/en/ported2browser-browser-game-ports-copyright/"
         }
       ]
-    }
+    },
+    "label": { "shape": "disc", "color": "limao", "pattern": "hachura" }
   },
   {
     "id": "cod-mw2-open-victor-zulu",
@@ -775,14 +828,25 @@
       "developer": "Infinity Ward",
       "rights_holder": "Activision (Microsoft)"
     },
-    "port": { "name": "Open Victor Zulu", "technique": "unknown", "code_license": null },
+    "port": {
+      "name": "Open Victor Zulu",
+      "technique": "unknown",
+      "code_license": null
+    },
     "rights": {
       "status": "unknown",
       "content_license": null,
       "summary": "Recriação do multiplayer para navegador."
     },
-    "requirements": { "user_files": [], "controls": [] },
-    "links": { "play": null, "project": null, "source": null },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
     "curation": {
       "state": "rejected",
       "risk": null,
@@ -794,6 +858,639 @@
           "url": "https://pbxscience.com/?p=24442"
         }
       ]
+    },
+    "label": { "shape": "disc", "color": "oliva", "pattern": "xadrez" }
+  },
+  {
+    "id": "ps2-play-js",
+    "title": "PlayStation 2 (emulador Play!)",
+    "game": {
+      "year": 2000,
+      "platforms": ["PS2"],
+      "genre": "Console inteiro (emulador)",
+      "developer": "Sony Computer Entertainment",
+      "rights_holder": "Sony Interactive Entertainment"
+    },
+    "port": {
+      "name": "Play!.js",
+      "author": "Jean-Philip Desjardins",
+      "released": "2022-02",
+      "technique": "emulation",
+      "based_on": "Emulador Play!, que reimplementa a BIOS do console em vez de usar a da Sony",
+      "code_license": null
+    },
+    "rights": {
+      "status": "byo_files",
+      "content_license": null,
+      "summary": "É o console, não um jogo. O emulador não traz jogo nenhum nem a BIOS da Sony: você abre a imagem de um disco que é seu."
+    },
+    "requirements": {
+      "user_files": [
+        {
+          "what": "Imagem de disco de PS2 (ISO, CSO, CHD, ISZ ou BIN)",
+          "needed_for": "play",
+          "where": "feita a partir do seu próprio disco"
+        }
+      ],
+      "controls": ["keyboard"],
+      "notes": "Versão experimental: os autores avisam que nem todo jogo que roda no Play! de computador roda no navegador. No lançamento só aceitava teclado."
+    },
+    "links": {
+      "play": "https://playjs.purei.org/",
+      "project": "https://purei.org/",
+      "source": "https://github.com/jpd002/Play-"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Selo confirmado: pede o disco de quem joga. Entra na vitrine depois da primeira conferência do robô.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Chrome Unboxed: This emulator wants to let you play your PlayStation 2 games through the web browser",
+          "url": "https://chromeunboxed.com/web-based-playstation-2-game-emulator"
+        },
+        {
+          "title": "MegaVisions: This emulator plays PlayStation 2 games in your web browser",
+          "url": "https://megavisions.net/this-emulator-plays-playstation-2-games-in-your-web-browser"
+        },
+        {
+          "title": "Play!: notas de versão",
+          "url": "https://purei.org/index.php?base=6"
+        }
+      ]
+    },
+    "label": { "shape": "disc", "color": "petroleo", "pattern": "grade" }
+  },
+  {
+    "id": "driver-2-redriver2",
+    "title": "Driver 2",
+    "game": {
+      "year": 2000,
+      "platforms": ["PS1"],
+      "genre": "Ação e direção",
+      "developer": "Reflections Interactive",
+      "rights_holder": "Ubisoft"
+    },
+    "port": {
+      "name": "REDRIVER2 (versão web)",
+      "author": "SoapyMan e equipe OpenDriver2",
+      "released": "2021-05",
+      "technique": "decompilation",
+      "based_on": "REDRIVER2: o código do jogo de PS1 refeito em C por engenharia reversa, sem emulação",
+      "code_license": "MIT"
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "O projeto não distribui os dados do jogo completo. A versão web foi noticiada rodando com a demonstração; falta confirmar no site o que ela traz e o que pede."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": "https://opendriver2.github.io/webgame/",
+      "project": null,
+      "source": "https://github.com/OpenDriver2/REDRIVER2"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Falta abrir o site e confirmar se roda só a demonstração ou se aceita os arquivos do disco do jogador. Confirmado isso, entra com o selo Demo ou Sua cópia.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "GamingOnLinux: Driver 2 reimplementation has a Beta out now",
+          "url": "https://www.gamingonlinux.com/2021/05/reverse-engineered-playstation-classic-driver-2-reimplementation-has-a-beta-out-now"
+        },
+        {
+          "title": "DSOGaming: Driver 2 gets an unofficial PC port",
+          "url": "https://www.dsogaming.com/news/playstation-exclusive-driver-2-gets-an-unofficial-pc-port-running-at-60fps/"
+        }
+      ]
     }
+  },
+  {
+    "id": "super-mario-64-sm64js",
+    "title": "Super Mario 64",
+    "game": {
+      "year": 1996,
+      "platforms": ["N64"],
+      "genre": "Plataforma 3D",
+      "developer": "Nintendo EAD",
+      "rights_holder": "Nintendo"
+    },
+    "port": {
+      "name": "sm64js",
+      "technique": "decompilation",
+      "based_on": "Decompilação do jogo e port de PC reescritos em JavaScript puro, sem emulação e sem WebAssembly",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "A página do projeto não diz de onde vêm os dados do jogo: se o site pede a ROM do jogador ou se já os traz."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": "https://sm64js.com/",
+      "project": null,
+      "source": "https://github.com/sm64js/sm64js"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Falta confirmar de onde vêm os dados do jogo. Só entra na vitrine se pedir a ROM do jogador.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "sm64js no GitHub",
+          "url": "https://github.com/sm64js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gran-turismo-4-ps2-web-recomp",
+    "title": "Gran Turismo 4",
+    "game": {
+      "year": 2004,
+      "platforms": ["PS2"],
+      "genre": "Corrida",
+      "developer": "Polyphony Digital",
+      "rights_holder": "Sony Interactive Entertainment"
+    },
+    "port": {
+      "name": "ps2-web-recomp",
+      "author": "snuri00 (conta no GitHub)",
+      "released": "2026-10",
+      "technique": "recompilation",
+      "based_on": "Código do jogo traduzido para C++ e WebAssembly, com gráficos em WebGPU",
+      "code_license": null
+    },
+    "rights": {
+      "status": "byo_files",
+      "content_license": null,
+      "summary": "O projeto não traz dados de jogo. Cada pessoa monta a página no próprio computador a partir da imagem de um disco que é seu."
+    },
+    "requirements": {
+      "user_files": [
+        {
+          "what": "Imagem do disco de PS2 do jogo",
+          "needed_for": "play",
+          "where": "feita a partir da sua cópia"
+        }
+      ],
+      "controls": [],
+      "notes": "Testado pelos autores no Chrome, em notebook com vídeo integrado. Precisa de WebGPU."
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": "https://github.com/snuri00/ps2-web-recomp"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Ainda não existe endereço para abrir e jogar: o projeto entrega a ferramenta, e cada pessoa monta a página a partir do próprio disco. Entra na vitrine se surgir uma versão hospedada que continue pedindo o disco.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "DigiTechBytes: PS2 games statically recompiled to WebAssembly",
+          "url": "https://digitechbytes.com/technology-news-gadgets/show-hn-ps2-games-statically-recompiled-to-webassembly/"
+        },
+        {
+          "title": "1023jack: PS2 games statically recompiled to WebAssembly",
+          "url": "https://1023jack.com/news/show-hn-ps2-games-statically-recompiled-to-webassembly/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "god-of-war-2-ps2-web-recomp",
+    "title": "God of War II",
+    "game": {
+      "year": 2007,
+      "platforms": ["PS2"],
+      "genre": "Ação e aventura",
+      "developer": "Santa Monica Studio",
+      "rights_holder": "Sony Interactive Entertainment"
+    },
+    "port": {
+      "name": "ps2-web-recomp",
+      "author": "snuri00 (conta no GitHub)",
+      "released": "2026-10",
+      "technique": "recompilation",
+      "based_on": "Código do jogo traduzido para C++ e WebAssembly, com gráficos em WebGPU",
+      "code_license": null
+    },
+    "rights": {
+      "status": "byo_files",
+      "content_license": null,
+      "summary": "O projeto não traz dados de jogo. Cada pessoa monta a página no próprio computador a partir da imagem de um disco que é seu."
+    },
+    "requirements": {
+      "user_files": [
+        {
+          "what": "Imagem do disco de PS2 do jogo",
+          "needed_for": "play",
+          "where": "feita a partir da sua cópia"
+        }
+      ],
+      "controls": [],
+      "notes": "Segundo os autores, foi o segundo jogo a funcionar, depois do Gran Turismo 4. Precisa de WebGPU."
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": "https://github.com/snuri00/ps2-web-recomp"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Ainda não existe endereço para abrir e jogar: o projeto entrega a ferramenta, e cada pessoa monta a página a partir do próprio disco. Entra na vitrine se surgir uma versão hospedada que continue pedindo o disco.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "DigiTechBytes: PS2 games statically recompiled to WebAssembly",
+          "url": "https://digitechbytes.com/technology-news-gadgets/show-hn-ps2-games-statically-recompiled-to-webassembly/"
+        },
+        {
+          "title": "1023jack: PS2 games statically recompiled to WebAssembly",
+          "url": "https://1023jack.com/news/show-hn-ps2-games-statically-recompiled-to-webassembly/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nfs-underground-2-revived",
+    "title": "Need for Speed: Underground 2",
+    "game": {
+      "year": 2004,
+      "platforms": ["PS2", "Xbox", "GameCube", "PC"],
+      "genre": "Corrida",
+      "developer": "EA Black Box",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "name": "Underground 2 Revived",
+      "technique": "recompilation",
+      "based_on": "Código da versão de PC recompilado para Chrome e Firefox",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "A reportagem não diz se o site traz os dados do jogo ou se pede os arquivos da sua cópia."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Falta confirmar de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Cultura Geek: Todos los juegos de PS2, PC y consola que podés jugar gratis en el navegador web",
+          "url": "https://culturageek.com.ar/juegos-ps2-pc-navegador-web-gratis/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nfs-most-wanted-plakmp",
+    "title": "Need for Speed: Most Wanted",
+    "game": {
+      "year": 2005,
+      "platforms": ["PS2", "Xbox", "GameCube", "PC", "Xbox 360"],
+      "genre": "Corrida",
+      "developer": "EA Black Box",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "name": "Versão web do grupo PlakMP",
+      "author": "PlakMP",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "A reportagem não diz se o site traz os dados do jogo ou se pede os arquivos da sua cópia."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Falta confirmar a técnica e de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Cultura Geek: Todos los juegos de PS2, PC y consola que podés jugar gratis en el navegador web",
+          "url": "https://culturageek.com.ar/juegos-ps2-pc-navegador-web-gratis/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "dbz-budokai-web-online",
+    "title": "Dragon Ball Z: Budokai",
+    "game": {
+      "year": 2002,
+      "platforms": ["PS2", "GameCube"],
+      "genre": "Luta",
+      "developer": "Dimps",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "name": "Budokai Web Online",
+      "released": "2026-10",
+      "technique": "recompilation",
+      "based_on": "Recompilação do binário da versão de PS2",
+      "code_license": null
+    },
+    "rights": {
+      "status": "bundled",
+      "content_license": null,
+      "summary": "Abre e joga direto, sozinho ou online, sem pedir arquivo nenhum: o jogo comercial vem dentro do site. O projeto se declara não comercial e sem vínculo com Sony, Bandai Namco, Shueisha ou Toei."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Embute o jogo comercial, então fica sem link. Sem notícia de remoção até a data desta ficha.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Insider Gaming: Dragon Ball Z Budokai now playable through your browser",
+          "url": "https://insider-gaming.com/dragon-ball-z-budokai-now-playable-through-your-browser/"
+        }
+      ]
+    },
+    "own_copy_route": "ps2-play-js",
+    "label": { "shape": "disc", "color": "abobora", "pattern": "bolinhas" }
+  },
+  {
+    "id": "dbz-budokai-tenkaichi-3-zarpado",
+    "title": "Dragon Ball Z: Budokai Tenkaichi 3",
+    "game": {
+      "year": 2007,
+      "platforms": ["PS2", "Wii"],
+      "genre": "Luta",
+      "developer": "Spike",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "name": "Dragon Ball Zarpado",
+      "author": "Lauta (@LautaTWT)",
+      "technique": "decompilation",
+      "based_on": "Código do jogo decompilado e levado ao navegador com WebAssembly, com gráficos em WebGPU ou WebGL 2",
+      "code_license": null
+    },
+    "rights": {
+      "status": "bundled",
+      "content_license": null,
+      "summary": "Abre e joga direto, com modo online, no computador e no celular, sem pedir arquivo nenhum: o jogo comercial vem dentro do site."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Embute o jogo comercial, então fica sem link. Outro port do mesmo autor, o de Mortal Kombat 9, saiu do ar por notificação de direitos pouco depois de lançado.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Cultura Geek: Todos los juegos de PS2, PC y consola que podés jugar gratis en el navegador web",
+          "url": "https://culturageek.com.ar/juegos-ps2-pc-navegador-web-gratis/"
+        }
+      ]
+    },
+    "own_copy_route": "ps2-play-js",
+    "label": { "shape": "disc", "color": "gema", "pattern": "espinha" }
+  },
+  {
+    "id": "pes-6-optijuegos",
+    "title": "Pro Evolution Soccer 6",
+    "game": {
+      "year": 2006,
+      "platforms": ["PS2", "PC", "Xbox 360", "PSP"],
+      "genre": "Futebol",
+      "developer": "Konami",
+      "rights_holder": "Konami"
+    },
+    "port": {
+      "name": "PES 6 no navegador",
+      "author": "OptiProjects (OptiJuegos)",
+      "released": "2026-10",
+      "technique": "unknown",
+      "based_on": "Versão de PSP do jogo, rodando no navegador com WebGL 2",
+      "code_license": null
+    },
+    "rights": {
+      "status": "bundled",
+      "content_license": null,
+      "summary": "Abre e joga direto, com partidas online e narração em espanhol: o jogo vem dentro do site, que ainda oferece os arquivos completos para baixar. O autor declara o projeto não comercial e sem aval da Konami."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Embute o jogo comercial, então fica sem link. O autor deixou um contato para reclamações de direitos.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Tecnobits: Play PES 6 in your browser",
+          "url": "https://tecnobits.com/en/Play-PES-6-in-your-browser/"
+        },
+        {
+          "title": "Cultura Geek: Todos los juegos de PS2, PC y consola que podés jugar gratis en el navegador web",
+          "url": "https://culturageek.com.ar/juegos-ps2-pc-navegador-web-gratis/"
+        }
+      ]
+    },
+    "own_copy_route": "ps2-play-js",
+    "label": { "shape": "disc", "color": "grama", "pattern": "barras" }
+  },
+  {
+    "id": "crash-bash-web",
+    "title": "Crash Bash",
+    "game": {
+      "year": 2000,
+      "platforms": ["PS1"],
+      "genre": "Minijogos em grupo",
+      "developer": "Eurocom",
+      "rights_holder": "Activision"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "bundled",
+      "content_license": null,
+      "summary": "Abre e joga direto, com multijogador online, sem pedir arquivo nenhum."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Embute o jogo comercial, então fica sem link. A reportagem não identifica o autor nem a técnica do port.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Cultura Geek: Todos los juegos de PS2, PC y consola que podés jugar gratis en el navegador web",
+          "url": "https://culturageek.com.ar/juegos-ps2-pc-navegador-web-gratis/"
+        }
+      ]
+    },
+    "label": { "shape": "disc", "color": "tomate", "pattern": "xadrez" }
+  },
+  {
+    "id": "wipeout-rewrite",
+    "title": "WipEout",
+    "game": {
+      "year": 1995,
+      "platforms": ["PS1", "PC", "Saturn"],
+      "genre": "Corrida futurista",
+      "developer": "Psygnosis",
+      "rights_holder": "Sony Interactive Entertainment"
+    },
+    "port": {
+      "name": "wipEout Rewrite",
+      "author": "Dominic Szablewski (PhobosLab)",
+      "released": "2023-08-10",
+      "technique": "source_port",
+      "based_on": "Reescrita feita a partir do código-fonte que vazou em 2022, da edição de Windows para placas ATI",
+      "code_license": null
+    },
+    "rights": {
+      "status": "bundled",
+      "content_license": null,
+      "summary": "A versão de navegador já vem com o jogo. O código partiu de um vazamento, e o próprio autor escreveu que a legalidade de redistribuir esse código é, no mínimo, questionável."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Embute o jogo, então fica sem link. O autor pediu em público que a Sony deixe o projeto em paz ou faça um remaster de verdade. Sem notícia de ação da empresa até a data desta ficha.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "PC Gamer: Wipeout's now remastered and playable in a browser",
+          "url": "https://www.pcgamer.com/wipeouts-now-remastered-and-playable-in-a-browser-coder-tells-sony-to-either-let-it-be-or-get-a-real-remaster-going"
+        },
+        {
+          "title": "Kotaku: PlayStation classic WipeOut gets a free browser version",
+          "url": "https://kotaku.com/sony-playstation-wipeout-remaster-free-pc-port-ps-plus-1850728999"
+        }
+      ]
+    },
+    "label": { "shape": "disc", "color": "anil", "pattern": "hachura" }
+  },
+  {
+    "id": "super-mario-64-multijogador-sauter",
+    "title": "Super Mario 64",
+    "game": {
+      "year": 1996,
+      "platforms": ["N64"],
+      "genre": "Plataforma 3D",
+      "developer": "Nintendo EAD",
+      "rights_holder": "Nintendo"
+    },
+    "port": {
+      "name": "Versão multijogador de Oliver Sauter",
+      "author": "Oliver Sauter",
+      "released": "2026",
+      "technique": "unknown",
+      "based_on": "Versão multijogador escrita com ajuda de IA, segundo o Kotaku",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "A reportagem não diz se o port trazia os dados do jogo ou se pedia a ROM do jogador."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Alvo de denúncia de direitos: parte do port foi desativada. Sem saber de onde vêm os dados do jogo, fica sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Kotaku: The Vibe-Coders Have Come For Nintendo",
+          "url": "https://kotaku.com/the-vibe-coders-have-come-for-nintendo-and-obviously-this-wont-end-well-2000745258"
+        }
+      ]
+    },
+    "label": { "shape": "cartridge", "color": "areia", "pattern": "bolinhas" }
   }
 ]

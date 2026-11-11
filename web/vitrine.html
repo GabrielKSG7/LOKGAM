@@ -63,6 +63,12 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 .capa--vaga:hover,.capa--vaga:focus-visible{color:var(--ink);border-color:var(--ink);transform:none}
 .vazio{margin:0;padding:28px 0;font-family:var(--font-mono);font-size:.85rem}
 
+/* Prateleira "Só a ficha": a mesma capa, menor e desbotada, com a tarja no lugar do selo */
+.parede--semlink{grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:28px 18px}
+.capa--semlink{filter:saturate(.45) drop-shadow(0 2px 0 rgba(10,6,30,.3)) drop-shadow(0 8px 10px rgba(10,6,30,.14))}
+.capa--semlink .capa__status{font-family:var(--font-mono);font-weight:400;font-size:clamp(.5rem,5.8cqi,.66rem);letter-spacing:.02em}
+.selo--semlink{--selo-bg:var(--paper);--selo-fg:var(--paper-ink);border-color:var(--paper-ink)}
+
 /* Cores de capa */
 .cor-tomate{--bg:#D23B24;--fg:#FFF3EC}
 .cor-abobora{--bg:#F08A1C;--fg:#2A1400}
@@ -146,6 +152,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 .link{font-family:var(--font-mono);font-size:.76rem;text-underline-offset:3px}
 .fontes{margin:0;font-size:.8rem;color:var(--paper-ink-2)}
 .fontes a{text-underline-offset:2px}
+.ficha__acoes .ficha__nota{margin:0;max-width:62ch}
 
 @media (max-width:520px){
   .parede{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}
@@ -199,6 +206,12 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     <p class="vazio" id="vazio" hidden>Nenhum jogo passa por esses filtros. Tire um deles ou limpe a busca.</p>
   </main>
 
+  <section class="secao" id="sem-link" aria-labelledby="semlink-titulo">
+    <h2 class="secao__titulo" id="semlink-titulo">Só a ficha</h2>
+    <p class="secao__lide">Ports que já trazem o jogo comercial dentro, ou que saíram do ar a pedido do dono. A ficha conta o que se sabe de cada um e para por aí: aqui não tem botão de jogar.</p>
+    <div class="parede parede--semlink" id="parede-semlink"></div>
+  </section>
+
   <section class="secao" id="curadoria" aria-labelledby="curadoria-titulo">
     <h2 class="secao__titulo" id="curadoria-titulo">O que entra na vitrine</h2>
     <p class="secao__lide">A LOKGAM não hospeda jogo nenhum. Cada capa leva ao site de quem fez o port, e só entra aqui o port que se encaixa em um destes quatro selos.</p>
@@ -209,7 +222,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
       <li><span class="selo selo--byo_files">Sua cópia</span><p>O port não traz dados do jogo. Você fornece os arquivos de uma cópia que é sua.</p></li>
     </ul>
     <dl class="notas">
-      <div><dt>Fica de fora</dt><dd>Port que já vem com o jogo comercial dentro não ganha link, por melhor que rode. Ele fica registrado na base, sem botão de jogar, e aparece no <a href="observatorio/#quedas">histórico de quedas</a> quando sofre notificação ou sai do ar.</dd></div>
+      <div><dt>Fica de fora</dt><dd>Port que já vem com o jogo comercial dentro não ganha link, por melhor que rode. Ele ganha uma capa em <a href="#sem-link">Só a ficha</a>, sem botão de jogar, e aparece no <a href="observatorio/#quedas">histórico de quedas</a> quando sofre notificação ou sai do ar.</dd></div>
       <div><dt>Risco de remoção</dt><dd>É uma avaliação editorial, não um parecer jurídico. Pesa a técnica do port, o que ele distribui e como o dono do jogo costuma agir.</dd></div>
       <div><dt>A luz na capa</dt><dd>Um robô abre cada link quatro vezes por dia. A conferência vale por três dias: sem uma mais nova, a capa volta para "não conferido". Há sites que barram o robô, e esses dependem de conferência à mão.
         <span class="legenda-led"><span><i class="led led--online"></i>no ar</span><span><i class="led led--unstable"></i>instável</span><span><i class="led led--offline"></i>fora do ar</span><span><i class="led led--unverified"></i>não conferido</span></span></dd></div>
@@ -218,7 +231,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 
   <section class="secao" id="analise" aria-labelledby="analise-titulo">
     <h2 class="secao__titulo" id="analise-titulo">Em análise</h2>
-    <p class="secao__lide">Ports já descobertos que ainda não têm selo. Enquanto a origem dos dados do jogo não for confirmada, ficam sem link.</p>
+    <p class="secao__lide">Ports já descobertos que ainda não entraram. Uns esperam a confirmação de onde vêm os dados do jogo, outros ainda não têm um endereço para abrir. Até lá, ficam sem link.</p>
     <ul class="analise" id="analise-lista"></ul>
   </section>
 
@@ -255,35 +268,46 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   D.ports.forEach(function (p) { porId[p.id] = p; });
   var aprovados = D.ports.filter(function (p) { return p.curation.state === 'approved'; });
   var pendentes = D.ports.filter(function (p) { return p.curation.state === 'pending'; });
-  var rejeitados = D.ports.filter(function (p) { return p.curation.state === 'rejected'; });
-  aprovados.forEach(function (p) {
-    p._busca = norm([p.title, p.game.genre, p.game.platforms.join(' '), p.port.name || '', p.game.developer || '', SELO_LONGO[p.rights.status]].join(' '));
+  /* Ficha rejeitada não tem link, mas tem capa: vai para a prateleira "Só a ficha" */
+  var semLink = D.ports.filter(function (p) { return p.curation.state === 'rejected' && p.label; });
+  var comCapa = aprovados.concat(semLink);
+  comCapa.forEach(function (p) {
+    p._busca = norm([p.title, p.game.genre, p.game.platforms.join(' '), p.port.name || '', p.port.author || '', p.game.developer || '', SELO_LONGO[p.rights.status] || 'sem link'].join(' '));
   });
+  var ACAO_DE_DONO = { dmca_notice: true, removal: true };
+  function motivoCurto(p) {
+    if (D.events.some(function (e) { return e.port_id === p.id && ACAO_DE_DONO[e.kind]; })) return 'alvo de remoção';
+    return p.rights.status === 'bundled' ? 'embute o jogo' : 'origem incerta';
+  }
 
   /* Balcão */
   $('#link-repo').href = D.repo;
   $('#placar').innerHTML =
     '<li><b>' + aprovados.length + '</b> na vitrine</li>' +
     '<li><a href="#analise"><b>' + pendentes.length + '</b> em análise</a></li>' +
-    '<li><a href="observatorio/#quedas"><b>' + rejeitados.length + '</b> fora da vitrine</a></li>';
+    '<li><a href="#sem-link"><b>' + semLink.length + '</b> só com ficha</a></li>';
 
   /* Capas */
   var parede = $('#parede');
   var capas = {};
   function capa(p) {
+    var temLink = p.curation.state === 'approved';
     var a = document.createElement('a');
-    a.className = 'capa capa--' + p.label.shape + ' cor-' + p.label.color + ' pad-' + p.label.pattern;
+    a.className = 'capa capa--' + p.label.shape + ' cor-' + p.label.color + ' pad-' + p.label.pattern + (temLink ? '' : ' capa--semlink');
     a.href = '#ficha-' + p.id;
     var plats = p.game.platforms.slice(0, 2).map(function (x) { return SIGLA[x] || x; }).join(' · ');
     a.innerHTML =
       '<span class="capa__corpo"><span class="capa__topo" aria-hidden="true"></span>' +
       '<span class="capa__rotulo"><span class="capa__titulo">' + esc(p.title) + '</span></span>' +
       '<span class="capa__rodape"><span class="capa__linha"><span>' + esc(plats) + '</span><span>' + p.game.year + '</span></span>' +
-      '<span class="capa__status"><i class="led"></i><span data-status></span></span></span></span>' +
-      '<span class="selo selo--' + p.rights.status + '">' + SELO[p.rights.status] + '</span>';
+      (temLink ? '<span class="capa__status"><i class="led"></i><span data-status></span></span>' : '<span class="capa__status">' + motivoCurto(p) + '</span>') +
+      '</span></span>' +
+      (temLink ? '<span class="selo selo--' + p.rights.status + '">' + SELO[p.rights.status] + '</span>' : '<span class="selo selo--semlink">Sem link</span>');
     return a;
   }
   aprovados.forEach(function (p) { capas[p.id] = parede.appendChild(capa(p)); });
+  var paredeSemLink = $('#parede-semlink'), secaoSemLink = $('#sem-link');
+  semLink.forEach(function (p) { capas[p.id] = paredeSemLink.appendChild(capa(p)); });
   var vaga = document.createElement('a');
   vaga.className = 'capa capa--vaga';
   vaga.href = '#curadoria';
@@ -322,7 +346,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   }
   function ajustarTudo() {
     L.ajustarLetreiro($('#marca-nome'));
-    parede.querySelectorAll('.capa:not([hidden]) .capa__titulo').forEach(ajustar);
+    document.querySelectorAll('.parede .capa:not([hidden]) .capa__titulo').forEach(ajustar);
   }
 
   /* Filtros */
@@ -343,7 +367,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     caixaSelos.appendChild(b);
   });
   var contaPlat = {};
-  aprovados.forEach(function (p) { p.game.platforms.forEach(function (x) { contaPlat[x] = (contaPlat[x] || 0) + 1; }); });
+  comCapa.forEach(function (p) { p.game.platforms.forEach(function (x) { contaPlat[x] = (contaPlat[x] || 0) + 1; }); });
   Object.keys(contaPlat).sort(function (a, b) { return contaPlat[b] - contaPlat[a] || a.localeCompare(b); }).forEach(function (x) {
     selConsole.add(new Option(x + ' (' + contaPlat[x] + ')', x));
   });
@@ -356,17 +380,28 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   function aplicar() {
     var q = norm(estado.q.trim());
     var ativos = Object.keys(estado.selos).filter(function (s) { return estado.selos[s]; });
-    var n = 0;
+    var n = 0, m = 0;
+    var passa = function (p) {
+      return (!estado.plat || p.game.platforms.indexOf(estado.plat) > -1) && (!q || p._busca.indexOf(q) > -1);
+    };
     aprovados.forEach(function (p) {
       var ok = (!ativos.length || ativos.indexOf(p.rights.status) > -1) &&
-        (!estado.plat || p.game.platforms.indexOf(estado.plat) > -1) &&
-        (!estado.ctrl || p.requirements.controls.indexOf(estado.ctrl) > -1) &&
-        (!q || p._busca.indexOf(q) > -1);
+        (!estado.ctrl || p.requirements.controls.indexOf(estado.ctrl) > -1) && passa(p);
       capas[p.id].hidden = !ok;
       if (ok) n++;
     });
+    /* Selo e controle são perguntas sobre jogar: com um deles ligado, a prateleira sem link sai de cena */
+    var soJogaveis = ativos.length > 0 || !!estado.ctrl;
+    semLink.forEach(function (p) {
+      var ok = !soJogaveis && passa(p);
+      capas[p.id].hidden = !ok;
+      if (ok) m++;
+    });
+    secaoSemLink.hidden = m === 0;
     var filtrando = !!(q || ativos.length || estado.plat || estado.ctrl);
-    contagem.textContent = filtrando ? 'Mostrando ' + n + ' de ' + L.plural(aprovados.length, 'jogo', 'jogos') : L.plural(n, 'jogo', 'jogos') + ' na vitrine';
+    var abaixo = m ? L.plural(m, 'ficha sem link', 'fichas sem link') + ' mais abaixo' : '';
+    contagem.textContent = filtrando ? 'Mostrando ' + n + ' de ' + L.plural(aprovados.length, 'jogo', 'jogos') + (abaixo ? ' · ' + abaixo : '') : L.plural(n, 'jogo', 'jogos') + ' na vitrine';
+    vazio.textContent = abaixo ? 'Nenhum jogo com link passa por esses filtros. Há ' + abaixo + '.' : 'Nenhum jogo passa por esses filtros. Tire um deles ou limpe a busca.';
     vazio.hidden = n > 0;
     vaga.hidden = filtrando;
     limpar.hidden = !filtrando;
@@ -418,23 +453,41 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
       linhas.map(function (t) { return '<p class="ficha__nota">' + esc(t) + '</p>'; }).join('') +
       ((p.history || []).length > 1 ? '<div class="conferencias" data-faixa></div>' : '');
   }
+  function cabecalhoHTML(p) {
+    var g = p.game;
+    return '<header class="ficha__faixa">' +
+        '<p class="ficha__id">Ficha ' + esc(p.id) + ' · adicionada em ' + data(p.curation.added) + '</p>' +
+        '<h2 class="ficha__titulo" id="ficha-titulo">' + esc(p.title) + '</h2>' +
+        '<p class="ficha__linha">' + g.year + ' · ' + esc(g.platforms.join(', ')) + ' · ' + esc(g.genre) + (g.developer ? ' · ' + esc(g.developer) : '') + '</p>' +
+        '<button type="button" class="ficha__fechar" id="ficha-fechar" data-fechar>Fechar</button>' +
+      '</header>';
+  }
+  function comoRodaHTML(p) {
+    return '<section class="ficha__bloco"><h3>Como roda</h3><dl class="campos">' +
+      campo('Port', p.port.name) + campo('Autor', p.port.author) + campo('Técnica', L.TECNICA[p.port.technique]) +
+      campo('Base', p.port.based_on) + campo('Desde', data(p.port.released)) + campo('Dono do jogo', p.game.rights_holder) +
+      '</dl></section>';
+  }
+  function historicoHTML(p) {
+    var eventos = D.events.filter(function (e) { return e.port_id === p.id; }).sort(function (a, b) { return L.chave(a.date) < L.chave(b.date) ? -1 : 1; });
+    return eventos.length ? '<section class="ficha__bloco ficha__bloco--largo"><h3>Histórico</h3><ol class="linha-tempo">' +
+      eventos.map(function (e) { return '<li><time>' + data(e.date) + '</time><span><b>' + L.TIPO[e.kind] + '.</b> ' + esc(e.summary) + '</span></li>'; }).join('') +
+      '</ol></section>' : '';
+  }
+  function fontesHTML(p) {
+    return '<p class="fontes">Fontes desta ficha: ' + p.curation.sources.map(function (f) {
+      return '<a href="' + esc(f.url) + '" rel="noopener noreferrer">' + esc(f.title) + '</a>';
+    }).join(' · ') + '</p>';
+  }
   function fichaHTML(p) {
-    var g = p.game, r = p.rights, q = p.requirements, c = p.curation;
+    var r = p.rights, q = p.requirements, c = p.curation;
     var arquivos = q.user_files.length ? q.user_files.map(function (f) {
       return '<li><b>' + esc(f.what) + '</b>' + (f.where ? ', ' + esc(f.where) : '') + '. ' +
         (f.needed_for === 'play' ? 'Sem isso o port não abre.' : 'Só para liberar o jogo completo.') + '</li>';
     }).join('') : '<li>Só o navegador. Nenhum arquivo seu é pedido.</li>';
     var controles = L.lista(q.controls.map(function (x) { return CONTROLE[x]; }));
     var licencas = [r.content_license ? 'Conteúdo: ' + r.content_license : '', p.port.code_license ? 'Código: ' + p.port.code_license : ''].filter(Boolean).join(' · ');
-    var eventos = D.events.filter(function (e) { return e.port_id === p.id; }).sort(function (a, b) { return L.chave(a.date) < L.chave(b.date) ? -1 : 1; });
-    var fontes = c.sources.map(function (f) { return '<a href="' + esc(f.url) + '" rel="noopener noreferrer">' + esc(f.title) + '</a>'; }).join(' · ');
-    return '' +
-      '<header class="ficha__faixa">' +
-        '<p class="ficha__id">Ficha ' + esc(p.id) + ' · adicionada em ' + data(c.added) + '</p>' +
-        '<h2 class="ficha__titulo" id="ficha-titulo">' + esc(p.title) + '</h2>' +
-        '<p class="ficha__linha">' + g.year + ' · ' + esc(g.platforms.join(', ')) + ' · ' + esc(g.genre) + (g.developer ? ' · ' + esc(g.developer) : '') + '</p>' +
-        '<button type="button" class="ficha__fechar" id="ficha-fechar" data-fechar>Fechar</button>' +
-      '</header>' +
+    return cabecalhoHTML(p) +
       '<div class="ficha__miolo">' +
         '<section class="ficha__bloco"><h3>Situação de direitos</h3>' +
           '<p><span class="selo selo--' + r.status + '">' + SELO_LONGO[r.status] + '</span></p>' +
@@ -446,18 +499,13 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
           (controles ? '<p class="ficha__nota">Joga com ' + esc(controles) + '.</p>' : '') +
           (q.notes ? '<p>' + esc(q.notes) + '</p>' : '') +
         '</section>' +
-        '<section class="ficha__bloco"><h3>Como roda</h3><dl class="campos">' +
-          campo('Port', p.port.name) + campo('Autor', p.port.author) + campo('Técnica', L.TECNICA[p.port.technique]) +
-          campo('Base', p.port.based_on) + campo('Desde', data(p.port.released)) + campo('Dono do jogo', g.rights_holder) +
-        '</dl></section>' +
+        comoRodaHTML(p) +
         '<section class="ficha__bloco"><h3>Estado do link</h3>' + conferenciaHTML(p, Date.now()) + '</section>' +
         '<section class="ficha__bloco ficha__bloco--largo"><h3>Risco de remoção</h3>' +
           '<p class="risco risco--' + c.risk + '"><span class="risco__barras" aria-hidden="true"><i></i><i></i><i></i></span>Risco ' + RISCO[c.risk] + '</p>' +
           '<p>' + esc(c.reason) + '</p>' +
         '</section>' +
-        (eventos.length ? '<section class="ficha__bloco ficha__bloco--largo"><h3>Histórico</h3><ol class="linha-tempo">' +
-          eventos.map(function (e) { return '<li><time>' + data(e.date) + '</time><span><b>' + L.TIPO[e.kind] + '.</b> ' + esc(e.summary) + '</span></li>'; }).join('') +
-        '</ol></section>' : '') +
+        historicoHTML(p) +
       '</div>' +
       '<footer class="ficha__acoes">' +
         '<div class="ficha__links">' +
@@ -465,12 +513,36 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
           (p.links.source ? '<a class="link" href="' + esc(p.links.source) + '" rel="noopener noreferrer">Código-fonte</a>' : '') +
           (p.links.project ? '<a class="link" href="' + esc(p.links.project) + '" rel="noopener noreferrer">Página do projeto</a>' : '') +
         '</div>' +
-        '<p class="fontes">Fontes desta ficha: ' + fontes + '</p>' +
+        fontesHTML(p) +
       '</footer>';
+  }
+  /* Ficha da prateleira "Só a ficha": conta o que se sabe do port e não leva a lugar nenhum */
+  function fichaSemLinkHTML(p) {
+    var rota = p.own_copy_route ? porId[p.own_copy_route] : null;
+    if (rota && rota.curation.state !== 'approved') rota = null;
+    return cabecalhoHTML(p) +
+      '<div class="ficha__miolo">' +
+        '<section class="ficha__bloco ficha__bloco--largo"><h3>Por que não tem link</h3>' +
+          '<p><span class="selo selo--semlink">Sem link</span></p>' +
+          '<p>' + esc(p.curation.reason) + '</p>' +
+        '</section>' +
+        '<section class="ficha__bloco"><h3>De onde vêm os dados do jogo</h3><p>' + esc(p.rights.summary) + '</p></section>' +
+        comoRodaHTML(p) +
+        (rota ? '<section class="ficha__bloco ficha__bloco--largo"><h3>Se você tem o jogo</h3>' +
+          '<p>Com a sua cópia existe outro caminho: a ficha <a href="#ficha-' + esc(rota.id) + '">' + esc(rota.title) + '</a>.</p></section>' : '') +
+        historicoHTML(p) +
+      '</div>' +
+      '<footer class="ficha__acoes">' +
+        '<p class="ficha__nota">Sem botão de jogar, de propósito. A LOKGAM só dá link para port oficial, livre, de demonstração ou que peça a cópia de quem joga.</p>' +
+        fontesHTML(p) +
+      '</footer>';
+  }
+  function temFicha(p) {
+    return p.curation.state === 'approved' || (p.curation.state === 'rejected' && !!p.label);
   }
   function abrir(p) {
     cartao.className = 'ficha__cartao cor-' + p.label.color + ' pad-' + p.label.pattern;
-    cartao.innerHTML = fichaHTML(p);
+    cartao.innerHTML = p.curation.state === 'approved' ? fichaHTML(p) : fichaSemLinkHTML(p);
     var faixa = $('[data-faixa]', cartao);
     if (faixa) {
       faixa.appendChild(L.faixa(p.history));
@@ -485,7 +557,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     var h = decodeURIComponent(location.hash.slice(1));
     if (h.indexOf('ficha-') === 0) {
       var p = porId[h.slice(6)];
-      if (p && p.curation.state === 'approved') { abrir(p); return; }
+      if (p && temFicha(p)) { abrir(p); return; }
     }
     if (dlg.open) dlg.close();
   }

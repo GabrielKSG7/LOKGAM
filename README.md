@@ -24,6 +24,7 @@ data/events.json        fatos datados: lançamentos, notificações, remoções,
 data/checks.jsonl       conferências de link, uma linha por conferência
 schema/                 JSON Schema das três tabelas
 scripts/validate.py     valida formato e regras de curadoria
+scripts/format_base.py  regrava ports.json no formato canônico
 scripts/check_links.py  o robô de conferência
 scripts/metrics.py      métricas do observatório
 scripts/build.py        gera docs/ a partir da base e de web/
@@ -52,6 +53,7 @@ Os campos que sustentam a curadoria ficam em `ports`:
 | `curation.risk` | `low`, `medium`, `high` | avaliação editorial do risco de remoção |
 | `requirements.user_files` | lista | arquivos que o jogador precisa fornecer, e para quê |
 | `label` | forma, cor e estampa | a capa gerada pela página, já que arte oficial não é usada |
+| `own_copy_route` | id de outra ficha | o caminho para quem tem o jogo, mostrado nas fichas sem link (por exemplo, o emulador do console) |
 
 A descrição de cada campo está nos arquivos de `schema/`.
 
@@ -62,7 +64,8 @@ O `validate.py` recusa a base se alguma destas regras falhar:
 - Ficha aprovada tem link para jogar, selo listável (`official`, `free`, `demo` ou `byo_files`), técnica conhecida, risco avaliado, capa e pelo menos uma conferência de link.
 - Selo `byo_files` exige um arquivo marcado como necessário para jogar. Selo `demo` exige um arquivo que libere o jogo completo.
 - Port que embute o jogo de terceiros (`bundled`) só existe como ficha rejeitada.
-- Ficha rejeitada não guarda link para jogar. O port continua na base por causa dos eventos, que alimentam o histórico de quedas.
+- Ficha rejeitada não guarda link para jogar, mas tem capa: aparece na prateleira "Só a ficha", sem botão de jogar, e seus eventos alimentam o histórico de quedas.
+- `own_copy_route` só pode apontar para uma ficha `byo_files` que não esteja rejeitada.
 
 O risco é uma avaliação editorial, não um parecer jurídico.
 
@@ -71,7 +74,10 @@ O risco é uma avaliação editorial, não um parecer jurídico.
 Entram na base, com duas condições:
 
 - **Com link** só quando o port pede os arquivos da cópia do jogador (selo "Sua cópia").
-- **Sem link** quando o port já vem com o jogo dentro. A ficha fica registrada como informativa e alimenta o histórico de quedas e o observatório.
+- **Sem link** quando o port já vem com o jogo dentro. A ficha vai para a prateleira "Só a ficha": conta de onde vêm os dados, como o port roda e o que já aconteceu com ele, e alimenta o histórico de quedas e o observatório.
+- **Console inteiro:** um emulador que roda no navegador e abre o disco do próprio jogador entra como ficha "Sua cópia". As fichas sem link de jogos daquele console apontam para ele.
+
+Quase todos os ports de PS2 noticiados em 2026 embutem o jogo, então a maior parte dessa geração está em "Só a ficha" ou em análise.
 
 ## O robô de conferência
 
@@ -115,6 +121,7 @@ Um limite de propósito: a LOKGAM não guarda link de port que embute o jogo, en
 ```
 pip install -r requirements-dev.txt
 python3 scripts/validate.py                 # valida a base
+python3 scripts/format_base.py              # põe ports.json no formato canônico
 pytest                                      # roda os testes
 python3 scripts/check_links.py --dry-run    # confere os links sem gravar
 python3 scripts/build.py                    # gera docs/
@@ -136,11 +143,13 @@ Para rodar a conferência na hora: aba **Actions**, workflow **Conferir links**,
 1. Acrescente a ficha em `data/ports.json`. Se ainda faltar confirmar de onde vêm os dados do jogo, use `curation.state: "pending"` e `rights.status: "unknown"`.
 2. Registre uma conferência manual em `data/checks.jsonl`, ou deixe o robô passar.
 3. Se houver lançamento, notificação ou queda com fonte, registre em `data/events.json`.
-4. Rode `python3 scripts/build.py` e inclua `docs/` no commit.
+4. Rode `python3 scripts/format_base.py` e `python3 scripts/build.py`, e inclua `docs/` no commit.
 
 ## Próximos passos
 
-- Fichas de jogos comerciais (Budokai, PES e afins) seguindo a política acima.
+- Confirmar no próprio site o que Driver 2 (REDRIVER2) e Super Mario 64 (sm64js) pedem ao jogador, para saírem da análise.
+- Mais fichas da geração PS1, PS2, N64, GameCube e Dreamcast: GTA III, The Simpsons: Hit & Run, Perfect Dark, Twilight Princess e os ports de PS2 que ainda não têm fonte confiável.
+- Emuladores de PS1 e N64 que abram o disco ou a ROM do jogador, como já existe para o PS2.
 - Envio de jogos por formulário, que cai na fila "Em análise" e só entra na vitrine depois de aprovado.
 - Canal para corrigir ou pedir a remoção de uma ficha.
 - Observatório: tempo entre o lançamento e a notificação, e tempo de resposta dos sites.

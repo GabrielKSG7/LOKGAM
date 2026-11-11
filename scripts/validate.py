@@ -62,6 +62,7 @@ def rule_errors(ports: list[dict], events: list[dict], checks: list[dict]) -> li
         if c["port_id"] not in known:
             errors.append(f"checks: port_id desconhecido: {c['port_id']}")
     checked = {c["port_id"] for c in checks}
+    by_id = {p["id"]: p for p in ports}
 
     for p in ports:
         pid, state = p["id"], p["curation"]["state"]
@@ -90,6 +91,15 @@ def rule_errors(ports: list[dict], events: list[dict], checks: list[dict]) -> li
                 errors.append(f"{pid}: selo '{status}' não combina com arquivo exigido para jogar")
         if state == "rejected" and p["links"]["play"]:
             errors.append(f"{pid}: ficha rejeitada não guarda links.play")
+        if state == "rejected" and "label" not in p:
+            errors.append(f"{pid}: ficha rejeitada sem capa (label)")
+        route = p.get("own_copy_route")
+        if route is not None:
+            target = by_id.get(route)
+            if target is None or route == pid:
+                errors.append(f"{pid}: own_copy_route aponta para ficha que não existe: {route}")
+            elif target["rights"]["status"] != "byo_files" or target["curation"]["state"] == "rejected":
+                errors.append(f"{pid}: own_copy_route precisa apontar para ficha 'byo_files' que não esteja rejeitada")
         if status == "bundled" and state != "rejected":
             errors.append(f"{pid}: port que embute o jogo precisa estar rejeitado")
     return errors

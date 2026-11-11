@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 
 import build
+import format_base
 import validate
 
 
@@ -35,6 +36,36 @@ def test_rejected_port_keeps_no_play_link():
     port = approved_port()
     port["curation"]["state"] = "rejected"
     assert any("rejeitada" in line for line in errors_for(port))
+
+
+def test_rejected_port_needs_a_cover_for_the_no_link_shelf():
+    port = approved_port()
+    port["curation"]["state"] = "rejected"
+    port["links"]["play"] = None
+    del port["label"]
+    assert any("sem capa" in line for line in errors_for(port))
+
+
+def test_own_copy_route_must_point_to_a_port_that_asks_for_the_players_copy():
+    ports, _, _ = validate.load_base()
+    target = copy.deepcopy(
+        next(p for p in ports if p["rights"]["status"] == "byo_files" and p["curation"]["state"] != "rejected")
+    )
+    port = approved_port()
+    port["id"] = "outra-ficha"
+    port["own_copy_route"] = target["id"]
+    checks = [{"port_id": port["id"]}, {"port_id": target["id"]}]
+    assert not any("own_copy_route" in line for line in validate.rule_errors([port, target], [], checks))
+    port["own_copy_route"] = "ficha-que-nao-existe"
+    assert any("não existe" in line for line in validate.rule_errors([port, target], [], checks))
+    port["own_copy_route"] = target["id"]
+    target["rights"]["status"] = "bundled"
+    assert any("own_copy_route" in line for line in validate.rule_errors([port, target], [], checks))
+
+
+def test_ports_file_is_in_canonical_format():
+    current = format_base.PORTS.read_text(encoding="utf-8")
+    assert current == format_base.format_ports(validate.load_json(format_base.PORTS))
 
 
 def test_approved_port_needs_a_link_check():

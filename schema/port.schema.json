@@ -37,7 +37,9 @@
               "Mega Drive", "Saturn", "Dreamcast",
               "PS1", "PS2", "PS3", "PS4",
               "Xbox", "Xbox 360", "Xbox One",
-              "3DO"
+              "3DO",
+              "PSP",
+              "Wii"
             ]
           }
         },
@@ -141,6 +143,11 @@
           "items": { "$ref": "#/$defs/source" }
         }
       }
+    },
+    "own_copy_route": {
+      "description": "Id de outra ficha que roda este jogo com a cópia do jogador (por exemplo, o emulador do console). Aparece nas fichas sem link, como o caminho para quem tem o jogo.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
     },
     "label": {
       "description": "Capa gerada pela vitrine, já que arte oficial não é usada. Obrigatória em ficha aprovada.",

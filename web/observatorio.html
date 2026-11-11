@@ -260,7 +260,7 @@
 
   var vitrine = D.availability.filter(function (r) { return r.curation === 'approved'; });
   var GRAVIDADE = { offline: 0, unstable: 1, unverified: 2, online: 3 };
-  var TECNICA_CURTA = { native_web: 'Feito para a web', source_port: 'Código-fonte aberto', reimplementation: 'Motor reescrito', decompilation: 'Engenharia reversa', recompilation: 'Recompilação', emulation: 'Emulação', unknown: 'Não identificada' };
+  var TECNICA_CURTA = { native_web: 'Feito para a web', source_port: 'Código-fonte', reimplementation: 'Motor reescrito', decompilation: 'Engenharia reversa', recompilation: 'Recompilação', emulation: 'Emulação', unknown: 'Não identificada' };
 
   /* Agora e disponibilidade dependem da hora: são refeitos a cada minuto */
   function pintarAgora() {
