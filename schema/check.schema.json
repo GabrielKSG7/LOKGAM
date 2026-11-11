@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "check.schema.json",
+  "title": "Check",
+  "description": "Uma conferência do link de um port. Uma linha por conferência, em ordem de chegada (JSON Lines). A vitrine mostra a mais recente de cada ficha; o histórico inteiro alimenta o observatório.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["port_id", "checked_at", "state", "method"],
+  "properties": {
+    "port_id": { "description": "Ficha conferida (ports.id).", "type": "string" },
+    "checked_at": {
+      "description": "Dia ou instante da conferência, em UTC: AAAA-MM-DD ou AAAA-MM-DDTHH:MM:SSZ.",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}Z)?$"
+    },
+    "state": {
+      "description": "online: respondeu normalmente. unstable: respondeu com erro intermitente ou bloqueio. offline: não respondeu ou mostra aviso de remoção. unverified: não foi possível conferir.",
+      "enum": ["online", "unstable", "offline", "unverified"]
+    },
+    "method": {
+      "description": "manual: alguém abriu a página. link_checker: conferência automática.",
+      "enum": ["manual", "link_checker"]
+    },
+    "http_status": { "type": ["integer", "null"] },
+    "note": { "type": "string" }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "port.schema.json",
+  "title": "Port",
+  "description": "Ficha de um port: uma versão de um jogo que roda no navegador, publicada por alguém em um endereço. Um mesmo jogo pode ter várias fichas, uma por port.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "game", "port", "rights", "requirements", "links", "curation"],
+  "properties": {
+    "id": {
+      "description": "Identificador estável da ficha, em minúsculas com hífens. Chave usada por checks e events.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "title": {
+      "description": "Nome do jogo como aparece na capa.",
+      "type": "string",
+      "minLength": 1
+    },
+    "game": {
+      "description": "O jogo original.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["year", "platforms", "genre"],
+      "properties": {
+        "year": { "description": "Ano do primeiro lançamento.", "type": "integer", "minimum": 1970, "maximum": 2100 },
+        "platforms": {
+          "description": "Plataformas originais, da mais associada ao jogo para a menos.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "Arcade", "PC", "PICO-8",
+              "NES", "SNES", "N64", "GameCube", "Switch",
+              "Game Boy", "Game Boy Color", "Game Boy Advance",
+              "Mega Drive", "Saturn", "Dreamcast",
+              "PS1", "PS2", "PS3", "PS4",
+              "Xbox", "Xbox 360", "Xbox One",
+              "3DO"
+            ]
+          }
+        },
+        "genre": { "type": "string", "minLength": 1 },
+        "developer": { "type": "string" },
+        "rights_holder": { "description": "Quem detém os direitos hoje, quando isso é claro.", "type": "string" }
+      }
+    },
+    "port": {
+      "description": "A versão de navegador.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["technique"],
+      "properties": {
+        "name": { "type": "string" },
+        "author": { "type": "string" },
+        "released": {
+          "description": "Data de lançamento do port, com a precisão conhecida: AAAA, AAAA-MM ou AAAA-MM-DD.",
+          "type": "string",
+          "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+        },
+        "technique": {
+          "description": "Como o jogo chegou ao navegador. native_web: feito para a web pelo dono. source_port: compilado do código-fonte aberto. reimplementation: motor reescrito do zero. decompilation: código reconstruído por engenharia reversa. recompilation: tradução estática do binário original. emulation: ROM rodando em emulador. unknown: só para fichas ainda não aprovadas.",
+          "enum": ["native_web", "source_port", "reimplementation", "decompilation", "recompilation", "emulation", "unknown"]
+        },
+        "based_on": { "description": "De onde vem o motor ou o código.", "type": "string" },
+        "code_license": { "description": "Licença do código do port, quando declarada.", "type": ["string", "null"] }
+      }
+    },
+    "rights": {
+      "description": "O que o port distribui e com que direito. É a base da curadoria.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summary"],
+      "properties": {
+        "status": {
+          "description": "official: publicado pelo dono do jogo ou pelos autores. free: jogo de código aberto ou liberado, com licença que permite distribuir. demo: o site traz só a demonstração ou o shareware; o resto pede arquivos do jogador. byo_files: o port não traz dados do jogo; o jogador fornece os da própria cópia. bundled: embute conteúdo proprietário de terceiros. unknown: ainda não confirmado.",
+          "enum": ["official", "free", "demo", "byo_files", "bundled", "unknown"]
+        },
+        "content_license": { "description": "Licença do conteúdo do jogo, quando declarada.", "type": ["string", "null"] },
+        "summary": { "description": "Uma ou duas frases para o visitante: por que a ficha tem esse selo.", "type": "string", "minLength": 1 }
+      }
+    },
+    "requirements": {
+      "description": "O que o jogador precisa ter.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["user_files", "controls"],
+      "properties": {
+        "user_files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["what", "needed_for"],
+            "properties": {
+              "what": { "description": "O arquivo pedido.", "type": "string" },
+              "needed_for": { "description": "play: sem ele o port não abre. full_game: sem ele só roda a demonstração.", "enum": ["play", "full_game"] },
+              "where": { "description": "De onde o jogador tira o arquivo.", "type": "string" }
+            }
+          }
+        },
+        "controls": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["keyboard", "mouse", "gamepad", "touch"] }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["play", "project", "source"],
+      "properties": {
+        "play": { "description": "Endereço onde o port roda. Fica nulo em ficha rejeitada.", "type": ["string", "null"], "format": "uri" },
+        "project": { "description": "Página do projeto ou do jogo.", "type": ["string", "null"], "format": "uri" },
+        "source": { "description": "Repositório do código.", "type": ["string", "null"], "format": "uri" }
+      }
+    },
+    "curation": {
+      "description": "Decisão editorial sobre a ficha.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "risk", "reason", "added", "sources"],
+      "properties": {
+        "state": {
+          "description": "approved: aparece na vitrine. pending: descoberto, ainda em análise. rejected: fica fora da vitrine; os eventos continuam registrados.",
+          "enum": ["approved", "pending", "rejected"]
+        },
+        "risk": {
+          "description": "Avaliação editorial do risco de o port ser contestado ou removido. Não é parecer jurídico. Obrigatória em ficha aprovada.",
+          "enum": ["low", "medium", "high", null]
+        },
+        "reason": { "description": "Por que a ficha está nesse estado e nesse risco.", "type": "string", "minLength": 1 },
+        "added": { "type": "string", "format": "date" },
+        "sources": {
+          "description": "De onde vieram as informações da ficha.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source" }
+        }
+      }
+    },
+    "label": {
+      "description": "Capa gerada pela vitrine, já que arte oficial não é usada. Obrigatória em ficha aprovada.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shape", "color", "pattern"],
+      "properties": {
+        "shape": { "description": "Mídia original: cartucho, disco ou jogo nascido na web.", "enum": ["cartridge", "disc", "web"] },
+        "color": { "enum": ["tomate", "abobora", "gema", "limao", "grama", "petroleo", "ceu", "anil", "uva", "chiclete", "areia", "grafite", "oliva"] },
+        "pattern": { "enum": ["grade", "hachura", "bolinhas", "espinha", "aneis", "xadrez", "barras", "triangulos"] }
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "url"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" }
+      }
+    }
+  }
+}

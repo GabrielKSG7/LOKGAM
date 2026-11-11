@@ -1,0 +1,12 @@
+{"port_id": "minecraft-classic", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
+{"port_id": "celeste-classic", "checked_at": "2026-11-10", "state": "online", "method": "manual", "http_status": null, "note": "A página do jogo carregou."}
+{"port_id": "celeste-classic-2", "checked_at": "2026-11-10", "state": "online", "method": "manual", "http_status": null, "note": "A página do cartucho carregou."}
+{"port_id": "warzone-2100", "checked_at": "2026-11-10", "state": "online", "method": "manual", "http_status": null, "note": "A página de jogo carregou."}
+{"port_id": "quake-qwasm", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
+{"port_id": "tobu-tobu-girl-deluxe", "checked_at": "2026-11-10", "state": "online", "method": "manual", "http_status": null, "note": "A página do player carregou. O player em si não foi testado."}
+{"port_id": "libbet-magic-floor", "checked_at": "2026-11-10", "state": "online", "method": "manual", "http_status": null, "note": "A página do player carregou. O player em si não foi testado."}
+{"port_id": "diablo-web", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura. O endereço consta no README do repositório."}
+{"port_id": "tomb-raider-openlara", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
+{"port_id": "halo-ce-web", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura. A Digital Citizen encontrou o site no ar em 3 e 4/10/2026."}
+{"port_id": "pepsiman-recompiled", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
+{"port_id": "goldeneye-goldenweb64", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}

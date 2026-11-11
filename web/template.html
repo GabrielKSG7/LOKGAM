@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOKGAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Parede de locadora: balcão compacto no topo, um mosaico só de capas geradas, e a ficha abre como cartão de locação. */
+  --wall:#ECE9F5;
+  --wall-2:#D6D0EA;
+  --ink:#1A1630;
+  --ink-2:#5A5378;
+  --paper:#FFFDF6;
+  --paper-2:#F4EFDE;
+  --paper-ink:#1A1630;
+  --paper-ink-2:#5F5873;
+  --paper-line:#D8D1BD;
+  --accent:#FFD21F;
+  --accent-ink:#1A1630;
+  --plastico:#A7A2BD;
+  --plastico-ink:#221D3D;
+  --ok:#157A4B;
+  --warn:#9A5800;
+  --bad:#BF2F1E;
+  --idle:#6A6485;
+  --font-display:"Anybody","Arial Narrow","Helvetica Neue",Impact,sans-serif;
+  --font-body:"Schibsted Grotesk","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-mono:"Martian Mono",ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --wall:#15122B;
+    --wall-2:#2B2654;
+    --ink:#F1EEFF;
+    --ink-2:#ABA5CC;
+    --paper:#231F42;
+    --paper-2:#2D2853;
+    --paper-ink:#F1EEFF;
+    --paper-ink-2:#B3ADD2;
+    --paper-line:#433D73;
+    --accent:#FFD21F;
+    --accent-ink:#1A1630;
+    --plastico:#6B6690;
+    --plastico-ink:#100D22;
+    --ok:#57DDA0;
+    --warn:#FFBB55;
+    --bad:#FF8572;
+    --idle:#9D97BD;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --wall:#15122B;
+  --wall-2:#2B2654;
+  --ink:#F1EEFF;
+  --ink-2:#ABA5CC;
+  --paper:#231F42;
+  --paper-2:#2D2853;
+  --paper-ink:#F1EEFF;
+  --paper-ink-2:#B3ADD2;
+  --paper-line:#433D73;
+  --accent:#FFD21F;
+  --accent-ink:#1A1630;
+  --plastico:#6B6690;
+  --plastico-ink:#100D22;
+  --ok:#57DDA0;
+  --warn:#FFBB55;
+  --bad:#FF8572;
+  --idle:#9D97BD;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--wall);color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.5}
+[hidden]{display:none !important}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;box-shadow:0 0 0 6px var(--ink)}
+
+.pagina{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,40px) 56px;display:flex;flex-direction:column;gap:clamp(30px,5vw,60px)}
+
+/* Balcão */
+.balcao{display:grid;gap:16px;container-type:inline-size}
+.marca{display:grid;gap:4px}
+.marca__sobre{margin:0;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.marca__nome{margin:0;font-family:var(--font-display);font-stretch:150%;font-weight:900;font-size:clamp(2rem,10.4cqi,9rem);line-height:.8;letter-spacing:-.015em;text-transform:uppercase;white-space:nowrap;overflow:hidden;padding-block:.05em}
+.marca__sub{margin:0;font-family:var(--font-display);font-stretch:150%;font-weight:500;font-size:clamp(.95rem,2.6cqi,1.7rem);line-height:1;letter-spacing:.32em;text-transform:uppercase}
+.tese{margin:6px 0 0;max-width:60ch;font-size:clamp(1.02rem,1.7cqi,1.22rem);text-wrap:pretty}
+.placar{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;padding:0;list-style:none;font-family:var(--font-mono);font-size:.74rem;color:var(--ink-2)}
+.placar b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.placar a{text-underline-offset:3px}
+
+/* Selos: os adesivos de classificação */
+.selo{display:inline-flex;align-items:center;gap:.5em;font-family:var(--font-mono);font-weight:600;font-size:.66rem;line-height:1;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;padding:.55em .8em;border-radius:999px;border:2px solid transparent;background:var(--selo-bg);color:var(--selo-fg)}
+.selo--official{--selo-bg:#8DB8FF;--selo-fg:#0A1B4D}
+.selo--free{--selo-bg:#5FE3A4;--selo-fg:#06301C}
+.selo--demo{--selo-bg:#FFB74A;--selo-fg:#3D2000}
+.selo--byo_files{--selo-bg:#FF93CC;--selo-fg:#4D0A2E}
+
+/* Filtros */
+.filtros{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.busca{flex:1 1 100%;min-width:0;font:inherit;font-family:var(--font-mono);font-size:.82rem;color:var(--ink);background:transparent;border:0;border-bottom:3px solid var(--ink);border-radius:0;padding:.7em .2em}
+.busca::placeholder{color:var(--ink-2);opacity:1}
+.filtro-selos{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;border:0;min-width:0}
+button.selo{cursor:pointer;font-size:.68rem;transition:transform .15s}
+button.selo b{font-weight:600;opacity:.7}
+button.selo[aria-pressed="false"]{background:transparent;color:var(--ink);border-color:var(--ink)}
+button.selo[aria-pressed="false"]::before{content:"";width:.8em;height:.8em;border-radius:50%;background:var(--selo-bg);box-shadow:0 0 0 1.5px var(--ink)}
+button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(--ink)}
+.campo{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.campo select{font:inherit;font-size:.78rem;letter-spacing:0;text-transform:none;color:var(--ink);background:var(--wall);border:2px solid var(--ink);border-radius:8px;padding:.45em .6em;max-width:11.5rem}
+.limpar{font:inherit;font-family:var(--font-mono);font-size:.72rem;color:var(--ink);background:none;border:0;padding:.4em 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.contagem{margin:0;font-family:var(--font-mono);font-size:.74rem;color:var(--ink-2)}
+.vitrine{display:grid;gap:22px}
+
+/* Parede de capas */
+.parede{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:30px 20px;padding-top:8px}
+.capa{position:relative;display:block;aspect-ratio:5/6;container-type:inline-size;text-decoration:none;color:var(--fg);filter:drop-shadow(0 2px 0 rgba(10,6,30,.3)) drop-shadow(0 10px 12px rgba(10,6,30,.16));transition:transform .18s cubic-bezier(.2,.9,.3,1.4)}
+.capa:hover,.capa:focus-visible{transform:translateY(-7px) rotate(-1.4deg)}
+.capa:focus-visible{outline-offset:6px;box-shadow:none}
+.capa__corpo{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+.capa__topo{display:none}
+.capa__rotulo{position:relative;flex:1;min-height:0;display:flex;align-items:flex-end;padding:9cqi 8cqi 6cqi;background:var(--bg);color:var(--fg);overflow:hidden}
+.capa__rotulo::before,.ficha__faixa::before{content:"";position:absolute;inset:0;--pc:color-mix(in srgb,var(--fg) 22%,transparent)}
+.capa__rotulo::after,.ficha__faixa::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 30%,transparent 78%)}
+.capa__titulo{position:relative;z-index:1;display:block;width:100%;max-height:100%;overflow:hidden;font-family:var(--font-display);font-stretch:100%;font-weight:800;font-size:clamp(1rem,17cqi,2.1rem);line-height:.94;letter-spacing:-.005em;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:none}
+.capa__rodape{display:flex;align-items:center;gap:6px;padding:5cqi 8cqi;font-family:var(--font-mono);font-size:clamp(.56rem,6.4cqi,.7rem);line-height:1;letter-spacing:.04em;background:color-mix(in srgb,var(--fg) 14%,var(--bg));color:var(--fg);white-space:nowrap}
+.capa__rodape span:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:clip}
+.led{flex:none;width:.85em;height:.85em;border-radius:50%;box-shadow:0 0 0 1.5px rgba(8,5,25,.75)}
+.led--online{background:#3BE590}
+.led--unstable{background:#FFB020}
+.led--offline{background:#FF4D3D}
+.led--unverified{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+.capa > .selo{position:absolute;z-index:2;top:-11px;right:-8px;transform:rotate(6deg);box-shadow:0 2px 0 rgba(10,6,30,.35)}
+
+/* Disco: capa com lombada */
+.capa--disc .capa__corpo{border-radius:4px;padding-left:9cqi}
+.capa--disc .capa__corpo::before{content:"";position:absolute;z-index:1;left:0;top:0;bottom:0;width:9cqi;background:linear-gradient(90deg,rgba(8,5,25,.42),rgba(8,5,25,.2) 70%,rgba(8,5,25,.34))}
+/* Cartucho: corpo de plástico, etiqueta colada */
+.capa--cartridge .capa__corpo{background:var(--plastico);clip-path:polygon(0 8%,8% 8%,8% 0,92% 0,92% 8%,100% 8%,100% 100%,0 100%);padding:17cqi 8cqi 0}
+.capa--cartridge .capa__topo{display:block;position:absolute;left:16%;right:16%;top:3.2%;height:7%;background:repeating-linear-gradient(to bottom,rgba(8,5,25,.3) 0 2px,transparent 2px 5px)}
+.capa--cartridge .capa__rotulo{border-radius:5px}
+.capa--cartridge .capa__rodape{background:transparent;color:var(--plastico-ink);padding-inline:1cqi}
+/* Web: janela com aba */
+.capa--web .capa__corpo{clip-path:polygon(0 11%,3% 11%,8% 0,46% 0,51% 11%,100% 11%,100% 100%,0 100%);padding-top:13cqi}
+.capa--web .capa__topo{display:block;position:absolute;left:11%;top:3.4%;width:16cqi;height:4.6cqi;background:radial-gradient(circle,var(--fg) 0 38%,transparent 42%) 0 50%/5.3cqi 100% repeat-x;opacity:.75}
+/* Vaga na prateleira */
+.capa--vaga{filter:none;color:var(--ink-2);border:2px dashed var(--ink-2);border-radius:6px;display:grid;place-items:center;text-align:center;padding:14px;font-family:var(--font-mono);font-size:.72rem;line-height:1.5}
+.capa--vaga:hover,.capa--vaga:focus-visible{color:var(--ink);border-color:var(--ink);transform:none}
+.vazio{margin:0;padding:28px 0;font-family:var(--font-mono);font-size:.85rem}
+
+/* Cores de capa */
+.cor-tomate{--bg:#D23B24;--fg:#FFF3EC}
+.cor-abobora{--bg:#F08A1C;--fg:#2A1400}
+.cor-gema{--bg:#F6C62E;--fg:#2A1F00}
+.cor-limao{--bg:#B7D43C;--fg:#1B2300}
+.cor-grama{--bg:#23834A;--fg:#F0FFF4}
+.cor-petroleo{--bg:#14787D;--fg:#E9FDFE}
+.cor-ceu{--bg:#46ACF4;--fg:#06203A}
+.cor-anil{--bg:#3C49D6;--fg:#EFF0FF}
+.cor-uva{--bg:#7A3EC2;--fg:#F6EDFF}
+.cor-chiclete{--bg:#EE6AA6;--fg:#3A061F}
+.cor-areia{--bg:#D8B678;--fg:#2D1F08}
+.cor-grafite{--bg:#3B3A47;--fg:#F2F2F7}
+.cor-oliva{--bg:#6C7933;--fg:#F8FBE8}
+/* Estampas de capa */
+.pad-grade .capa__rotulo::before,.pad-grade.ficha__cartao .ficha__faixa::before{background:linear-gradient(var(--pc) 2px,transparent 2px) 0 0/16px 16px,linear-gradient(90deg,var(--pc) 2px,transparent 2px) 0 0/16px 16px}
+.pad-hachura .capa__rotulo::before,.pad-hachura.ficha__cartao .ficha__faixa::before{background:repeating-linear-gradient(135deg,var(--pc) 0 3px,transparent 3px 11px)}
+.pad-bolinhas .capa__rotulo::before,.pad-bolinhas.ficha__cartao .ficha__faixa::before{background:radial-gradient(var(--pc) 0 26%,transparent 30%) 0 0/14px 14px}
+.pad-espinha .capa__rotulo::before,.pad-espinha.ficha__cartao .ficha__faixa::before{background:linear-gradient(135deg,var(--pc) 25%,transparent 25%) -9px 0/18px 18px,linear-gradient(225deg,var(--pc) 25%,transparent 25%) -9px 0/18px 18px}
+.pad-aneis .capa__rotulo::before,.pad-aneis.ficha__cartao .ficha__faixa::before{background:repeating-radial-gradient(circle at 78% 8%,transparent 0 9px,var(--pc) 9px 12px)}
+.pad-xadrez .capa__rotulo::before,.pad-xadrez.ficha__cartao .ficha__faixa::before{background:conic-gradient(var(--pc) 25%,transparent 0 50%,var(--pc) 0 75%,transparent 0) 0 0/22px 22px}
+.pad-barras .capa__rotulo::before,.pad-barras.ficha__cartao .ficha__faixa::before{background:repeating-linear-gradient(102deg,var(--pc) 0 5px,transparent 5px 17px)}
+.pad-triangulos .capa__rotulo::before,.pad-triangulos.ficha__cartao .ficha__faixa::before{background:linear-gradient(45deg,var(--pc) 25%,transparent 25%) 0 0/20px 20px,linear-gradient(-45deg,var(--pc) 25%,transparent 25%) 0 0/20px 20px}
+
+/* Seções */
+.secao{display:grid;gap:18px}
+.secao__titulo{margin:0;font-family:var(--font-display);font-stretch:130%;font-weight:800;font-size:clamp(1.35rem,3vw,2.1rem);line-height:1;text-transform:uppercase;text-wrap:balance}
+.secao__lide{margin:0;max-width:64ch;color:var(--ink-2)}
+.regras{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px 28px;margin:0;padding:0;list-style:none}
+.regras li{display:grid;gap:8px;align-content:start}
+.regras p{margin:0;font-size:.95rem}
+.regras .selo{justify-self:start}
+.notas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 28px;margin:0;padding:18px 0 0;border-top:2px solid var(--wall-2)}
+.notas div{display:grid;gap:4px}
+.notas dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.notas dd{margin:0;font-size:.92rem;color:var(--ink-2)}
+.legenda-led{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink)}
+.legenda-led span{display:inline-flex;align-items:center;gap:6px}
+
+.tabela-rolagem{overflow-x:auto}
+.quedas{width:100%;min-width:640px;border-collapse:collapse;font-size:.92rem}
+.quedas th{text-align:left;font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:0 14px 8px 0;border-bottom:2px solid var(--ink)}
+.quedas td{vertical-align:top;padding:12px 14px 12px 0;border-bottom:1px solid var(--wall-2)}
+.quedas td:first-child{font-family:var(--font-mono);font-size:.76rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.quedas td:nth-child(2){font-weight:700;min-width:11rem}
+.quedas small{display:block;font-weight:400;color:var(--ink-2)}
+.quedas a{text-underline-offset:3px;white-space:nowrap}
+.analise{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.analise li{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--ink-2)}
+.analise b{font-weight:700}
+.analise span{color:var(--ink-2);font-size:.93rem}
+.rodape{display:grid;gap:6px;padding-top:22px;border-top:2px solid var(--ink);font-size:.86rem;color:var(--ink-2);max-width:78ch}
+.rodape p{margin:0}
+
+/* Ficha */
+.ficha{border:0;padding:0;margin:auto;background:transparent;color:var(--paper-ink);width:min(780px,calc(100vw - 20px));max-width:none;max-height:calc(100dvh - 20px);overflow:auto;overscroll-behavior:contain}
+.ficha::backdrop{background:rgba(12,8,34,.66)}
+.ficha__cartao{display:grid;background:var(--paper);border-radius:6px;overflow:hidden;box-shadow:0 24px 60px rgba(8,5,25,.45)}
+.ficha__faixa{position:relative;display:grid;gap:8px;padding:clamp(18px,3.4vw,30px);padding-right:clamp(92px,16vw,120px);background:var(--bg);color:var(--fg);container-type:inline-size}
+.ficha__faixa::after{background:linear-gradient(to right,var(--bg) 42%,transparent 96%)}
+.ficha__faixa > *{position:relative;z-index:1}
+.ficha__id{margin:0;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.86}
+.ficha__titulo{margin:0;font-family:var(--font-display);font-stretch:120%;font-weight:900;font-size:clamp(1.7rem,8cqi,3.4rem);line-height:.92;text-transform:uppercase;text-wrap:balance}
+.ficha__linha{margin:0;font-family:var(--font-mono);font-size:.74rem;line-height:1.6}
+.ficha__fechar{position:absolute !important;top:14px;right:14px;font:inherit;font-family:var(--font-mono);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--bg);background:var(--fg);border:0;border-radius:999px;padding:.6em .95em;cursor:pointer}
+.ficha__miolo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px 32px;padding:clamp(18px,3.4vw,30px)}
+.ficha__bloco{display:grid;gap:10px;align-content:start;min-width:0}
+.ficha__bloco--largo{grid-column:1/-1}
+.ficha__bloco h3{margin:0;font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-ink-2);padding-bottom:6px;border-bottom:1px solid var(--paper-line)}
+.ficha__bloco p,.ficha__bloco ul{margin:0}
+.ficha__bloco ul{padding-left:1.1em;display:grid;gap:6px}
+.ficha__nota{font-size:.88rem;color:var(--paper-ink-2)}
+.campos{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;margin:0;font-size:.9rem}
+.campos dt{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;color:var(--paper-ink-2);padding-top:.25em}
+.campos dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.carimbo{justify-self:start;display:inline-grid;gap:3px;margin:4px 0 2px 2px !important;padding:8px 14px 7px;font-family:var(--font-display);font-stretch:125%;font-weight:800;font-size:1.02rem;line-height:1;letter-spacing:.06em;text-transform:uppercase;border:3px double currentColor;border-radius:4px;transform:rotate(-3deg)}
+.carimbo small{font-family:var(--font-mono);font-weight:400;font-size:.6rem;letter-spacing:.06em}
+.carimbo--online{color:var(--ok)}
+.carimbo--unstable{color:var(--warn)}
+.carimbo--offline{color:var(--bad)}
+.carimbo--unverified{color:var(--idle)}
+.risco{display:flex;align-items:center;gap:10px;font-weight:700}
+.risco__barras{display:inline-flex;gap:3px}
+.risco__barras i{width:16px;height:9px;border-radius:2px;background:var(--paper-line)}
+.risco--low .risco__barras i:nth-child(-n+1){background:var(--ok)}
+.risco--medium .risco__barras i:nth-child(-n+2){background:var(--warn)}
+.risco--high .risco__barras i{background:var(--bad)}
+.linha-tempo{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.linha-tempo li{display:grid;grid-template-columns:6.4rem 1fr;gap:12px;font-size:.92rem}
+.linha-tempo time{font-family:var(--font-mono);font-size:.72rem;padding-top:.2em;color:var(--paper-ink-2)}
+.ficha__acoes{display:grid;gap:14px;padding:clamp(18px,3.4vw,30px);background:var(--paper-2);border-top:1px solid var(--paper-line)}
+.ficha__links{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.botao{display:inline-flex;align-items:center;gap:.6em;font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:1rem;line-height:1.1;letter-spacing:.02em;text-transform:uppercase;text-decoration:none;color:var(--accent-ink);background:var(--accent);padding:.85em 1.15em;border-radius:6px;box-shadow:0 4px 0 var(--accent-ink);transition:transform .12s,box-shadow .12s}
+.botao:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--accent-ink)}
+.link{font-family:var(--font-mono);font-size:.76rem;text-underline-offset:3px}
+.fontes{margin:0;font-size:.8rem;color:var(--paper-ink-2)}
+.fontes a{text-underline-offset:2px}
+
+.quedas td[data-rotulo]::before{content:none}
+@media (max-width:700px){
+  .quedas{min-width:0}
+  .quedas thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .quedas tbody{display:grid}
+  .quedas tr{display:grid;gap:5px;padding:16px 0;border-bottom:1px solid var(--wall-2)}
+  .quedas td{display:block;padding:0;border:0}
+  .quedas td:nth-child(2){min-width:0}
+  .quedas td:first-child small{display:inline;margin-left:8px}
+  .quedas td[data-rotulo]{font-size:.86rem}
+  .quedas td[data-rotulo]::before{content:attr(data-rotulo) ": ";font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+  .quedas td[data-rotulo] br{display:none}
+  .quedas td[data-rotulo] a{margin-right:10px}
+}
+@media (max-width:520px){
+  .parede{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}
+  .campo{flex:1 1 100%}
+  .campo select{flex:1;max-width:none}
+  .linha-tempo li{grid-template-columns:1fr;gap:2px}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .capa,.botao,button.selo{transition:none}
+  .capa:hover,.capa:focus-visible{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="pagina">
+
+  <header class="balcao">
+    <div class="marca">
+      <p class="marca__sobre">Protótipo · base conferida em <span id="base-data"></span></p>
+      <h1 class="marca__nome" id="marca-nome"><span>LOKGAM</span></h1>
+      <p class="marca__sub">locadora de games no navegador</p>
+    </div>
+    <p class="tese">Jogos de console que rodam direto no navegador. Cada ficha diz o que o port traz, o que você precisa ter e qual o risco de ele sumir.</p>
+    <ul class="placar" id="placar"></ul>
+  </header>
+
+  <main class="vitrine" id="vitrine">
+    <h2 class="sr">Vitrine</h2>
+    <form class="filtros" id="filtros" role="search" aria-label="Filtrar a vitrine">
+      <label class="sr" for="busca">Buscar por jogo, console ou gênero</label>
+      <input class="busca" id="busca" type="search" placeholder="Buscar por jogo, console ou gênero" autocomplete="off">
+      <fieldset class="filtro-selos" id="filtro-selos">
+        <legend class="sr">Situação de direitos</legend>
+      </fieldset>
+      <label class="campo" for="filtro-console">Console
+        <select id="filtro-console"><option value="">Todos</option></select>
+      </label>
+      <label class="campo" for="filtro-controle">Jogar com
+        <select id="filtro-controle"><option value="">Qualquer coisa</option></select>
+      </label>
+      <button class="limpar" id="limpar" type="reset" hidden>Limpar filtros</button>
+    </form>
+    <p class="contagem" id="contagem" aria-live="polite"></p>
+    <div class="parede" id="parede"></div>
+    <p class="vazio" id="vazio" hidden>Nenhum jogo passa por esses filtros. Tire um deles ou limpe a busca.</p>
+  </main>
+
+  <section class="secao" id="curadoria" aria-labelledby="curadoria-titulo">
+    <h2 class="secao__titulo" id="curadoria-titulo">O que entra na vitrine</h2>
+    <p class="secao__lide">A LOKGAM não hospeda jogo nenhum. Cada capa leva ao site de quem fez o port, e só entra aqui o port que se encaixa em um destes quatro selos.</p>
+    <ul class="regras">
+      <li><span class="selo selo--official">Oficial</span><p>Publicado no navegador pelo dono do jogo ou pelos próprios autores.</p></li>
+      <li><span class="selo selo--free">Livre</span><p>Jogo de código aberto ou liberado pelos autores, com licença que permite distribuir.</p></li>
+      <li><span class="selo selo--demo">Demo</span><p>O site traz só a demonstração ou o shareware. O jogo completo pede os arquivos da sua cópia.</p></li>
+      <li><span class="selo selo--byo_files">Sua cópia</span><p>O port não traz dados do jogo. Você fornece os arquivos de uma cópia que é sua.</p></li>
+    </ul>
+    <dl class="notas">
+      <div><dt>Fica de fora</dt><dd>Port que já vem com o jogo comercial dentro não ganha link, por melhor que rode. Ele fica registrado na base, sem botão de jogar, e aparece no histórico quando sofre notificação ou queda.</dd></div>
+      <div><dt>Risco de remoção</dt><dd>É uma avaliação editorial, não um parecer jurídico. Pesa a técnica do port, o que ele distribui e como o dono do jogo costuma agir.</dd></div>
+      <div><dt>A luz na capa</dt><dd>Mostra a última conferência do link.
+        <span class="legenda-led"><span><i class="led led--online"></i>no ar</span><span><i class="led led--unverified"></i>não conferido</span><span><i class="led led--unstable"></i>instável</span><span><i class="led led--offline"></i>fora do ar</span></span></dd></div>
+    </dl>
+  </section>
+
+  <section class="secao" id="quedas" aria-labelledby="quedas-titulo">
+    <h2 class="secao__titulo" id="quedas-titulo">Histórico de quedas</h2>
+    <p class="secao__lide">Notificações, remoções e sumiços de ports de navegador, com a fonte de cada registro. Ports que saíram do ar ou que embutem o jogo aparecem aqui sem link.</p>
+    <div class="tabela-rolagem">
+      <table class="quedas">
+        <thead><tr><th scope="col">Quando</th><th scope="col">Port</th><th scope="col">Quem agiu</th><th scope="col">O que aconteceu</th><th scope="col">Fonte</th></tr></thead>
+        <tbody id="quedas-corpo"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao" id="analise" aria-labelledby="analise-titulo">
+    <h2 class="secao__titulo" id="analise-titulo">Em análise</h2>
+    <p class="secao__lide">Ports já descobertos que ainda não têm selo. Enquanto a origem dos dados do jogo não for confirmada, ficam sem link.</p>
+    <ul class="analise" id="analise-lista"></ul>
+  </section>
+
+  <footer class="rodape">
+    <p>Protótipo com fichas reais. Jogos, nomes e marcas pertencem aos seus donos, e nenhuma arte oficial é usada: as capas são geradas pela própria página.</p>
+    <p>O canal para corrigir ou pedir a remoção de uma ficha ainda vai ser definido.</p>
+  </footer>
+</div>
+
+<dialog class="ficha" id="ficha" aria-labelledby="ficha-titulo">
+  <article class="ficha__cartao" id="ficha-cartao"></article>
+</dialog>
+
+<script type="application/json" id="catalogo">__CATALOGO__</script>
+<script>
+(function () {
+  'use strict';
+  var D = JSON.parse(document.getElementById('catalogo').textContent);
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var esc = function (s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+  var norm = function (s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+
+  var SELO = { official: 'Oficial', free: 'Livre', demo: 'Demo', byo_files: 'Sua cópia' };
+  var SELO_LONGO = { official: 'Oficial', free: 'Livre', demo: 'Demo jogável', byo_files: 'Traga sua cópia' };
+  var ESTADO = { online: 'No ar', unverified: 'Não conferido', unstable: 'Instável', offline: 'Fora do ar' };
+  var TECNICA = {
+    native_web: 'Feito para a web',
+    source_port: 'Compilado do código-fonte aberto',
+    reimplementation: 'Motor reescrito do zero',
+    decompilation: 'Código reconstruído por engenharia reversa',
+    recompilation: 'Recompilação estática do código original',
+    emulation: 'Emulação no navegador'
+  };
+  var RISCO = { low: 'baixo', medium: 'médio', high: 'alto' };
+  var CONTROLE = { keyboard: 'teclado', mouse: 'mouse', gamepad: 'controle', touch: 'toque na tela' };
+  var TIPO = { launch: 'Lançamento', dmca_notice: 'Notificação de direitos autorais', removal: 'Remoção', outage: 'Queda', restored: 'Voltou ao ar', model_change: 'Mudou de modelo' };
+  var SIGLA = { 'Game Boy': 'GB', 'Game Boy Color': 'GBC', 'Game Boy Advance': 'GBA', 'Xbox 360': 'X360', 'Xbox One': 'XONE', 'Saturn': 'SAT', 'Dreamcast': 'DC', 'Mega Drive': 'MD', 'GameCube': 'GC' };
+  var MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+  function data(s) {
+    if (!s) return '';
+    var p = s.slice(0, 10).split('-');
+    if (p[2]) return p[2] + '/' + p[1] + '/' + p[0];
+    if (p[1]) return MES[+p[1] - 1] + '/' + p[0];
+    return p[0];
+  }
+  function plural(n, um, varios) { return n + ' ' + (n === 1 ? um : varios); }
+  function lista(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1]; }
+  /* Data só com mês vai para o fim daquele mês na ordenação */
+  function chave(d) { return d.length === 7 ? d + '-99' : d; }
+
+  var porId = {};
+  D.ports.forEach(function (p) { porId[p.id] = p; });
+  var aprovados = D.ports.filter(function (p) { return p.curation.state === 'approved'; });
+  var pendentes = D.ports.filter(function (p) { return p.curation.state === 'pending'; });
+  var rejeitados = D.ports.filter(function (p) { return p.curation.state === 'rejected'; });
+  aprovados.forEach(function (p) {
+    p._busca = norm([p.title, p.game.genre, p.game.platforms.join(' '), p.port.name || '', p.game.developer || '', SELO_LONGO[p.rights.status]].join(' '));
+  });
+
+  /* Balcão */
+  $('#base-data').textContent = data(D.base_date);
+  $('#placar').innerHTML =
+    '<li><b>' + aprovados.length + '</b> na vitrine</li>' +
+    '<li><a href="#analise"><b>' + pendentes.length + '</b> em análise</a></li>' +
+    '<li><a href="#quedas"><b>' + rejeitados.length + '</b> fora da vitrine</a></li>';
+
+  /* Capas */
+  var parede = $('#parede');
+  var capas = {};
+  function capa(p) {
+    var a = document.createElement('a');
+    a.className = 'capa capa--' + p.label.shape + ' cor-' + p.label.color + ' pad-' + p.label.pattern;
+    a.href = '#ficha-' + p.id;
+    var plats = p.game.platforms.slice(0, 2).map(function (x) { return SIGLA[x] || x; }).join(' · ');
+    a.innerHTML =
+      '<span class="capa__corpo"><span class="capa__topo" aria-hidden="true"></span>' +
+      '<span class="capa__rotulo"><span class="capa__titulo">' + esc(p.title) + '</span></span>' +
+      '<span class="capa__rodape"><span>' + esc(plats) + '</span><span>' + p.game.year + '</span>' +
+      '<i class="led led--' + p.status.state + '"></i><span class="sr">' + ESTADO[p.status.state] + '</span></span></span>' +
+      '<span class="selo selo--' + p.rights.status + '">' + SELO[p.rights.status] + '</span>';
+    return a;
+  }
+  aprovados.forEach(function (p) { capas[p.id] = parede.appendChild(capa(p)); });
+  var vaga = document.createElement('a');
+  vaga.className = 'capa capa--vaga';
+  vaga.href = '#curadoria';
+  vaga.textContent = 'Falta um jogo? Veja o que entra na vitrine';
+  parede.appendChild(vaga);
+
+  /* Ajuste de largura da letra: cada título ocupa a etiqueta inteira */
+  function ajustar(el, min) {
+    el.style.fontStretch = '';
+    el.style.fontSize = '';
+    /* Folga na altura: com entrelinha apertada, o desenho das letras passa uns pixels da caixa sem cortar linha nenhuma */
+    var cabe = function () {
+      var folga = parseFloat(getComputedStyle(el).fontSize) * 0.3;
+      return el.scrollWidth <= el.clientWidth + 1 && el.scrollHeight <= el.clientHeight + folga;
+    };
+    for (var w = 150; w >= 50; w -= 5) {
+      el.style.fontStretch = w + '%';
+      if (cabe()) return;
+    }
+    var fs = parseFloat(getComputedStyle(el).fontSize);
+    while (fs > (min || 11) && !cabe()) { fs -= 1; el.style.fontSize = fs + 'px'; }
+  }
+  function ajustarMarca() {
+    var el = $('#marca-nome'), letras = el.firstElementChild;
+    el.style.fontSize = '';
+    var fs = parseFloat(getComputedStyle(el).fontSize);
+    var w = letras.getBoundingClientRect().width;
+    if (w > 0) el.style.fontSize = Math.min(fs * el.clientWidth / w * 0.992, 190) + 'px';
+  }
+  function ajustarTudo() {
+    ajustarMarca();
+    parede.querySelectorAll('.capa:not([hidden]) .capa__titulo').forEach(function (el) { ajustar(el); });
+  }
+
+  /* Filtros */
+  var estado = { q: '', selos: {}, plat: '', ctrl: '' };
+  var busca = $('#busca'), selConsole = $('#filtro-console'), selControle = $('#filtro-controle');
+  var caixaSelos = $('#filtro-selos'), contagem = $('#contagem'), vazio = $('#vazio'), limpar = $('#limpar');
+
+  Object.keys(SELO).forEach(function (s) {
+    var n = aprovados.filter(function (p) { return p.rights.status === s; }).length;
+    if (!n) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.id = 'filtro-selo-' + s;
+    b.className = 'selo selo--' + s;
+    b.dataset.selo = s;
+    b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = SELO[s] + ' <b>' + n + '</b>';
+    caixaSelos.appendChild(b);
+  });
+  var contaPlat = {};
+  aprovados.forEach(function (p) { p.game.platforms.forEach(function (x) { contaPlat[x] = (contaPlat[x] || 0) + 1; }); });
+  Object.keys(contaPlat).sort(function (a, b) { return contaPlat[b] - contaPlat[a] || a.localeCompare(b); }).forEach(function (x) {
+    selConsole.add(new Option(x + ' (' + contaPlat[x] + ')', x));
+  });
+  Object.keys(CONTROLE).forEach(function (c) {
+    if (aprovados.some(function (p) { return p.requirements.controls.indexOf(c) > -1; })) {
+      selControle.add(new Option(CONTROLE[c].charAt(0).toUpperCase() + CONTROLE[c].slice(1), c));
+    }
+  });
+
+  function aplicar() {
+    var q = norm(estado.q.trim());
+    var ativos = Object.keys(estado.selos).filter(function (s) { return estado.selos[s]; });
+    var n = 0;
+    aprovados.forEach(function (p) {
+      var ok = (!ativos.length || ativos.indexOf(p.rights.status) > -1) &&
+        (!estado.plat || p.game.platforms.indexOf(estado.plat) > -1) &&
+        (!estado.ctrl || p.requirements.controls.indexOf(estado.ctrl) > -1) &&
+        (!q || p._busca.indexOf(q) > -1);
+      capas[p.id].hidden = !ok;
+      if (ok) n++;
+    });
+    var filtrando = !!(q || ativos.length || estado.plat || estado.ctrl);
+    contagem.textContent = filtrando ? 'Mostrando ' + n + ' de ' + plural(aprovados.length, 'jogo', 'jogos') : plural(n, 'jogo', 'jogos') + ' na vitrine';
+    vazio.hidden = n > 0;
+    vaga.hidden = filtrando;
+    limpar.hidden = !filtrando;
+    caixaSelos.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', estado.selos[b.dataset.selo] ? 'true' : 'false'); });
+    busca.value = estado.q; selConsole.value = estado.plat; selControle.value = estado.ctrl;
+    ajustarTudo();
+  }
+  busca.addEventListener('input', function () { estado.q = busca.value; aplicar(); });
+  selConsole.addEventListener('change', function () { estado.plat = selConsole.value; aplicar(); });
+  selControle.addEventListener('change', function () { estado.ctrl = selControle.value; aplicar(); });
+  caixaSelos.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-selo]');
+    if (!b) return;
+    estado.selos[b.dataset.selo] = !estado.selos[b.dataset.selo];
+    aplicar();
+  });
+  $('#filtros').addEventListener('submit', function (e) { e.preventDefault(); });
+  $('#filtros').addEventListener('reset', function (e) {
+    e.preventDefault();
+    estado = { q: '', selos: {}, plat: '', ctrl: '' };
+    aplicar();
+    busca.focus();
+  });
+
+  /* Histórico de quedas e fila de análise */
+  var linhas = D.events.filter(function (e) { return e.kind !== 'launch'; })
+    .sort(function (a, b) { return chave(a.date) < chave(b.date) ? 1 : chave(a.date) > chave(b.date) ? -1 : 0; });
+  $('#quedas-corpo').innerHTML = linhas.map(function (e) {
+    var p = porId[e.port_id];
+    var quando = data(e.date) + (e.date_basis === 'reported' ? '<small>data da notícia</small>' : '');
+    var nome = esc(p.title) + (p.port.name ? '<small>' + esc(p.port.name) + '</small>' : '');
+    var fontes = e.sources.map(function (f) { return '<a href="' + esc(f.url) + '" rel="noopener noreferrer">' + esc(f.title) + '</a>'; }).join('<br>');
+    return '<tr><td>' + quando + '</td><td>' + nome + '</td><td data-rotulo="Quem agiu">' + (e.actor ? esc(e.actor) : 'Não informado') + '</td><td>' +
+      '<small>' + TIPO[e.kind] + '</small>' + esc(e.summary) + '</td><td data-rotulo="Fonte">' + fontes + '</td></tr>';
+  }).join('');
+  $('#analise-lista').innerHTML = pendentes.map(function (p) {
+    return '<li><b>' + esc(p.title) + (p.port.name ? ' · ' + esc(p.port.name) : '') + '</b><span>' + esc(p.curation.reason) + '</span></li>';
+  }).join('') || '<li><span>Nada na fila agora.</span></li>';
+  if (!pendentes.length) $('#analise').hidden = true;
+
+  /* Ficha */
+  var dlg = $('#ficha'), cartao = $('#ficha-cartao');
+  function campo(rotulo, valor) { return valor ? '<dt>' + rotulo + '</dt><dd>' + esc(valor) + '</dd>' : ''; }
+  function fichaHTML(p) {
+    var g = p.game, r = p.rights, q = p.requirements, c = p.curation, s = p.status;
+    var arquivos = q.user_files.length ? q.user_files.map(function (f) {
+      return '<li><b>' + esc(f.what) + '</b>' + (f.where ? ', ' + esc(f.where) : '') + '. ' +
+        (f.needed_for === 'play' ? 'Sem isso o port não abre.' : 'Só para liberar o jogo completo.') + '</li>';
+    }).join('') : '<li>Só o navegador. Nenhum arquivo seu é pedido.</li>';
+    var controles = lista(q.controls.map(function (x) { return CONTROLE[x]; }));
+    var licencas = [r.content_license ? 'Conteúdo: ' + r.content_license : '', p.port.code_license ? 'Código: ' + p.port.code_license : ''].filter(Boolean).join(' · ');
+    var eventos = D.events.filter(function (e) { return e.port_id === p.id; }).sort(function (a, b) { return chave(a.date) < chave(b.date) ? -1 : 1; });
+    var fontes = c.sources.map(function (f) { return '<a href="' + esc(f.url) + '" rel="noopener noreferrer">' + esc(f.title) + '</a>'; }).join(' · ');
+    return '' +
+      '<header class="ficha__faixa">' +
+        '<p class="ficha__id">Ficha ' + esc(p.id) + ' · adicionada em ' + data(c.added) + '</p>' +
+        '<h2 class="ficha__titulo" id="ficha-titulo">' + esc(p.title) + '</h2>' +
+        '<p class="ficha__linha">' + g.year + ' · ' + esc(g.platforms.join(', ')) + ' · ' + esc(g.genre) + (g.developer ? ' · ' + esc(g.developer) : '') + '</p>' +
+        '<button type="button" class="ficha__fechar" id="ficha-fechar" data-fechar>Fechar</button>' +
+      '</header>' +
+      '<div class="ficha__miolo">' +
+        '<section class="ficha__bloco"><h3>Situação de direitos</h3>' +
+          '<p><span class="selo selo--' + r.status + '">' + SELO_LONGO[r.status] + '</span></p>' +
+          '<p>' + esc(r.summary) + '</p>' +
+          (licencas ? '<p class="ficha__nota">' + esc(licencas) + '</p>' : '') +
+        '</section>' +
+        '<section class="ficha__bloco"><h3>O que você precisa</h3>' +
+          '<ul>' + arquivos + '</ul>' +
+          (controles ? '<p class="ficha__nota">Joga com ' + esc(controles) + '.</p>' : '') +
+          (q.notes ? '<p>' + esc(q.notes) + '</p>' : '') +
+        '</section>' +
+        '<section class="ficha__bloco"><h3>Como roda</h3><dl class="campos">' +
+          campo('Port', p.port.name) + campo('Autor', p.port.author) + campo('Técnica', TECNICA[p.port.technique]) +
+          campo('Base', p.port.based_on) + campo('Desde', data(p.port.released)) + campo('Dono do jogo', g.rights_holder) +
+        '</dl></section>' +
+        '<section class="ficha__bloco"><h3>Link e risco</h3>' +
+          '<p class="carimbo carimbo--' + s.state + '">' + ESTADO[s.state] + '<small>conferência de ' + data(s.checked_at) + '</small></p>' +
+          (s.note ? '<p class="ficha__nota">' + esc(s.note) + '</p>' : '') +
+          '<p class="risco risco--' + c.risk + '"><span class="risco__barras" aria-hidden="true"><i></i><i></i><i></i></span>Risco de remoção ' + RISCO[c.risk] + '</p>' +
+          '<p>' + esc(c.reason) + '</p>' +
+        '</section>' +
+        (eventos.length ? '<section class="ficha__bloco ficha__bloco--largo"><h3>Histórico</h3><ol class="linha-tempo">' +
+          eventos.map(function (e) { return '<li><time>' + data(e.date) + '</time><span><b>' + TIPO[e.kind] + '.</b> ' + esc(e.summary) + '</span></li>'; }).join('') +
+        '</ol></section>' : '') +
+      '</div>' +
+      '<footer class="ficha__acoes">' +
+        '<div class="ficha__links">' +
+          '<a class="botao" href="' + esc(p.links.play) + '" rel="noopener noreferrer">Abrir no site do projeto <span aria-hidden="true">↗</span></a>' +
+          (p.links.source ? '<a class="link" href="' + esc(p.links.source) + '" rel="noopener noreferrer">Código-fonte</a>' : '') +
+          (p.links.project ? '<a class="link" href="' + esc(p.links.project) + '" rel="noopener noreferrer">Página do projeto</a>' : '') +
+        '</div>' +
+        '<p class="fontes">Fontes desta ficha: ' + fontes + '</p>' +
+      '</footer>';
+  }
+  function abrir(p) {
+    cartao.className = 'ficha__cartao cor-' + p.label.color + ' pad-' + p.label.pattern;
+    cartao.innerHTML = fichaHTML(p);
+    if (!dlg.open) dlg.showModal();
+    dlg.scrollTop = 0;
+  }
+  function rota() {
+    var h = decodeURIComponent(location.hash.slice(1));
+    if (h.indexOf('ficha-') === 0) {
+      var p = porId[h.slice(6)];
+      if (p && p.curation.state === 'approved') { abrir(p); return; }
+    }
+    if (dlg.open) dlg.close();
+  }
+  dlg.addEventListener('click', function (e) {
+    if (e.target === dlg || e.target.closest('[data-fechar]')) dlg.close();
+  });
+  dlg.addEventListener('close', function () {
+    if (location.hash.indexOf('#ficha-') === 0) {
+      var y = window.scrollY;
+      location.hash = '';
+      window.scrollTo({ top: y, behavior: 'instant' });
+    }
+  });
+  window.addEventListener('hashchange', rota);
+
+  /* Partida: guarda os filtros entre republicações da página */
+  var hot = window.claude && window.claude.hot;
+  if (hot && hot.snapshot) hot.snapshot(function () { return estado; });
+  function iniciar(salvo) {
+    if (salvo && typeof salvo === 'object') {
+      estado.q = salvo.q || '';
+      estado.selos = salvo.selos || {};
+      estado.plat = salvo.plat || '';
+      estado.ctrl = salvo.ctrl || '';
+    }
+    aplicar();
+    rota();
+  }
+  if (hot && hot.ready) hot.ready(iniciar); else iniciar((hot && hot.data) || {});
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarTudo);
+  var espera;
+  window.addEventListener('resize', function () { clearTimeout(espera); espera = setTimeout(ajustarTudo, 120); });
+})();
+</script>
+</body>
+</html>
