@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Valida a base da Locadora: formato (JSON Schema) e regras de curadoria.
+"""Valida a base da LOKGAM: formato (JSON Schema), regras de curadoria e camadas do pipeline.
 
 Uso: python3 scripts/validate.py
 Sai com código 1 se houver qualquer erro.

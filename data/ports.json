@@ -1804,14 +1804,14 @@
       "controls": []
     },
     "links": {
-      "play": "https://ripleyxlr8.github.io/",
+      "play": null,
       "project": null,
       "source": "https://github.com/ripleyXLR8/atlantis-native"
     },
     "curation": {
       "state": "pending",
       "risk": null,
-      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "reason": "O endereço indicado ao projeto era a raiz do site do autor e respondia com erro 404, então saiu da ficha. Falta achar o endereço certo do jogo e uma fonte que diga de onde vêm os dados.",
       "added": "2026-11-11",
       "sources": [
         {

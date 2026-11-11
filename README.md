@@ -47,7 +47,7 @@ docs/                   site gerado; não edite à mão
 
 ## Modelo de dados
 
-Três tabelas ligadas por `ports.id`, mais uma de apoio.
+Três tabelas curadas, ligadas por `ports.id`, e uma de apoio. As tabelas do pipeline (bronze e prata) estão descritas em "O pipeline de catálogos".
 
 | Tabela | Grão | Muda como | Para que serve |
 |---|---|---|---|
@@ -177,6 +177,16 @@ Limites conhecidos: o agrupamento por nome erra quando duas listas chamam o mesm
 ### Ouro: o que vem depois
 
 As respostas do observatório, como quanto tempo um port sobrevive, quais donos de jogos agem e como a onda cresce mês a mês. Dependem de algumas semanas de coleta acumulada.
+
+## Limites conhecidos
+
+- **O agendamento atrasa.** O GitHub não garante o horário dos workflows agendados; já houve conferência saindo mais de duas horas depois do previsto. Por isso uma conferência vale por três dias na vitrine.
+- **Alguns sites barram o robô.** Quando o site responde com bloqueio de robôs, o port fica como "não conferido" e não como "fora do ar". Nesses casos só uma conferência manual atualiza a luz.
+- **Uma fonte grande só.** Quase tudo da coleta vem de um catálogo. As métricas de catálogo descrevem essa lista, não a web inteira.
+- **Classificação parcial.** A origem (console, fliperama ou PC) é conhecida para uma parte pequena dos jogos coletados. O resto aparece como não classificado.
+- **Agrupamento por nome.** Ports do mesmo jogo com nomes muito diferentes ficam separados, e não há ainda uma tabela de ligações manuais.
+- **Histórico curto.** As datas de entrada dos ports só passam a ser exatas para o que surgir depois do primeiro retrato, de 11/11/2026.
+- **Sem testes das páginas no navegador.** Os testes cobrem os dados que as páginas recebem; o comportamento em tela é conferido à mão.
 
 ## Como rodar
 
