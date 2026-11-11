@@ -140,6 +140,57 @@ def composition(ports: list[dict]) -> list[dict]:
     return sorted(rows, key=lambda row: (row["technique"] == "unknown", -row["total"], row["technique"]))
 
 
+# Hospedagem gratuita em que cada projeto ganha um subdomínio.
+SHARED_HOSTING = (
+    "github.io", "gitlab.io", "codeberg.page", "itch.io", "pages.dev", "workers.dev", "vercel.app",
+    "netlify.app", "web.app", "firebaseapp.com", "glitch.me", "replit.app", "onrender.com",
+    "railway.app", "surge.sh", "neocities.org", "herokuapp.com",
+)
+
+
+def is_shared_hosting(host: str) -> bool:
+    return any(host == suffix or host.endswith("." + suffix) for suffix in SHARED_HOSTING)
+
+
+def catalog_coverage(sources: list[dict], catalogs: list[dict], bronze: dict, top: int = 6) -> dict:
+    """O que a coleta de catálogos já tem: números por fonte e onde ficam as versões jogáveis."""
+    names = {catalog["id"]: catalog["name"] for catalog in catalogs}
+    hosts: Counter = Counter()
+    rows = []
+    for source in sources:
+        snapshot = bronze["snapshots"].get(source["id"], [])
+        runs = [run for run in bronze["runs"] if run["source"] == source["id"]]
+        good = [run for run in runs if run["status"] in ("ok", "unchanged")]
+        tally = Counter(change["change"] for change in bronze["changes"].get(source["id"], []))
+        play = [entry["play_host"] for entry in snapshot if entry["play_host"]]
+        hosts.update(play)
+        rows.append({
+            "id": source["id"],
+            "name": names.get(source["catalog_id"], source["id"]),
+            "status": source["status"],
+            "notes": None if source["status"] == "active" else source["notes"],
+            "rows": len(snapshot),
+            "with_play": len(play),
+            "with_source": sum(1 for entry in snapshot if entry["source_host"]),
+            "first_run": runs[0]["run_at"] if runs else None,
+            "last_run": runs[-1]["run_at"] if runs else None,
+            "last_status": runs[-1]["status"] if runs else None,
+            "last_good_run": good[-1]["run_at"] if good else None,
+            "changes": {kind: tally[kind] for kind in ("added", "removed", "changed")},
+        })
+    ranked = sorted(hosts.items(), key=lambda pair: (-pair[1], pair[0]))
+    return {
+        "sources": rows,
+        "hosting": {
+            "entries": sum(hosts.values()),
+            "hosts": len(hosts),
+            "single_entry_hosts": sum(1 for count in hosts.values() if count == 1),
+            "shared": sum(count for host, count in hosts.items() if is_shared_hosting(host)),
+            "top": [{"host": host, "entries": count} for host, count in ranked[:top]],
+        },
+    }
+
+
 def build_metrics(ports: list[dict], events: list[dict], checks: list[dict]) -> dict:
     stamps = [check["checked_at"] for check in checks]
     last_check = max(stamps) if stamps else None

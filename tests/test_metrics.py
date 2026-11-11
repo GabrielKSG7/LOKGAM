@@ -1,7 +1,10 @@
 """Métricas do observatório sobre bases pequenas, montadas à mão."""
 from __future__ import annotations
 
-from metrics import MIN_SAMPLES, actors, availability, by_port, composition, events_by_month, latest
+from metrics import (
+    MIN_SAMPLES, actors, availability, by_port, catalog_coverage, composition, events_by_month,
+    is_shared_hosting, latest,
+)
 
 
 def port(pid, state="approved", technique="source_port", play="https://exemplo.test/jogo"):
@@ -108,3 +111,41 @@ def test_composition_counts_by_technique_and_state():
     rows = composition(ports)
     assert [row["technique"] for row in rows] == ["decompilation", "emulation", "unknown"]
     assert rows[0] == {"technique": "decompilation", "approved": 1, "pending": 0, "rejected": 1, "total": 2}
+
+
+def test_catalog_coverage_counts_per_source_and_where_ports_live():
+    def entry(key, play=None, source=None):
+        return {"key": key, "play_host": play, "source_host": source}
+
+    sources = [
+        {"id": "lista", "catalog_id": "cat", "status": "active", "notes": "n"},
+        {"id": "fechada", "catalog_id": "outro", "status": "blocked", "notes": "pede que robôs não leiam"},
+    ]
+    bronze = {
+        "runs": [
+            {"source": "lista", "run_at": "2026-11-11T21:00:00Z", "status": "ok"},
+            {"source": "lista", "run_at": "2026-11-12T04:43:00Z", "status": "unchanged"},
+            {"source": "lista", "run_at": "2026-11-13T04:43:00Z", "status": "failed"},
+        ],
+        "snapshots": {"lista": [
+            entry("a", "espelho.example", "github.com"), entry("b", "espelho.example"), entry("c", "fulano.github.io"),
+            entry("d", source="github.com"), entry("e", "fulano.github.io"), entry("f", "sozinho.example"),
+        ]},
+        "changes": {"lista": [{"change": "added"}, {"change": "added"}, {"change": "removed"}]},
+    }
+    out = catalog_coverage(sources, [{"id": "cat", "name": "Lista"}], bronze, top=2)
+    lista, fechada = out["sources"]
+    assert (lista["name"], lista["rows"], lista["with_play"], lista["with_source"], lista["notes"]) == ("Lista", 6, 5, 2, None)
+    assert (lista["first_run"], lista["last_run"], lista["last_status"], lista["last_good_run"]) == (
+        "2026-11-11T21:00:00Z", "2026-11-13T04:43:00Z", "failed", "2026-11-12T04:43:00Z")
+    assert lista["changes"] == {"added": 2, "removed": 1, "changed": 0}
+    assert (fechada["name"], fechada["rows"], fechada["last_run"], fechada["notes"]) == ("fechada", 0, None, "pede que robôs não leiam")
+    assert out["hosting"] == {
+        "entries": 5, "hosts": 3, "single_entry_hosts": 1, "shared": 2,
+        "top": [{"host": "espelho.example", "entries": 2}, {"host": "fulano.github.io", "entries": 2}],
+    }
+
+
+def test_shared_hosting_is_matched_by_suffix_only():
+    assert is_shared_hosting("fulano.github.io") and is_shared_hosting("itch.io")
+    assert not is_shared_hosting("github.io.example") and not is_shared_hosting("meugithub.io")

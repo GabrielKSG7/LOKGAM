@@ -12,8 +12,8 @@ from __future__ import annotations
 import json
 import sys
 
-from metrics import build_metrics, by_port, check_summary, is_monitored, latest
-from validate import ROOT, load_base, load_catalogs, validate
+from metrics import build_metrics, by_port, catalog_coverage, check_summary, is_monitored, latest
+from validate import ROOT, load_base, load_bronze, load_catalogs, load_sources, validate
 
 REPO_URL = "https://github.com/GabrielKSG7/LOKGAM"
 # Quantas conferências recentes cada ficha da vitrine mostra.
@@ -68,7 +68,12 @@ def observatory_payload(ports: list[dict], events: list[dict], checks: list[dict
         }
         for event in events
     ]
-    return {"repo": REPO_URL, **build_metrics(ports, events, checks), "events": timeline}
+    return {
+        "repo": REPO_URL,
+        **build_metrics(ports, events, checks),
+        "events": timeline,
+        "catalogs": catalog_coverage(load_sources(), load_catalogs(), load_bronze()),
+    }
 
 
 def main() -> int:

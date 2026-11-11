@@ -1,6 +1,8 @@
 # LOKGAM
 
-Locadora de games no navegador: um catálogo de jogos de console que rodam direto no navegador, no espírito do Click Jogos e do FRIV. A diferença é que cada jogo tem uma ficha que diz o que o port distribui, o que o jogador precisa ter e qual o risco de ele sumir, e um robô confere quatro vezes por dia se cada link continua no ar.
+Observatório dos ports de jogos de console para navegador. A LOKGAM acompanha a onda de jogos clássicos que passaram a rodar direto no navegador: lê os catálogos que existem, mede se cada port continua no ar, registra notificações de direitos e quedas, e mostra onde dá para jogar de forma legítima.
+
+O projeto nasceu como uma vitrine no espírito do Click Jogos e do FRIV, e a vitrine continua. Cada jogo com link tem uma ficha que diz o que o port distribui, o que o jogador precisa ter e qual o risco de ele sumir, e um robô confere quatro vezes por dia se o link continua no ar.
 
 - **Vitrine:** https://gabrielksg7.github.io/LOKGAM/
 - **Observatório:** https://gabrielksg7.github.io/LOKGAM/observatorio/
@@ -10,23 +12,29 @@ O projeto é um protótipo em evolução.
 ## Como funciona
 
 ```
-data/*.json(l)  ──►  validate.py  ──►  build.py  ──►  docs/ (GitHub Pages)
-      ▲                                   ▲
-      │                                   │
-check_links.py (robô, a cada 6 h)     metrics.py (observatório)
+catálogos na web ──► collect_catalogs.py ──► data/bronze/ ──┐
+                     (robô, uma vez por dia)                 │
+                                                             ▼
+data/*.json(l) ──► validate.py ──► metrics.py ──► build.py ──► docs/ (GitHub Pages)
+      ▲
+      │
+check_links.py (robô, a cada 6 h)
 ```
 
-A base são três arquivos de texto versionados no Git. O robô acrescenta linhas, as métricas são recalculadas e o site é gerado de novo, tudo no GitHub Actions. Não há servidor nem banco de dados.
+A base são arquivos de texto versionados no Git. Os robôs acrescentam linhas, as métricas são recalculadas e o site é gerado de novo, tudo no GitHub Actions. Não há servidor nem banco de dados.
 
 ```
 data/ports.json         fichas dos ports (uma por port, não por jogo)
 data/events.json        fatos datados: lançamentos, notificações, remoções, quedas
 data/checks.jsonl       conferências de link, uma linha por conferência
 data/catalogs.json      outros catálogos, listas e portais de ports
-schema/                 JSON Schema das três tabelas
+data/sources.json       fontes de coleta: qual catálogo, por onde é lido, com qual leitor
+data/bronze/            retratos dos catálogos, mudanças e registro das coletas
+schema/                 JSON Schema de cada tabela
 scripts/validate.py     valida formato e regras de curadoria
 scripts/format_base.py  regrava ports.json no formato canônico
 scripts/check_links.py  o robô de conferência
+scripts/collect_catalogs.py  o robô de coleta de catálogos
 scripts/metrics.py      métricas do observatório
 scripts/build.py        gera docs/ a partir da base e de web/
 web/                    modelos das páginas, CSS e JS compartilhados
@@ -120,12 +128,48 @@ O `metrics.py` calcula, a partir das três tabelas:
 
 Um limite de propósito: a LOKGAM não guarda link de port que embute o jogo, então esses ports não são conferidos pelo robô. O que se sabe deles vem de notícias e entra como evento.
 
+## O pipeline de catálogos
+
+Os catálogos de ports que existem na web são tratados como fonte de dados. O desenho segue o modelo de camadas (bronze, prata, ouro), e a primeira está pronta.
+
+### Bronze: o retrato de cada catálogo
+
+Uma vez por dia, `collect_catalogs.py` lê cada fonte ativa de `data/sources.json` e grava em `data/bronze/`:
+
+| Arquivo | O que guarda |
+|---|---|
+| `<fonte>/snapshot.jsonl` | o retrato mais recente da lista, uma entrada por linha, em ordem de chave |
+| `<fonte>/changes.jsonl` | o que entrou, saiu ou mudou entre um retrato e o seguinte; só cresce |
+| `runs.jsonl` | uma linha por fonte a cada execução: resultado, hash do original e medidas de qualidade da leitura |
+
+Decisões de projeto:
+
+- **Identidade sem endereço.** De cada entrada ficam o título, o domínio da versão jogável e o dono do repositório do código. O endereço completo e o texto original não são gravados. Do endereço fica uma impressão digital (hash), que basta para saber se ele mudou.
+- **Idempotência.** Se o hash do original é o mesmo da última coleta, nada é lido de novo e a execução fica registrada como `unchanged`.
+- **Retrato inicial.** A primeira coleta de uma fonte não gera mudanças, e trocar a versão do leitor gera um retrato novo. Assim `changes.jsonl` só tem mudança do catálogo, nunca mudança da leitura.
+- **Proteções.** Espelho quando a origem falha, `robots.txt` obedecido nas fontes que são páginas, recusa da coleta que traz menos da metade do retrato anterior, e descarte (contado) de entrada fora do schema.
+- **Qualidade medida.** Cada execução registra quantas tabelas e linhas leu, quantas linhas vieram sem link e quantas chaves se repetiram. No Ultimate Catalog, o total lido é comparado com o que a própria lista declara, e a estrela que a lista dá a quem tem versão jogável e código serve para conferir a leitura dos links.
+
+| Fonte | Situação |
+|---|---|
+| Ultimate Catalog of Web Game Ports | coletada, pelo README da lista, com espelho |
+| BottleShip (lista de compatibilidade) | coletada |
+| Ported2Browser | não coletada: o site pede que robôs não o leiam |
+
+Uma entrada de catálogo ainda não é uma ficha. A mesma versão aparece em mais de uma lista, muita coisa ali é jogo de PC e não port de console, e nada foi classificado quanto a direitos.
+
+### Prata e ouro: o que vem depois
+
+- **Prata:** juntar a mesma versão vinda de fontes diferentes, ligar as entradas às fichas curadas, separar o que é port de console e montar a linha do tempo de cada port (quando apareceu, quando sumiu, quando mudou de domínio).
+- **Ouro:** as respostas do observatório, como quanto tempo um port sobrevive, quais donos de jogos agem e como a onda cresce mês a mês.
+
 ## Como rodar
 
 ```
 pip install -r requirements-dev.txt
 python3 scripts/validate.py                 # valida a base
 python3 scripts/format_base.py              # põe ports.json no formato canônico
+python3 scripts/collect_catalogs.py --dry-run   # coleta os catálogos sem gravar nada
 pytest                                      # roda os testes
 python3 scripts/check_links.py --dry-run    # confere os links sem gravar
 python3 scripts/build.py                    # gera docs/
@@ -138,9 +182,10 @@ Os testes do robô sobem um servidor HTTP local e exercitam cada tipo de respost
 | Workflow | Quando roda | O que faz |
 |---|---|---|
 | `conferir-links.yml` | a cada 6 horas e sob demanda | confere os links, gera o site e grava tudo em um commit |
+| `coletar-catalogos.yml` | uma vez por dia e sob demanda | coleta os catálogos, gera o site e grava tudo em um commit |
 | `ci.yml` | a cada push e pull request | valida a base, roda os testes e confere se `docs/` está em dia |
 
-Para rodar a conferência na hora: aba **Actions**, workflow **Conferir links**, botão **Run workflow**.
+Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repositório ao mesmo tempo. Para rodar um deles na hora: aba **Actions**, workflow **Conferir links** ou **Coletar catálogos**, botão **Run workflow**.
 
 ## Como adicionar um port
 
@@ -151,17 +196,19 @@ Para rodar a conferência na hora: aba **Actions**, workflow **Conferir links**,
 
 ## Próximos passos
 
+- Camada prata: unificar as entradas dos catálogos, ligá-las às fichas e montar a linha do tempo de cada port.
+- Conferir a disponibilidade das entradas de catálogo por domínio, sem gravar o endereço.
+- Camada ouro, com dbt e DuckDB: sobrevivência dos ports, quedas por dono de jogo e crescimento por mês.
+- Mais fontes: catálogos que publiquem um arquivo de dados ou autorizem a leitura.
+- Observatório como página inicial, com a vitrine como a seção "onde jogar".
+- Conjunto de dados aberto, atualizado todo dia.
 - Esvaziar a fila de análise: abrir cada site e confirmar se pede a cópia do jogador, se é livre ou demo, ou se já traz o jogo.
-- Importador de catálogos: ler as listas de "Outros catálogos" e gerar candidatos automaticamente, em uma tabela de entrada separada das fichas.
-- Conferir os catálogos que ainda estão sem link.
-- Emuladores de PS1 e N64 que abram o disco ou a ROM do jogador, como já existe para o PS2.
-- Envio de jogos por formulário, que cai na fila "Em análise" e só entra na vitrine depois de aprovado.
 - Canal para corrigir ou pedir a remoção de uma ficha.
-- Observatório: tempo entre o lançamento e a notificação, e tempo de resposta dos sites.
 - Domínio próprio.
 
 ## Ideias para o futuro
 
+- **Envio pela comunidade:** formulário que cai na fila "Em análise" e só entra depois de aprovado.
 - **Launcher próprio:** guardar a biblioteca de arquivos do jogador uma vez só, dizer quais ports aceitam cada arquivo, padronizar controle e tela cheia, jogar offline e abrir só sites curados. Começaria como app instalável a partir do site.
 - **Smart TVs:** verificar se a vitrine e os ports rodam nos navegadores de TV (Tizen, webOS, Android TV), que costumam ter suporte limitado a WebAssembly, WebGL 2 e controles. A vitrine precisaria de navegação pelo controle remoto.
 

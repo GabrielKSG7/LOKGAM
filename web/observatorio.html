@@ -78,6 +78,10 @@
 .tabela th.num{text-align:right;white-space:normal}
 .tabela small{display:block;font-weight:400;color:var(--ink-2)}
 .tabela--estreita{max-width:34rem}
+.tabela td.fonte{min-width:11rem;font-weight:600}
+@media (max-width:560px){.tabela--fontes td.fonte{min-width:0}.tabela--fontes th,.tabela--fontes td{padding-right:10px}.tabela--fontes th:last-child,.tabela--fontes td:last-child{padding-right:0}}
+.tabela td.fonte small{max-width:44ch;margin-top:2px}
+.tabela td.dominio{font-family:var(--font-mono);font-size:.82rem;overflow-wrap:anywhere}
 .barra{display:block;height:8px;min-width:2px;border-radius:4px;background:var(--serie-1)}
 .celula-barra{width:26%;vertical-align:middle !important}
 .tabela td.tecnica{min-width:9.5rem}
@@ -136,6 +140,26 @@
     <ul class="agora" id="agora-numeros"></ul>
     <p class="nota" id="agora-nota"></p>
   </main>
+
+  <div class="duas">
+    <section class="secao" id="catalogos" aria-labelledby="catalogos-titulo">
+      <h2 class="secao__titulo" id="catalogos-titulo">Catálogos acompanhados</h2>
+      <p class="secao__lide">Um robô lê estas listas uma vez por dia e guarda o retrato de cada uma, sem os endereços dos ports. É daqui que a base vai crescer.</p>
+      <div class="tabela-rolagem"><table class="tabela tabela--fontes">
+        <thead><tr><th scope="col">Fonte</th><th scope="col" class="num">Entradas</th><th scope="col" class="num">Jogáveis</th><th scope="col" class="num">Com código</th></tr></thead>
+        <tbody id="fontes-corpo"></tbody>
+      </table></div>
+    </section>
+
+    <section class="secao" id="hospedagem" aria-labelledby="hospedagem-titulo">
+      <h2 class="secao__titulo" id="hospedagem-titulo">Onde ficam as versões jogáveis</h2>
+      <p class="secao__lide" id="hospedagem-frase"></p>
+      <div class="tabela-rolagem"><table class="tabela">
+        <thead><tr><th scope="col">Domínio</th><th scope="col" class="coluna-barra"><span class="sr">Entradas em barra</span></th><th scope="col" class="num">Entradas</th></tr></thead>
+        <tbody id="hospedagem-corpo"></tbody>
+      </table></div>
+    </section>
+  </div>
 
   <section class="secao" id="disponibilidade" aria-labelledby="disp-titulo">
     <h2 class="secao__titulo" id="disp-titulo">Disponibilidade por port</h2>
@@ -207,6 +231,7 @@
       <div><dt>O robô</dt><dd>Passa quatro vezes por dia e se identifica como LOKGAM-conferencia. Abre só a página inicial de cada port e lê a resposta. Ele não testa se o jogo roda.</dd></div>
       <div><dt>Disponibilidade</dt><dd>Conferências com resposta normal, divididas pelas conferências em que o robô conseguiu ver o site. Quando o site barra o robô, a conferência não conta para nenhum lado. A porcentagem só aparece depois de <span id="minimo"></span> conferências válidas.</dd></div>
       <div><dt>O que não é medido</dt><dd>A LOKGAM não guarda link de port que embute o jogo, então esses ports não são conferidos. O que se sabe deles vem de notícias e está no histórico de quedas.</dd></div>
+      <div><dt>Catálogos</dt><dd>De cada entrada de catálogo ficam o título, o domínio da versão jogável e o dono do repositório do código. O endereço completo não é gravado. Uma entrada ainda não é uma ficha: a mesma versão pode aparecer em mais de uma lista, e nada ali foi classificado. Os retratos estão em <a id="dado-bronze" href="#">data/bronze</a>.</dd></div>
       <div><dt>Dados abertos</dt><dd>As três tabelas estão no repositório: <a id="dado-ports" href="#">ports.json</a>, <a id="dado-events" href="#">events.json</a> e <a id="dado-checks" href="#">checks.jsonl</a>.</dd></div>
     </dl>
   </section>
@@ -250,7 +275,8 @@
   [
     [D.totals.checks, 'conferências desde ' + L.data(D.totals.first_check || '')],
     [D.totals.events, 'eventos com fonte'],
-    [D.totals.ports, 'fichas na base']
+    [D.totals.ports, 'fichas na base'],
+    [D.catalogs.sources.reduce(function (t, f) { return t + f.rows; }, 0).toLocaleString('pt-BR'), 'entradas lidas de catálogos']
   ].forEach(function (par) {
     var li = no('li');
     li.appendChild(no('b', '', par[0]));
@@ -437,6 +463,62 @@
     tr.appendChild(no('td', '', a.ports.join(', ')));
     quem.appendChild(tr);
   });
+
+  /* Catálogos acompanhados */
+  var C = D.catalogs;
+  var milhar = function (n) { return n.toLocaleString('pt-BR'); };
+  $('#dado-bronze').href = D.repo + '/tree/main/data/bronze';
+  function linhaDaFonte(f, agora) {
+    if (f.status !== 'active') return 'Não coletado. ' + f.notes;
+    if (!f.last_good_run) return f.last_run ? 'A coleta ainda não deu certo.' : 'Aguardando a primeira coleta.';
+    var partes = [(f.last_status === 'failed' ? 'A última tentativa falhou; retrato de ' : 'Lido ') + L.quando({ checked_at: f.last_good_run }, agora)];
+    var m = f.changes;
+    var mudou = [m.added && L.plural(m.added, 'entrou', 'entraram'), m.removed && L.plural(m.removed, 'saiu', 'saíram'), m.changed && L.plural(m.changed, 'mudou', 'mudaram')].filter(Boolean);
+    partes.push(mudou.length ? L.lista(mudou) + ' desde ' + L.data(f.first_run) : 'sem mudanças desde o primeiro retrato, de ' + L.data(f.first_run));
+    return partes.join(' · ');
+  }
+  var corpoFontes = $('#fontes-corpo');
+  function pintarFontes() {
+    var agora = Date.now();
+    corpoFontes.textContent = '';
+    C.sources.forEach(function (f) {
+      var tr = no('tr');
+      var nome = no('td', 'fonte', f.name);
+      nome.appendChild(no('small', '', linhaDaFonte(f, agora)));
+      tr.appendChild(nome);
+      /* Fonte que não traz links (uma lista de compatibilidade, por exemplo) fica com traço nas duas últimas colunas */
+      var temLinks = f.with_play + f.with_source > 0;
+      [f.rows, f.with_play, f.with_source].forEach(function (n, i) { tr.appendChild(no('td', 'num', f.last_good_run && (i === 0 || temLinks) ? milhar(n) : '—')); });
+      corpoFontes.appendChild(tr);
+    });
+  }
+  L.aCadaMinuto(pintarFontes);
+
+  var H = C.hosting;
+  if (H.entries) {
+    var noTopo = H.top.slice(0, 4).reduce(function (t, h) { return t + h.entries; }, 0);
+    $('#hospedagem-frase').textContent = 'As ' + milhar(H.entries) + ' versões jogáveis listadas estão em ' + L.plural(H.hosts, 'domínio', 'domínios') +
+      '. Os quatro maiores concentram ' + Math.round(noTopo / H.entries * 100) + '% delas, e ' + milhar(H.single_entry_hosts) + ' domínios aparecem uma única vez. ' +
+      Math.round(H.shared / H.entries * 100) + '% ficam em hospedagem gratuita, como GitHub Pages e itch.io.';
+    var corpoHosp = $('#hospedagem-corpo');
+    var linhasHosp = H.top.map(function (h) { return [h.host, h.entries, 'dominio']; });
+    var resto = H.entries - H.top.reduce(function (t, h) { return t + h.entries; }, 0);
+    if (resto > 0) linhasHosp.push(['Outros ' + milhar(H.hosts - H.top.length) + ' domínios', resto, '']);
+    var maiorHosp = Math.max.apply(null, linhasHosp.map(function (x) { return x[1]; }));
+    linhasHosp.forEach(function (x) {
+      var tr = no('tr');
+      tr.appendChild(no('td', x[2], x[0]));
+      var celula = no('td', 'celula-barra');
+      var barra = no('span', 'barra');
+      barra.style.width = (x[1] / maiorHosp * 100) + '%';
+      celula.appendChild(barra);
+      tr.appendChild(celula);
+      tr.appendChild(no('td', 'num', milhar(x[1])));
+      corpoHosp.appendChild(tr);
+    });
+  } else {
+    $('#hospedagem').hidden = true;
+  }
 
   /* Raio-x da base */
   var raiox = $('#raiox-corpo');

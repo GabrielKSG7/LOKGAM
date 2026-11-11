@@ -268,7 +268,7 @@ def parse_bottleship_compat(text: str) -> tuple[list[dict], dict]:
             if len(row) <= max(at_title, at_status) or not clean_title(row[at_title].text):
                 quality["rows_without_title"] += 1
                 continue
-            extra = {"status": row[at_status].text.replace("*", "").strip().lower()[:60]}
+            extra = {"status": re.sub(r"[*†‡§]", "", row[at_status].text).strip().lower()[:60]}
             if at_gog is not None and at_gog < len(row):
                 extra["gog"] = "yes" if row[at_gog].text.strip() else "no"
             entries.append(new_entry(clean_title(row[at_title].text), table.heading[:24], extra=extra))
@@ -279,7 +279,7 @@ def parse_bottleship_compat(text: str) -> tuple[list[dict], dict]:
 # sem registrar como mudança do catálogo o que é só mudança da leitura.
 PARSERS = {
     "ultimate_catalog": (parse_ultimate_catalog, 1),
-    "bottleship_compat": (parse_bottleship_compat, 1),
+    "bottleship_compat": (parse_bottleship_compat, 2),
 }
 
 
