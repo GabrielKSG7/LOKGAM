@@ -1,28 +1,68 @@
 #!/usr/bin/env python3
-"""Gera docs/index.html: a vitrine com a base embutida, em um arquivo só.
+"""Gera o site em docs/: a vitrine e o observatório, cada um em um arquivo só.
 
 Uso: python3 scripts/build.py
 Valida a base antes; não gera nada se houver erro.
+
+A saída depende só dos arquivos do repositório. Tudo que depende da hora
+(há quanto tempo foi a última conferência) é calculado no navegador.
 """
 from __future__ import annotations
 
 import json
 import sys
-from pathlib import Path
 
+from metrics import build_metrics, by_port, check_summary, is_monitored, latest
 from validate import ROOT, load_base, validate
 
-PLACEHOLDER = "__CATALOGO__"
+REPO_URL = "https://github.com/GabrielKSG7/LOKGAM"
+# Quantas conferências recentes cada ficha da vitrine mostra.
+HISTORY_LENGTH = 30
 
 
-def latest_checks(checks: list[dict]) -> dict[str, dict]:
-    """Última conferência de cada ficha. Empate de data fica com a linha mais recente do arquivo."""
-    latest: dict[str, dict] = {}
-    for check in checks:
-        current = latest.get(check["port_id"])
-        if current is None or check["checked_at"] >= current["checked_at"]:
-            latest[check["port_id"]] = check
-    return latest
+def embed(data: dict) -> str:
+    """JSON pronto para ir dentro de uma tag <script>."""
+    return json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+
+
+def render(template_name: str, replacements: dict[str, str]) -> str:
+    page = (ROOT / "web" / template_name).read_text(encoding="utf-8")
+    for placeholder, value in replacements.items():
+        if page.count(placeholder) != 1:
+            raise SystemExit(f"{template_name} precisa ter exatamente um {placeholder}.")
+        page = page.replace(placeholder, value)
+    return page
+
+
+def storefront_payload(ports: list[dict], events: list[dict], checks: list[dict]) -> dict:
+    grouped = by_port(checks)
+    stamps = [check["checked_at"] for check in checks]
+    cards = []
+    for port in ports:
+        card = json.loads(json.dumps(port))
+        if port["curation"]["state"] != "approved":
+            # Só ficha aprovada leva link para a página.
+            card["links"]["play"] = None
+        if is_monitored(port):
+            history = grouped.get(port["id"], [])
+            card["seen"] = check_summary(latest(history, observed_only=True))
+            card["last"] = check_summary(latest(history))
+            card["history"] = [[row["checked_at"], row["state"]] for row in history[-HISTORY_LENGTH:]]
+        cards.append(card)
+    return {"repo": REPO_URL, "last_check": max(stamps) if stamps else None, "ports": cards, "events": events}
+
+
+def observatory_payload(ports: list[dict], events: list[dict], checks: list[dict]) -> dict:
+    by_id = {port["id"]: port for port in ports}
+    timeline = [
+        {
+            **event,
+            "title": by_id[event["port_id"]]["title"],
+            "port_name": by_id[event["port_id"]]["port"].get("name", ""),
+        }
+        for event in events
+    ]
+    return {"repo": REPO_URL, **build_metrics(ports, events, checks), "events": timeline}
 
 
 def main() -> int:
@@ -34,32 +74,24 @@ def main() -> int:
         return 1
 
     ports, events, checks = load_base()
-    latest = latest_checks(checks)
-    for port in ports:
-        check = latest.get(port["id"])
-        port["status"] = {
-            "state": check["state"] if check else "unverified",
-            "checked_at": check["checked_at"] if check else None,
-            "note": check.get("note", "") if check else "",
-        }
-        if port["curation"]["state"] == "rejected":
-            port["links"]["play"] = None
-
-    payload = {
-        "base_date": max(c["checked_at"] for c in checks)[:10],
-        "ports": ports,
-        "events": events,
+    shared = {
+        "/*__BASE_CSS__*/": (ROOT / "web" / "base.css").read_text(encoding="utf-8"),
+        "/*__BASE_JS__*/": (ROOT / "web" / "base.js").read_text(encoding="utf-8"),
     }
-    data = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-
-    template = (ROOT / "web" / "template.html").read_text(encoding="utf-8")
-    if template.count(PLACEHOLDER) != 1:
-        print(f"O template precisa ter exatamente um {PLACEHOLDER}.")
-        return 1
-    out = ROOT / "docs" / "index.html"
-    out.parent.mkdir(exist_ok=True)
-    out.write_text(template.replace(PLACEHOLDER, data), encoding="utf-8")
-    print(f"Gerado {out.relative_to(ROOT)} ({out.stat().st_size / 1024:.0f} KB) com {len(ports)} fichas.")
+    pages = {
+        "index.html": render("vitrine.html", {**shared, "__DADOS__": embed(storefront_payload(ports, events, checks))}),
+        "observatorio/index.html": render(
+            "observatorio.html", {**shared, "__DADOS__": embed(observatory_payload(ports, events, checks))}
+        ),
+    }
+    docs = ROOT / "docs"
+    for name, page in pages.items():
+        out = docs / name
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(page, encoding="utf-8")
+        print(f"Gerado docs/{name} ({out.stat().st_size / 1024:.0f} KB)")
+    # Sem isto o GitHub Pages passa o site pelo Jekyll à toa.
+    (docs / ".nojekyll").write_text("", encoding="utf-8")
     return 0
 
 

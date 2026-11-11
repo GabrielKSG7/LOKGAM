@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LOKGAM</title>
+<meta name="description" content="Locadora de games no navegador: jogos de console que rodam direto no navegador, com a situação de direitos e o estado do link em cada ficha.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&amp;display=swap" rel="stylesheet">
@@ -11,7 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Parede de locadora: balcão compacto no topo, um mosaico só de capas geradas, e a ficha abre como cartão de locação. */
+  /* Parede de locadora: balcão compacto no topo, um mosaico só de capas geradas, e a ficha abre como cartão de locação.
+     O observatório usa o mesmo balcão e troca a parede por medidas: situação agora, faixas de conferência e um gráfico por mês. */
   --wall:#ECE9F5;
   --wall-2:#D6D0EA;
   --ink:#1A1630;
@@ -25,10 +27,14 @@
   --accent-ink:#1A1630;
   --plastico:#A7A2BD;
   --plastico-ink:#221D3D;
+  /* Estado de um link: nunca usado para outra coisa */
   --ok:#157A4B;
   --warn:#9A5800;
   --bad:#BF2F1E;
   --idle:#6A6485;
+  /* Séries de gráfico, validadas contra a parede clara e a escura */
+  --serie-1:#3C49D6;
+  --serie-2:#D6478E;
   --font-display:"Anybody","Arial Narrow","Helvetica Neue",Impact,sans-serif;
   --font-body:"Schibsted Grotesk","Segoe UI",system-ui,-apple-system,sans-serif;
   --font-mono:"Martian Mono",ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,monospace;
@@ -53,6 +59,8 @@
     --warn:#FFBB55;
     --bad:#FF8572;
     --idle:#9D97BD;
+    --serie-1:#6E7BF2;
+    --serie-2:#D55181;
   }
 }
 :root[data-theme="dark"]{
@@ -74,6 +82,8 @@
   --warn:#FFBB55;
   --bad:#FF8572;
   --idle:#9D97BD;
+  --serie-1:#6E7BF2;
+  --serie-2:#D55181;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -84,14 +94,21 @@ body{margin:0;background:var(--wall);color:var(--ink);font-family:var(--font-bod
 a{color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;box-shadow:0 0 0 6px var(--ink)}
 
-.pagina{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,40px) 56px;display:flex;flex-direction:column;gap:clamp(30px,5vw,60px)}
+.pagina{max-width:1180px;margin:0 auto;padding:clamp(14px,2.4vw,24px) clamp(16px,4vw,40px) 56px;display:flex;flex-direction:column;gap:clamp(30px,5vw,60px)}
+
+/* Trilho de navegação */
+.trilho{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.04em}
+.trilho a{padding:.5em 0;text-decoration:none;border-bottom:3px solid transparent}
+.trilho a:hover{border-bottom-color:var(--ink-2)}
+.trilho a[aria-current="page"]{font-weight:600;border-bottom-color:var(--ink)}
+.trilho__fora{margin-left:auto;color:var(--ink-2)}
 
 /* Balcão */
 .balcao{display:grid;gap:16px;container-type:inline-size}
 .marca{display:grid;gap:4px}
 .marca__sobre{margin:0;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
 .marca__nome{margin:0;font-family:var(--font-display);font-stretch:150%;font-weight:900;font-size:clamp(2rem,10.4cqi,9rem);line-height:.8;letter-spacing:-.015em;text-transform:uppercase;white-space:nowrap;overflow:hidden;padding-block:.05em}
-.marca__sub{margin:0;font-family:var(--font-display);font-stretch:150%;font-weight:500;font-size:clamp(.95rem,2.6cqi,1.7rem);line-height:1;letter-spacing:.32em;text-transform:uppercase}
+.marca__sub{margin:0;font-family:var(--font-display);font-stretch:150%;font-weight:500;font-size:clamp(.82rem,2.4cqi,1.6rem);line-height:1.1;letter-spacing:.3em;text-transform:uppercase}
 .tese{margin:6px 0 0;max-width:60ch;font-size:clamp(1.02rem,1.7cqi,1.22rem);text-wrap:pretty}
 .placar{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;padding:0;list-style:none;font-family:var(--font-mono);font-size:.74rem;color:var(--ink-2)}
 .placar b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
@@ -103,6 +120,40 @@ a{color:inherit}
 .selo--free{--selo-bg:#5FE3A4;--selo-fg:#06301C}
 .selo--demo{--selo-bg:#FFB74A;--selo-fg:#3D2000}
 .selo--byo_files{--selo-bg:#FF93CC;--selo-fg:#4D0A2E}
+
+/* Luz de status da capa */
+.led{flex:none;display:inline-block;width:.85em;height:.85em;border-radius:50%;box-shadow:0 0 0 1.5px rgba(8,5,25,.75)}
+.led--online{background:#3BE590}
+.led--unstable{background:#FFB020}
+.led--offline{background:#FF4D3D}
+.led--unverified{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+
+/* Faixa de conferências: cada barrinha é uma conferência, e a altura repete o que a cor diz */
+.faixa{display:flex;align-items:flex-end;justify-content:flex-end;gap:2px;height:18px;min-width:0;overflow:hidden}
+.pulso{flex:none;display:inline-block;width:6px;height:18px;border-radius:2px;background:currentColor}
+.pulso--online{color:var(--ok)}
+.pulso--unstable{color:var(--warn);height:11px}
+.pulso--offline{color:var(--bad);height:5px}
+.pulso--unverified{color:var(--idle);background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+.pulso--vazio{height:2px;color:var(--wall-2)}
+.legenda-pulso{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none;font-family:var(--font-mono);font-size:.7rem;color:var(--ink-2)}
+.legenda-pulso li{display:inline-flex;align-items:flex-end;gap:7px;line-height:1.2}
+
+/* Seções */
+.secao{display:grid;gap:18px}
+.secao__titulo{margin:0;font-family:var(--font-display);font-stretch:130%;font-weight:800;font-size:clamp(1.35rem,3vw,2.1rem);line-height:1;text-transform:uppercase;text-wrap:balance}
+.secao__lide{margin:0;max-width:64ch;color:var(--ink-2)}
+.notas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 28px;margin:0;padding:18px 0 0;border-top:2px solid var(--wall-2)}
+.notas div{display:grid;gap:4px;align-content:start}
+.notas dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.notas dd{margin:0;font-size:.92rem;color:var(--ink-2)}
+.rodape{display:grid;gap:6px;padding-top:22px;border-top:2px solid var(--ink);font-size:.86rem;color:var(--ink-2);max-width:78ch}
+.rodape p{margin:0}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+}
+
 
 /* Filtros */
 .filtros{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
@@ -131,13 +182,11 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 .capa__rotulo::before,.ficha__faixa::before{content:"";position:absolute;inset:0;--pc:color-mix(in srgb,var(--fg) 22%,transparent)}
 .capa__rotulo::after,.ficha__faixa::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 30%,transparent 78%)}
 .capa__titulo{position:relative;z-index:1;display:block;width:100%;max-height:100%;overflow:hidden;font-family:var(--font-display);font-stretch:100%;font-weight:800;font-size:clamp(1rem,17cqi,2.1rem);line-height:.94;letter-spacing:-.005em;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:none}
-.capa__rodape{display:flex;align-items:center;gap:6px;padding:5cqi 8cqi;font-family:var(--font-mono);font-size:clamp(.56rem,6.4cqi,.7rem);line-height:1;letter-spacing:.04em;background:color-mix(in srgb,var(--fg) 14%,var(--bg));color:var(--fg);white-space:nowrap}
-.capa__rodape span:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:clip}
-.led{flex:none;width:.85em;height:.85em;border-radius:50%;box-shadow:0 0 0 1.5px rgba(8,5,25,.75)}
-.led--online{background:#3BE590}
-.led--unstable{background:#FFB020}
-.led--offline{background:#FF4D3D}
-.led--unverified{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+.capa__rodape{display:grid;gap:3cqi;padding:4.6cqi 8cqi 5cqi;font-family:var(--font-mono);font-size:clamp(.54rem,6cqi,.68rem);line-height:1;letter-spacing:.02em;background:color-mix(in srgb,var(--fg) 14%,var(--bg));color:var(--fg);white-space:nowrap}
+.capa__linha{display:flex;justify-content:space-between;gap:6px;min-width:0}
+.capa__linha span:first-child{min-width:0;overflow:hidden}
+.capa__status{display:flex;align-items:center;gap:.55em;min-width:0;font-family:var(--font-body);font-weight:500;font-size:clamp(.6rem,6.7cqi,.76rem);letter-spacing:0}
+.capa__status .led{font-size:.82em}
 .capa > .selo{position:absolute;z-index:2;top:-11px;right:-8px;transform:rotate(6deg);box-shadow:0 2px 0 rgba(10,6,30,.35)}
 
 /* Disco: capa com lombada */
@@ -180,35 +229,17 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 .pad-barras .capa__rotulo::before,.pad-barras.ficha__cartao .ficha__faixa::before{background:repeating-linear-gradient(102deg,var(--pc) 0 5px,transparent 5px 17px)}
 .pad-triangulos .capa__rotulo::before,.pad-triangulos.ficha__cartao .ficha__faixa::before{background:linear-gradient(45deg,var(--pc) 25%,transparent 25%) 0 0/20px 20px,linear-gradient(-45deg,var(--pc) 25%,transparent 25%) 0 0/20px 20px}
 
-/* Seções */
-.secao{display:grid;gap:18px}
-.secao__titulo{margin:0;font-family:var(--font-display);font-stretch:130%;font-weight:800;font-size:clamp(1.35rem,3vw,2.1rem);line-height:1;text-transform:uppercase;text-wrap:balance}
-.secao__lide{margin:0;max-width:64ch;color:var(--ink-2)}
+/* Regras de curadoria e fila de análise */
 .regras{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px 28px;margin:0;padding:0;list-style:none}
 .regras li{display:grid;gap:8px;align-content:start}
 .regras p{margin:0;font-size:.95rem}
 .regras .selo{justify-self:start}
-.notas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 28px;margin:0;padding:18px 0 0;border-top:2px solid var(--wall-2)}
-.notas div{display:grid;gap:4px}
-.notas dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
-.notas dd{margin:0;font-size:.92rem;color:var(--ink-2)}
-.legenda-led{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink)}
+.legenda-led{display:flex;flex-wrap:wrap;gap:6px 16px;padding-top:4px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink)}
 .legenda-led span{display:inline-flex;align-items:center;gap:6px}
-
-.tabela-rolagem{overflow-x:auto}
-.quedas{width:100%;min-width:640px;border-collapse:collapse;font-size:.92rem}
-.quedas th{text-align:left;font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:0 14px 8px 0;border-bottom:2px solid var(--ink)}
-.quedas td{vertical-align:top;padding:12px 14px 12px 0;border-bottom:1px solid var(--wall-2)}
-.quedas td:first-child{font-family:var(--font-mono);font-size:.76rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-.quedas td:nth-child(2){font-weight:700;min-width:11rem}
-.quedas small{display:block;font-weight:400;color:var(--ink-2)}
-.quedas a{text-underline-offset:3px;white-space:nowrap}
 .analise{margin:0;padding:0;list-style:none;display:grid;gap:10px}
 .analise li{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--ink-2)}
 .analise b{font-weight:700}
 .analise span{color:var(--ink-2);font-size:.93rem}
-.rodape{display:grid;gap:6px;padding-top:22px;border-top:2px solid var(--ink);font-size:.86rem;color:var(--ink-2);max-width:78ch}
-.rodape p{margin:0}
 
 /* Ficha */
 .ficha{border:0;padding:0;margin:auto;background:transparent;color:var(--paper-ink);width:min(780px,calc(100vw - 20px));max-width:none;max-height:calc(100dvh - 20px);overflow:auto;overscroll-behavior:contain}
@@ -237,6 +268,10 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 .carimbo--unstable{color:var(--warn)}
 .carimbo--offline{color:var(--bad)}
 .carimbo--unverified{color:var(--idle)}
+.conferencias{display:grid;gap:6px;justify-items:start}
+.conferencias .faixa{justify-content:flex-start;max-width:100%}
+.conferencias .pulso--vazio{color:var(--paper-line)}
+.conferencias small{font-family:var(--font-mono);font-size:.64rem;color:var(--paper-ink-2)}
 .risco{display:flex;align-items:center;gap:10px;font-weight:700}
 .risco__barras{display:inline-flex;gap:3px}
 .risco__barras i{width:16px;height:9px;border-radius:2px;background:var(--paper-line)}
@@ -254,20 +289,6 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 .fontes{margin:0;font-size:.8rem;color:var(--paper-ink-2)}
 .fontes a{text-underline-offset:2px}
 
-.quedas td[data-rotulo]::before{content:none}
-@media (max-width:700px){
-  .quedas{min-width:0}
-  .quedas thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-  .quedas tbody{display:grid}
-  .quedas tr{display:grid;gap:5px;padding:16px 0;border-bottom:1px solid var(--wall-2)}
-  .quedas td{display:block;padding:0;border:0}
-  .quedas td:nth-child(2){min-width:0}
-  .quedas td:first-child small{display:inline;margin-left:8px}
-  .quedas td[data-rotulo]{font-size:.86rem}
-  .quedas td[data-rotulo]::before{content:attr(data-rotulo) ": ";font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
-  .quedas td[data-rotulo] br{display:none}
-  .quedas td[data-rotulo] a{margin-right:10px}
-}
 @media (max-width:520px){
   .parede{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}
   .campo{flex:1 1 100%}
@@ -275,7 +296,6 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   .linha-tempo li{grid-template-columns:1fr;gap:2px}
 }
 @media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
   .capa,.botao,button.selo{transition:none}
   .capa:hover,.capa:focus-visible{transform:none}
 }
@@ -284,9 +304,15 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 <body>
 <div class="pagina">
 
+  <nav class="trilho" aria-label="Páginas do site">
+    <a href="./" aria-current="page">Vitrine</a>
+    <a href="observatorio/">Observatório</a>
+    <a class="trilho__fora" id="link-repo" href="https://github.com/GabrielKSG7/LOKGAM" rel="noopener noreferrer">Código e dados no GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+
   <header class="balcao">
     <div class="marca">
-      <p class="marca__sobre">Protótipo · base conferida em <span id="base-data"></span></p>
+      <p class="marca__sobre">Protótipo · <span id="conferencia"></span></p>
       <h1 class="marca__nome" id="marca-nome"><span>LOKGAM</span></h1>
       <p class="marca__sub">locadora de games no navegador</p>
     </div>
@@ -325,22 +351,11 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
       <li><span class="selo selo--byo_files">Sua cópia</span><p>O port não traz dados do jogo. Você fornece os arquivos de uma cópia que é sua.</p></li>
     </ul>
     <dl class="notas">
-      <div><dt>Fica de fora</dt><dd>Port que já vem com o jogo comercial dentro não ganha link, por melhor que rode. Ele fica registrado na base, sem botão de jogar, e aparece no histórico quando sofre notificação ou queda.</dd></div>
+      <div><dt>Fica de fora</dt><dd>Port que já vem com o jogo comercial dentro não ganha link, por melhor que rode. Ele fica registrado na base, sem botão de jogar, e aparece no <a href="observatorio/#quedas">histórico de quedas</a> quando sofre notificação ou sai do ar.</dd></div>
       <div><dt>Risco de remoção</dt><dd>É uma avaliação editorial, não um parecer jurídico. Pesa a técnica do port, o que ele distribui e como o dono do jogo costuma agir.</dd></div>
-      <div><dt>A luz na capa</dt><dd>Mostra a última conferência do link.
-        <span class="legenda-led"><span><i class="led led--online"></i>no ar</span><span><i class="led led--unverified"></i>não conferido</span><span><i class="led led--unstable"></i>instável</span><span><i class="led led--offline"></i>fora do ar</span></span></dd></div>
+      <div><dt>A luz na capa</dt><dd>Um robô abre cada link quatro vezes por dia. A conferência vale por três dias: sem uma mais nova, a capa volta para "não conferido". Há sites que barram o robô, e esses dependem de conferência à mão.
+        <span class="legenda-led"><span><i class="led led--online"></i>no ar</span><span><i class="led led--unstable"></i>instável</span><span><i class="led led--offline"></i>fora do ar</span><span><i class="led led--unverified"></i>não conferido</span></span></dd></div>
     </dl>
-  </section>
-
-  <section class="secao" id="quedas" aria-labelledby="quedas-titulo">
-    <h2 class="secao__titulo" id="quedas-titulo">Histórico de quedas</h2>
-    <p class="secao__lide">Notificações, remoções e sumiços de ports de navegador, com a fonte de cada registro. Ports que saíram do ar ou que embutem o jogo aparecem aqui sem link.</p>
-    <div class="tabela-rolagem">
-      <table class="quedas">
-        <thead><tr><th scope="col">Quando</th><th scope="col">Port</th><th scope="col">Quem agiu</th><th scope="col">O que aconteceu</th><th scope="col">Fonte</th></tr></thead>
-        <tbody id="quedas-corpo"></tbody>
-      </table>
-    </div>
   </section>
 
   <section class="secao" id="analise" aria-labelledby="analise-titulo">
@@ -359,47 +374,143 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   <article class="ficha__cartao" id="ficha-cartao"></article>
 </dialog>
 
-<script type="application/json" id="catalogo">{"base_date":"2026-11-11","ports":[{"id":"minecraft-classic","title":"Minecraft Classic","game":{"year":2009,"platforms":["PC","Xbox 360"],"genre":"Sandbox","developer":"Mojang","rights_holder":"Mojang Studios (Microsoft)"},"port":{"name":"Minecraft Classic para navegador","author":"Mojang","released":"2019-05","technique":"native_web","based_on":"Recriação oficial da versão Classic de 2009 (0.0.23a_01)","code_license":null},"rights":{"status":"official","content_license":null,"summary":"Publicado pela própria Mojang em 2019, nos dez anos do jogo. Gratuito, no site oficial."},"requirements":{"user_files":[],"controls":["keyboard","mouse"],"notes":"Só o modo criativo, com 32 blocos. Dá para chamar até nove pessoas por link."},"links":{"play":"https://classic.minecraft.net","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Publicação oficial do dono do jogo.","added":"2026-11-10","sources":[{"title":"TechRaptor: Revisit Minecraft Classic in your own browser for free","url":"https://techraptor.net/content/revisit-minecraft-classic-in-your-own-browser-for-free"},{"title":"Windows Central: Minecraft Classic hits browsers for 10-year anniversary","url":"https://windowscentral.com/play-minecraft-classic-your-browser"}]},"label":{"shape":"web","color":"grama","pattern":"grade"},"status":{"state":"unverified","checked_at":"2026-11-10","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."}},{"id":"celeste-classic","title":"Celeste Classic","game":{"year":2015,"platforms":["PICO-8"],"genre":"Plataforma","developer":"Maddy Thorson e Noel Berry"},"port":{"name":"Celeste Classic no itch.io","author":"Maddy Thorson e Noel Berry","released":"2015","technique":"native_web","based_on":"Cartucho original de PICO-8, publicado pelos autores","code_license":null},"rights":{"status":"official","content_license":null,"summary":"Publicado pelos próprios autores. É o jogo de PICO-8, feito em quatro dias, que deu origem ao Celeste de 2018."},"requirements":{"user_files":[],"controls":["keyboard"],"notes":"Setas, X e C."},"links":{"play":"https://maddymakesgamesinc.itch.io/celesteclassic","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Publicação oficial dos autores.","added":"2026-11-10","sources":[{"title":"Página do jogo no itch.io","url":"https://maddymakesgamesinc.itch.io/celesteclassic"}]},"label":{"shape":"web","color":"chiclete","pattern":"triangulos"},"status":{"state":"online","checked_at":"2026-11-10","note":"A página do jogo carregou."}},{"id":"celeste-classic-2","title":"Celeste Classic 2: Lani's Trek","game":{"year":2021,"platforms":["PICO-8"],"genre":"Plataforma","developer":"Maddy Thorson, Noel Berry e Lena Raine"},"port":{"name":"Cartucho no fórum da Lexaloffle","author":"Maddy Thorson, Noel Berry e Lena Raine","released":"2021-01","technique":"native_web","based_on":"Cartucho original de PICO-8, publicado pelos autores","code_license":"CC BY-NC-SA 4.0"},"rights":{"status":"official","content_license":"CC BY-NC-SA 4.0","summary":"Publicado pelos autores nos três anos do Celeste. A página do cartucho indica a licença CC BY-NC-SA 4.0."},"requirements":{"user_files":[],"controls":["keyboard"],"notes":"Feito em três dias, como continuação do primeiro Celeste Classic."},"links":{"play":"https://www.lexaloffle.com/bbs/?pid=86840","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Publicação oficial dos autores, com licença aberta para uso não comercial.","added":"2026-11-10","sources":[{"title":"Página do cartucho no fórum da Lexaloffle","url":"https://www.lexaloffle.com/bbs/?pid=86840"},{"title":"PC Gamer: Celeste Classic 2 is a free sequel to the original PICO-8 platformer","url":"https://www.pcgamer.com/celeste-classic-2-lanis-trek-is-a-free-sequel-to-the-original-pico-8-platformer/"}]},"label":{"shape":"web","color":"anil","pattern":"espinha"},"status":{"state":"online","checked_at":"2026-11-10","note":"A página do cartucho carregou."}},{"id":"warzone-2100","title":"Warzone 2100","game":{"year":1999,"platforms":["PC","PS1"],"genre":"Estratégia em tempo real","developer":"Pumpkin Studios","rights_holder":"Warzone 2100 Project (código aberto desde 2004)"},"port":{"name":"Warzone 2100 Web Edition","author":"Warzone 2100 Project","technique":"source_port","based_on":"Código-fonte original do jogo, aberto em 2004 e mantido pela comunidade","code_license":"GPL-2.0-or-later"},"rights":{"status":"free","content_license":null,"summary":"O código do jogo foi aberto em 2004, a pedido dos fãs, e hoje a comunidade mantém o projeto. A edição web é do próprio projeto."},"requirements":{"user_files":[],"controls":["mouse","keyboard"],"notes":"Os vídeos da campanha vêm por streaming, em baixa qualidade. O navegador pode apagar os saves sem avisar. Segundo o projeto, roda também em iPad e em tablets Android."},"links":{"play":"https://play.wz2100.net","project":"https://wz2100.net/news/journey-to-the-web-porting-warzone-2100-to-webassembly/","source":"https://github.com/Warzone2100/warzone2100"},"curation":{"state":"approved","risk":"low","reason":"Jogo de código aberto, publicado na web pelo projeto que o mantém.","added":"2026-11-10","sources":[{"title":"Warzone 2100: Journey to the Web","url":"https://wz2100.net/news/journey-to-the-web-porting-warzone-2100-to-webassembly/"}]},"label":{"shape":"disc","color":"abobora","pattern":"grade"},"status":{"state":"online","checked_at":"2026-11-10","note":"A página de jogo carregou."}},{"id":"quake-qwasm","title":"Quake","game":{"year":1996,"platforms":["PC","Saturn","N64"],"genre":"Tiro em primeira pessoa","developer":"id Software","rights_holder":"id Software (Microsoft)"},"port":{"name":"Qwasm","author":"GMH-Code","technique":"source_port","based_on":"Código-fonte do Quake, liberado pela id Software","code_license":"GPL (arquivo gnu.txt no repositório)"},"rights":{"status":"free","content_license":null,"summary":"Segundo o projeto, a versão hospedada é gratuita, tem bots e não usa nada do jogo original. O README não diz qual é esse conjunto de dados nem a licença dele."},"requirements":{"user_files":[],"controls":["keyboard","mouse"],"notes":"Quem hospedar a própria cópia pode usar os arquivos PAK do jogo. O projeto pede para ninguém publicar a versão completa."},"links":{"play":"https://gmh-code.github.io/qwasm/","project":null,"source":"https://github.com/GMH-Code/Qwasm"},"curation":{"state":"approved","risk":"low","reason":"Motor de código aberto e, segundo o projeto, nenhum dado do jogo original. Falta confirmar a licença dos dados hospedados.","added":"2026-11-10","sources":[{"title":"README do Qwasm no GitHub","url":"https://www.github.com/GMH-Code/Quake-WASM"}]},"label":{"shape":"disc","color":"areia","pattern":"hachura"},"status":{"state":"unverified","checked_at":"2026-11-10","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."}},{"id":"tobu-tobu-girl-deluxe","title":"Tobu Tobu Girl Deluxe","game":{"year":2019,"platforms":["Game Boy","Game Boy Color"],"genre":"Arcade de plataforma","developer":"Tangram Games (música de potato-tan)"},"port":{"name":"Handheld Console Player","author":"WaveSpeed","technique":"emulation","based_on":"ROM livre do jogo em um emulador de código aberto que roda no navegador","code_license":"MIT"},"rights":{"status":"free","content_license":"CC BY 4.0","summary":"Homebrew de Game Boy com código sob licença MIT e arte e música sob CC BY 4.0. Os autores distribuem a ROM de graça."},"requirements":{"user_files":[],"controls":["keyboard","gamepad","touch"],"notes":"O mesmo player traz outros dez homebrews de licença aberta."},"links":{"play":"https://wavespeed.ai/free-tools/handheld-console-player","project":"https://tangramgames.itch.io/tobu-tobu-girl-deluxe","source":"https://github.com/SimonLarsen/tobutobugirl-dx"},"curation":{"state":"approved","risk":"low","reason":"Jogo de licença aberta, publicado pelos autores.","added":"2026-11-10","sources":[{"title":"Página do player, com créditos e licenças","url":"https://wavespeed.ai/free-tools/handheld-console-player"},{"title":"Página do jogo no itch.io","url":"https://tangramgames.itch.io/tobu-tobu-girl-deluxe"}]},"label":{"shape":"cartridge","color":"ceu","pattern":"bolinhas"},"status":{"state":"online","checked_at":"2026-11-10","note":"A página do player carregou. O player em si não foi testado."}},{"id":"libbet-magic-floor","title":"Libbet and the Magic Floor","game":{"year":2018,"platforms":["Game Boy"],"genre":"Quebra-cabeça","developer":"Damian Yerrick"},"port":{"name":"Handheld Console Player","author":"WaveSpeed","technique":"emulation","based_on":"ROM livre do jogo em um emulador de código aberto que roda no navegador","code_license":"zlib"},"rights":{"status":"free","content_license":"zlib","summary":"Homebrew de Game Boy sob licença zlib, segundo os créditos na página do player."},"requirements":{"user_files":[],"controls":["keyboard","gamepad","touch"],"notes":"O mesmo player traz outros dez homebrews de licença aberta."},"links":{"play":"https://wavespeed.ai/free-tools/handheld-console-player","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Jogo de licença aberta, publicado pelo autor.","added":"2026-11-10","sources":[{"title":"Página do player, com créditos e licenças","url":"https://wavespeed.ai/free-tools/handheld-console-player"}]},"label":{"shape":"cartridge","color":"uva","pattern":"xadrez"},"status":{"state":"online","checked_at":"2026-11-10","note":"A página do player carregou. O player em si não foi testado."}},{"id":"diablo-web","title":"Diablo","game":{"year":1996,"platforms":["PC","PS1"],"genre":"RPG de ação","developer":"Blizzard North","rights_holder":"Blizzard Entertainment (Microsoft)"},"port":{"name":"DiabloWeb","author":"d07RiV","released":"2019-07","technique":"decompilation","based_on":"Devilution, o código do jogo reconstruído por engenharia reversa","code_license":null},"rights":{"status":"demo","content_license":null,"summary":"O site traz o arquivo da versão shareware, que abre direto. Para o jogo completo, você carrega o DIABDAT.MPQ da sua própria cópia."},"requirements":{"user_files":[{"what":"DIABDAT.MPQ","needed_for":"full_game","where":"da sua cópia do jogo, que é vendido no GOG"}],"controls":["mouse","keyboard","touch"],"notes":"Na versão shareware só dá para jogar de Guerreiro e a masmorra é limitada."},"links":{"play":"https://d07riv.github.io/diabloweb/","project":null,"source":"https://github.com/d07RiV/diabloweb"},"curation":{"state":"approved","risk":"medium","reason":"Distribui só a versão shareware, mas o motor vem de engenharia reversa do jogo. Está no ar desde 2019.","added":"2026-11-10","sources":[{"title":"README do DiabloWeb no GitHub","url":"https://github.com/d07RiV/diabloweb"},{"title":"GameSpot: Diablo Is Now Playable Right In Your Browser","url":"https://www.gamespot.com/articles/diablo-is-now-playable-right-in-your-browser/1100-6468838"}]},"label":{"shape":"disc","color":"tomate","pattern":"hachura"},"status":{"state":"unverified","checked_at":"2026-11-10","note":"Site fora do alcance da ferramenta de leitura. O endereço consta no README do repositório."}},{"id":"tomb-raider-openlara","title":"Tomb Raider","game":{"year":1996,"platforms":["Saturn","PS1","PC"],"genre":"Ação e aventura","developer":"Core Design"},"port":{"name":"OpenLara","author":"XProger (Timur Gagiev)","released":"2017","technique":"reimplementation","based_on":"Motor de código aberto escrito do zero, sem código do jogo original","code_license":null},"rights":{"status":"demo","content_license":null,"summary":"A página abre uma fase de demonstração, a City of Vilcabamba. As outras fases você carrega dos arquivos da sua própria cópia."},"requirements":{"user_files":[{"what":"Arquivos de fase (.PHD ou .PSX)","needed_for":"full_game","where":"da sua cópia do jogo"}],"controls":["keyboard","gamepad","touch"],"notes":"Visão em primeira ou terceira pessoa e taxa de quadros destravada. Nem toda fase funciona, e o projeto parece parado."},"links":{"play":"http://xproger.info/projects/OpenLara/","project":null,"source":"https://github.com/XProger/OpenLara"},"curation":{"state":"approved","risk":"medium","reason":"O motor é original, mas a fase de demonstração é conteúdo do jogo. Está no ar desde 2017.","added":"2026-11-10","sources":[{"title":"PC Gamer: Play the original Tomb Raider in your browser with unlocked FPS","url":"https://pcgamer.com/play-the-original-tomb-raider-in-your-browser-with-unlocked-fps"},{"title":"PCsteps: como carregar as outras fases","url":"https://www.pcsteps.com/?p=8005"}]},"label":{"shape":"disc","color":"petroleo","pattern":"triangulos"},"status":{"state":"unverified","checked_at":"2026-11-10","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."}},{"id":"halo-ce-web","title":"Halo: Combat Evolved","game":{"year":2001,"platforms":["Xbox"],"genre":"Tiro em primeira pessoa","developer":"Bungie","rights_holder":"Microsoft"},"port":{"name":"web-halo","author":"Mitchell Hynes","released":"2026-09-29","technique":"decompilation","based_on":"Decompilação da versão de Xbox (build 2342), a partir dos projetos de bnunu e punpckhdq","code_license":null},"rights":{"status":"byo_files","content_license":null,"summary":"O site não fornece dados do jogo. Antes de carregar, pede a imagem de disco feita da sua própria cópia de Xbox."},"requirements":{"user_files":[{"what":"Imagem de disco do Xbox (.xiso ou .iso)","needed_for":"play","where":"feita a partir da sua cópia do jogo"}],"controls":["keyboard","mouse"],"notes":"Campanha completa, tela dividida e multiplayer online. Desde o lançamento, o site já foi bloqueado e saiu do ar mais de uma vez."},"links":{"play":"https://mitchellhynes.com/halo/halo.html","project":null,"source":"https://github.com/ecumene/web-halo"},"curation":{"state":"approved","risk":"high","reason":"Não distribui dados do jogo, mas o motor vem da decompilação de um jogo que a Microsoft ainda vende, e o port ganhou muita visibilidade.","added":"2026-11-10","sources":[{"title":"Digital Citizen: Halo: Combat Evolved Runs in a Browser With 128-Player Rooms and No Game Data","url":"https://www.digitalcitizen.life/halo-combat-evolved-browser-port-no-game-data/"},{"title":"TechSpot: You can now play the original Halo in your browser","url":"https://www.techspot.com/news/114042-you-can-now-play-original-halo-browser-128.html"}]},"label":{"shape":"disc","color":"oliva","pattern":"aneis"},"status":{"state":"unverified","checked_at":"2026-11-10","note":"Site fora do alcance da ferramenta de leitura. A Digital Citizen encontrou o site no ar em 3 e 4/10/2026."}},{"id":"pepsiman-recompiled","title":"Pepsiman","game":{"year":1999,"platforms":["PS1"],"genre":"Ação e corrida","developer":"KID"},"port":{"name":"Pepsiman Recompiled","author":"kem0x","released":"2026-07","technique":"recompilation","based_on":"PSXRecomp, que traduz o código de PlayStation para WebAssembly","code_license":"Uso não comercial (PSXRecomp: PolyForm Noncommercial 1.0.0)"},"rights":{"status":"byo_files","content_license":null,"summary":"O projeto diz que não distribui disco, executável nem código gerado do jogo. Você fornece os arquivos de disco da sua cópia. A BIOS já vem incluída, numa versão livre."},"requirements":{"user_files":[{"what":"Arquivos de disco (CUE/BIN)","needed_for":"play","where":"da sua cópia do jogo"}],"controls":["keyboard","gamepad"],"notes":"Roda a 60 quadros por segundo e em tela larga. Funciona melhor em navegadores Chromium. Há falhas em outros navegadores e no celular."},"links":{"play":"https://pepsiman.ol.mr/","project":null,"source":"https://github.com/kem0x/RepsiMan"},"curation":{"state":"approved","risk":"medium","reason":"Não distribui dados do jogo, mas a recompilação parte do código original. Jogo de 1999 lançado só no Japão.","added":"2026-11-10","sources":[{"title":"README do projeto","url":"https://raw.githubusercontent.com/FermataRest/RepsiMan/HEAD/README.md"},{"title":"Notebookcheck: A recompiled version of Pepsiman lets you play the PS1 cult classic natively in your browser","url":"https://www.notebookcheck.net/A-recompiled-version-of-Pepsiman-lets-you-play-the-PS1-cult-classic-natively-in-your-browser-at-60-FPS.1354060.0.html"}]},"label":{"shape":"disc","color":"grafite","pattern":"barras"},"status":{"state":"unstable","checked_at":"2026-11-11T02:55:00Z","note":"Erro de acesso da Cloudflare ao abrir a página, relatado pelo curador."}},{"id":"goldeneye-goldenweb64","title":"GoldenEye 007","game":{"year":1997,"platforms":["N64"],"genre":"Tiro em primeira pessoa","developer":"Rare"},"port":{"name":"GoldenWeb64","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Ainda não deu para confirmar como o site obtém a ROM: se pede a do jogador ou se já traz o jogo."},"requirements":{"user_files":[],"controls":[]},"links":{"play":"https://goldenweb64.com/","project":null,"source":null},"curation":{"state":"pending","risk":null,"reason":"Falta confirmar de onde vêm os dados do jogo. Só entra na vitrine se pedir a ROM do jogador.","added":"2026-11-10","sources":[{"title":"Ultimate Catalog of Web Game Ports","url":"https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"}]},"status":{"state":"unverified","checked_at":"2026-11-10","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."}},{"id":"gta-vice-city-doszone","title":"Grand Theft Auto: Vice City","game":{"year":2002,"platforms":["PS2","PC","Xbox"],"genre":"Ação em mundo aberto","developer":"Rockstar North","rights_holder":"Take-Two Interactive"},"port":{"name":"Vice City na DOS Zone","author":"DOS Zone","technique":"decompilation","based_on":"reVC, o motor do jogo reconstruído por engenharia reversa","code_license":null},"rights":{"status":"byo_files","content_license":null,"summary":"Pedia os arquivos ou a chave da cópia original para liberar o jogo completo."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Removido depois de um pedido da Take-Two.","added":"2026-11-10","sources":[{"title":"Generation Amiga: Take-Two's DMCA hammer falls on fan-made GTA browser revival","url":"https://www.generationamiga.com/2025/12/27/take-twos-dmca-hammer-falls-on-fan-made-gta-browser-revival/"}]},"status":{"state":"unverified","checked_at":null,"note":""}},{"id":"pso-reborn","title":"Phantasy Star Online","game":{"year":2000,"platforms":["Dreamcast"],"genre":"RPG online","developer":"Sonic Team","rights_holder":"Sega"},"port":{"name":"PSO Reborn","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Port de navegador feito por fãs."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Recebeu notificação da Sega.","added":"2026-11-10","sources":[{"title":"Power Up Gaming: Phantasy Star browser port PSO Reborn hit with Sega DMCA notice","url":"https://powerupgaming.co.uk/2026/09/24/phantasy-star-browser-port-pso-reborn-hit-with-sega-dmca-notice/"}]},"status":{"state":"unverified","checked_at":null,"note":""}},{"id":"cod-black-ops-2-web","title":"Call of Duty: Black Ops II","game":{"year":2012,"platforms":["Xbox 360","PS3","PC"],"genre":"Tiro em primeira pessoa","developer":"Treyarch","rights_holder":"Activision (Microsoft)"},"port":{"name":"Ports de multiplayer e Zombies","author":"Luckey Faraday","technique":"unknown","code_license":null},"rights":{"status":"bundled","content_license":null,"summary":"Segundo os relatos, reaproveitava mapas, modelos e animações tirados do jogo de PC."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Embutia conteúdo do jogo e saiu do ar depois de um DMCA da Activision.","added":"2026-11-10","sources":[{"title":"TweakTown: Activision takes down AI-made Black Ops 2 browser ports","url":"https://www.tweaktown.com/news/114029/activision-takes-down-ai-made-black-ops-2-browser-ports/index.html"}]},"status":{"state":"unverified","checked_at":null,"note":""}},{"id":"celeste-wasm","title":"Celeste","game":{"year":2018,"platforms":["Switch","PS4","Xbox One","PC"],"genre":"Plataforma","developer":"Maddy Makes Games","rights_holder":"Maddy Makes Games"},"port":{"name":"celeste-wasm","technique":"decompilation","code_license":null},"rights":{"status":"bundled","content_license":null,"summary":"O repositório trazia os dados comerciais do jogo."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Embutia os dados comerciais do jogo, alvo da notificação no GitHub.","added":"2026-11-10","sources":[{"title":"PBX Science: Browser Game Ports Meet a Wave of DMCA Takedowns","url":"https://pbxscience.com/?p=24442"}]},"status":{"state":"unverified","checked_at":null,"note":""}},{"id":"gta-v-playgta5","title":"Grand Theft Auto V","game":{"year":2013,"platforms":["PS3","Xbox 360","PS4","Xbox One","PC"],"genre":"Ação em mundo aberto","developer":"Rockstar North","rights_holder":"Take-Two Interactive"},"port":{"name":"playgta5.com","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Versão de navegador publicada em um site não oficial."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Saiu do ar em poucas horas. Não há como conferir o que distribuía.","added":"2026-11-10","sources":[{"title":"XenoSpectrum: Ported2Browser e o risco jurídico de diretórios","url":"https://xenospectrum.com/en/ported2browser-browser-game-ports-copyright/"}]},"status":{"state":"unverified","checked_at":null,"note":""}},{"id":"cod-mw2-open-victor-zulu","title":"Call of Duty: Modern Warfare 2","game":{"year":2009,"platforms":["Xbox 360","PS3","PC"],"genre":"Tiro em primeira pessoa","developer":"Infinity Ward","rights_holder":"Activision (Microsoft)"},"port":{"name":"Open Victor Zulu","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Recriação do multiplayer para navegador."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Removido depois de um pedido de DMCA.","added":"2026-11-10","sources":[{"title":"PBX Science: Browser Game Ports Meet a Wave of DMCA Takedowns","url":"https://pbxscience.com/?p=24442"}]},"status":{"state":"unverified","checked_at":null,"note":""}}],"events":[{"id":"2025-12-vice-city-doszone-dmca","port_id":"gta-vice-city-doszone","date":"2025-12","date_basis":"reported","kind":"dmca_notice","actor":"Take-Two Interactive","summary":"A DOS Zone tirou o port do ar depois de um pedido de remoção da Take-Two, mesmo exigindo a cópia original para o jogo completo.","sources":[{"title":"Generation Amiga","url":"https://www.generationamiga.com/2025/12/27/take-twos-dmca-hammer-falls-on-fan-made-gta-browser-revival/"},{"title":"80 Level","url":"https://80.lv/articles/take-two-takes-down-browser-version-of-gta-vice-city-with-dmca-request"}]},{"id":"2026-07-pepsiman-launch","port_id":"pepsiman-recompiled","date":"2026-07","date_basis":"occurred","kind":"launch","actor":null,"summary":"Sai a versão 1.0, a primeira feita para WebAssembly.","sources":[{"title":"Notebookcheck","url":"https://www.notebookcheck.net/A-recompiled-version-of-Pepsiman-lets-you-play-the-PS1-cult-classic-natively-in-your-browser-at-60-FPS.1354060.0.html"}]},{"id":"2026-09-24-pso-reborn-dmca","port_id":"pso-reborn","date":"2026-09-24","date_basis":"reported","kind":"dmca_notice","actor":"Sega","summary":"O port de navegador feito por fãs recebeu uma notificação da Sega.","sources":[{"title":"Power Up Gaming","url":"https://powerupgaming.co.uk/2026/09/24/phantasy-star-browser-port-pso-reborn-hit-with-sega-dmca-notice/"}]},{"id":"2026-09-29-halo-launch","port_id":"halo-ce-web","date":"2026-09-29","date_basis":"occurred","kind":"launch","actor":null,"summary":"Mitchell Hynes publica o port, com campanha completa e multiplayer.","sources":[{"title":"TechSpot","url":"https://www.techspot.com/news/114042-you-can-now-play-original-halo-browser-128.html"}]},{"id":"2026-09-halo-cloudflare-block","port_id":"halo-ce-web","date":"2026-09","date_basis":"reported","kind":"outage","actor":"Cloudflare","summary":"Cerca de sete horas depois do lançamento, uma trava automática da Cloudflare bloqueou o site por pouco tempo, por causa do volume de acessos.","sources":[{"title":"Borns IT- und Windows-Blog","url":"https://borncity.com/news/halo-combat-evolved-im-browser-originalspiel-unterstuetzt-128-spieler/"}]},{"id":"2026-10-halo-repeated-outages","port_id":"halo-ce-web","date":"2026-10","date_basis":"reported","kind":"outage","actor":null,"summary":"Relato de que o site saiu do ar várias vezes e de que o link original parou de funcionar. O jogo seguia acessível por link direto.","sources":[{"title":"PC Guide","url":"https://www.pcguide.com/news/halo-ce-in-your-browser-with-splitscreen-co-op-and-128-player-multiplayer-gets-taken-down-but-its-still-playable/"}]},{"id":"2026-10-06-gta-v-offline","port_id":"gta-v-playgta5","date":"2026-10-06","date_basis":"occurred","kind":"outage","actor":null,"summary":"Saiu do ar poucas horas depois de viralizar. O motivo não foi confirmado.","sources":[{"title":"XenoSpectrum","url":"https://xenospectrum.com/en/ported2browser-browser-game-ports-copyright/"}]},{"id":"2026-10-10-cod-bo2-dmca","port_id":"cod-black-ops-2-web","date":"2026-10-10","date_basis":"reported","kind":"dmca_notice","actor":"Activision","summary":"O autor disse ter recebido um DMCA da Activision. Os dois ports, multiplayer e Zombies, saíram do ar.","sources":[{"title":"TweakTown","url":"https://www.tweaktown.com/news/114029/activision-takes-down-ai-made-black-ops-2-browser-ports/index.html"}]},{"id":"2026-10-14-celeste-wasm-dmca","port_id":"celeste-wasm","date":"2026-10-14","date_basis":"occurred","kind":"dmca_notice","actor":"Maddy Makes Games","summary":"Uma notificação no GitHub mirou os dados comerciais do jogo que estavam no repositório. O port estava no ar havia cerca de dez meses.","sources":[{"title":"PBX Science","url":"https://pbxscience.com/?p=24442"}]},{"id":"2026-10-17-mw2-ovz-removal","port_id":"cod-mw2-open-victor-zulu","date":"2026-10-17","date_basis":"reported","kind":"removal","actor":null,"summary":"A página passou a mostrar só um aviso de que o projeto foi removido depois de um pedido de DMCA.","sources":[{"title":"PBX Science","url":"https://pbxscience.com/?p=24442"}]}]}</script>
+<script type="application/json" id="dados">{"repo":"https://github.com/GabrielKSG7/LOKGAM","last_check":"2026-11-11T02:55:00Z","ports":[{"id":"minecraft-classic","title":"Minecraft Classic","game":{"year":2009,"platforms":["PC","Xbox 360"],"genre":"Sandbox","developer":"Mojang","rights_holder":"Mojang Studios (Microsoft)"},"port":{"name":"Minecraft Classic para navegador","author":"Mojang","released":"2019-05","technique":"native_web","based_on":"Recriação oficial da versão Classic de 2009 (0.0.23a_01)","code_license":null},"rights":{"status":"official","content_license":null,"summary":"Publicado pela própria Mojang em 2019, nos dez anos do jogo. Gratuito, no site oficial."},"requirements":{"user_files":[],"controls":["keyboard","mouse"],"notes":"Só o modo criativo, com 32 blocos. Dá para chamar até nove pessoas por link."},"links":{"play":"https://classic.minecraft.net","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Publicação oficial do dono do jogo.","added":"2026-11-10","sources":[{"title":"TechRaptor: Revisit Minecraft Classic in your own browser for free","url":"https://techraptor.net/content/revisit-minecraft-classic-in-your-own-browser-for-free"},{"title":"Windows Central: Minecraft Classic hits browsers for 10-year anniversary","url":"https://windowscentral.com/play-minecraft-classic-your-browser"}]},"label":{"shape":"web","color":"grama","pattern":"grade"},"seen":null,"last":{"checked_at":"2026-11-10","state":"unverified","method":"manual","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."},"history":[["2026-11-10","unverified"]]},{"id":"celeste-classic","title":"Celeste Classic","game":{"year":2015,"platforms":["PICO-8"],"genre":"Plataforma","developer":"Maddy Thorson e Noel Berry"},"port":{"name":"Celeste Classic no itch.io","author":"Maddy Thorson e Noel Berry","released":"2015","technique":"native_web","based_on":"Cartucho original de PICO-8, publicado pelos autores","code_license":null},"rights":{"status":"official","content_license":null,"summary":"Publicado pelos próprios autores. É o jogo de PICO-8, feito em quatro dias, que deu origem ao Celeste de 2018."},"requirements":{"user_files":[],"controls":["keyboard"],"notes":"Setas, X e C."},"links":{"play":"https://maddymakesgamesinc.itch.io/celesteclassic","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Publicação oficial dos autores.","added":"2026-11-10","sources":[{"title":"Página do jogo no itch.io","url":"https://maddymakesgamesinc.itch.io/celesteclassic"}]},"label":{"shape":"web","color":"chiclete","pattern":"triangulos"},"seen":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do jogo carregou."},"last":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do jogo carregou."},"history":[["2026-11-10","online"]]},{"id":"celeste-classic-2","title":"Celeste Classic 2: Lani's Trek","game":{"year":2021,"platforms":["PICO-8"],"genre":"Plataforma","developer":"Maddy Thorson, Noel Berry e Lena Raine"},"port":{"name":"Cartucho no fórum da Lexaloffle","author":"Maddy Thorson, Noel Berry e Lena Raine","released":"2021-01","technique":"native_web","based_on":"Cartucho original de PICO-8, publicado pelos autores","code_license":"CC BY-NC-SA 4.0"},"rights":{"status":"official","content_license":"CC BY-NC-SA 4.0","summary":"Publicado pelos autores nos três anos do Celeste. A página do cartucho indica a licença CC BY-NC-SA 4.0."},"requirements":{"user_files":[],"controls":["keyboard"],"notes":"Feito em três dias, como continuação do primeiro Celeste Classic."},"links":{"play":"https://www.lexaloffle.com/bbs/?pid=86840","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Publicação oficial dos autores, com licença aberta para uso não comercial.","added":"2026-11-10","sources":[{"title":"Página do cartucho no fórum da Lexaloffle","url":"https://www.lexaloffle.com/bbs/?pid=86840"},{"title":"PC Gamer: Celeste Classic 2 is a free sequel to the original PICO-8 platformer","url":"https://www.pcgamer.com/celeste-classic-2-lanis-trek-is-a-free-sequel-to-the-original-pico-8-platformer/"}]},"label":{"shape":"web","color":"anil","pattern":"espinha"},"seen":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do cartucho carregou."},"last":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do cartucho carregou."},"history":[["2026-11-10","online"]]},{"id":"warzone-2100","title":"Warzone 2100","game":{"year":1999,"platforms":["PC","PS1"],"genre":"Estratégia em tempo real","developer":"Pumpkin Studios","rights_holder":"Warzone 2100 Project (código aberto desde 2004)"},"port":{"name":"Warzone 2100 Web Edition","author":"Warzone 2100 Project","technique":"source_port","based_on":"Código-fonte original do jogo, aberto em 2004 e mantido pela comunidade","code_license":"GPL-2.0-or-later"},"rights":{"status":"free","content_license":null,"summary":"O código do jogo foi aberto em 2004, a pedido dos fãs, e hoje a comunidade mantém o projeto. A edição web é do próprio projeto."},"requirements":{"user_files":[],"controls":["mouse","keyboard"],"notes":"Os vídeos da campanha vêm por streaming, em baixa qualidade. O navegador pode apagar os saves sem avisar. Segundo o projeto, roda também em iPad e em tablets Android."},"links":{"play":"https://play.wz2100.net","project":"https://wz2100.net/news/journey-to-the-web-porting-warzone-2100-to-webassembly/","source":"https://github.com/Warzone2100/warzone2100"},"curation":{"state":"approved","risk":"low","reason":"Jogo de código aberto, publicado na web pelo projeto que o mantém.","added":"2026-11-10","sources":[{"title":"Warzone 2100: Journey to the Web","url":"https://wz2100.net/news/journey-to-the-web-porting-warzone-2100-to-webassembly/"}]},"label":{"shape":"disc","color":"abobora","pattern":"grade"},"seen":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página de jogo carregou."},"last":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página de jogo carregou."},"history":[["2026-11-10","online"]]},{"id":"quake-qwasm","title":"Quake","game":{"year":1996,"platforms":["PC","Saturn","N64"],"genre":"Tiro em primeira pessoa","developer":"id Software","rights_holder":"id Software (Microsoft)"},"port":{"name":"Qwasm","author":"GMH-Code","technique":"source_port","based_on":"Código-fonte do Quake, liberado pela id Software","code_license":"GPL (arquivo gnu.txt no repositório)"},"rights":{"status":"free","content_license":null,"summary":"Segundo o projeto, a versão hospedada é gratuita, tem bots e não usa nada do jogo original. O README não diz qual é esse conjunto de dados nem a licença dele."},"requirements":{"user_files":[],"controls":["keyboard","mouse"],"notes":"Quem hospedar a própria cópia pode usar os arquivos PAK do jogo. O projeto pede para ninguém publicar a versão completa."},"links":{"play":"https://gmh-code.github.io/qwasm/","project":null,"source":"https://github.com/GMH-Code/Qwasm"},"curation":{"state":"approved","risk":"low","reason":"Motor de código aberto e, segundo o projeto, nenhum dado do jogo original. Falta confirmar a licença dos dados hospedados.","added":"2026-11-10","sources":[{"title":"README do Qwasm no GitHub","url":"https://www.github.com/GMH-Code/Quake-WASM"}]},"label":{"shape":"disc","color":"areia","pattern":"hachura"},"seen":null,"last":{"checked_at":"2026-11-10","state":"unverified","method":"manual","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."},"history":[["2026-11-10","unverified"]]},{"id":"tobu-tobu-girl-deluxe","title":"Tobu Tobu Girl Deluxe","game":{"year":2019,"platforms":["Game Boy","Game Boy Color"],"genre":"Arcade de plataforma","developer":"Tangram Games (música de potato-tan)"},"port":{"name":"Handheld Console Player","author":"WaveSpeed","technique":"emulation","based_on":"ROM livre do jogo em um emulador de código aberto que roda no navegador","code_license":"MIT"},"rights":{"status":"free","content_license":"CC BY 4.0","summary":"Homebrew de Game Boy com código sob licença MIT e arte e música sob CC BY 4.0. Os autores distribuem a ROM de graça."},"requirements":{"user_files":[],"controls":["keyboard","gamepad","touch"],"notes":"O mesmo player traz outros dez homebrews de licença aberta."},"links":{"play":"https://wavespeed.ai/free-tools/handheld-console-player","project":"https://tangramgames.itch.io/tobu-tobu-girl-deluxe","source":"https://github.com/SimonLarsen/tobutobugirl-dx"},"curation":{"state":"approved","risk":"low","reason":"Jogo de licença aberta, publicado pelos autores.","added":"2026-11-10","sources":[{"title":"Página do player, com créditos e licenças","url":"https://wavespeed.ai/free-tools/handheld-console-player"},{"title":"Página do jogo no itch.io","url":"https://tangramgames.itch.io/tobu-tobu-girl-deluxe"}]},"label":{"shape":"cartridge","color":"ceu","pattern":"bolinhas"},"seen":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do player carregou. O player em si não foi testado."},"last":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do player carregou. O player em si não foi testado."},"history":[["2026-11-10","online"]]},{"id":"libbet-magic-floor","title":"Libbet and the Magic Floor","game":{"year":2018,"platforms":["Game Boy"],"genre":"Quebra-cabeça","developer":"Damian Yerrick"},"port":{"name":"Handheld Console Player","author":"WaveSpeed","technique":"emulation","based_on":"ROM livre do jogo em um emulador de código aberto que roda no navegador","code_license":"zlib"},"rights":{"status":"free","content_license":"zlib","summary":"Homebrew de Game Boy sob licença zlib, segundo os créditos na página do player."},"requirements":{"user_files":[],"controls":["keyboard","gamepad","touch"],"notes":"O mesmo player traz outros dez homebrews de licença aberta."},"links":{"play":"https://wavespeed.ai/free-tools/handheld-console-player","project":null,"source":null},"curation":{"state":"approved","risk":"low","reason":"Jogo de licença aberta, publicado pelo autor.","added":"2026-11-10","sources":[{"title":"Página do player, com créditos e licenças","url":"https://wavespeed.ai/free-tools/handheld-console-player"}]},"label":{"shape":"cartridge","color":"uva","pattern":"xadrez"},"seen":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do player carregou. O player em si não foi testado."},"last":{"checked_at":"2026-11-10","state":"online","method":"manual","note":"A página do player carregou. O player em si não foi testado."},"history":[["2026-11-10","online"]]},{"id":"diablo-web","title":"Diablo","game":{"year":1996,"platforms":["PC","PS1"],"genre":"RPG de ação","developer":"Blizzard North","rights_holder":"Blizzard Entertainment (Microsoft)"},"port":{"name":"DiabloWeb","author":"d07RiV","released":"2019-07","technique":"decompilation","based_on":"Devilution, o código do jogo reconstruído por engenharia reversa","code_license":null},"rights":{"status":"demo","content_license":null,"summary":"O site traz o arquivo da versão shareware, que abre direto. Para o jogo completo, você carrega o DIABDAT.MPQ da sua própria cópia."},"requirements":{"user_files":[{"what":"DIABDAT.MPQ","needed_for":"full_game","where":"da sua cópia do jogo, que é vendido no GOG"}],"controls":["mouse","keyboard","touch"],"notes":"Na versão shareware só dá para jogar de Guerreiro e a masmorra é limitada."},"links":{"play":"https://d07riv.github.io/diabloweb/","project":null,"source":"https://github.com/d07RiV/diabloweb"},"curation":{"state":"approved","risk":"medium","reason":"Distribui só a versão shareware, mas o motor vem de engenharia reversa do jogo. Está no ar desde 2019.","added":"2026-11-10","sources":[{"title":"README do DiabloWeb no GitHub","url":"https://github.com/d07RiV/diabloweb"},{"title":"GameSpot: Diablo Is Now Playable Right In Your Browser","url":"https://www.gamespot.com/articles/diablo-is-now-playable-right-in-your-browser/1100-6468838"}]},"label":{"shape":"disc","color":"tomate","pattern":"hachura"},"seen":null,"last":{"checked_at":"2026-11-10","state":"unverified","method":"manual","note":"Site fora do alcance da ferramenta de leitura. O endereço consta no README do repositório."},"history":[["2026-11-10","unverified"]]},{"id":"tomb-raider-openlara","title":"Tomb Raider","game":{"year":1996,"platforms":["Saturn","PS1","PC"],"genre":"Ação e aventura","developer":"Core Design"},"port":{"name":"OpenLara","author":"XProger (Timur Gagiev)","released":"2017","technique":"reimplementation","based_on":"Motor de código aberto escrito do zero, sem código do jogo original","code_license":null},"rights":{"status":"demo","content_license":null,"summary":"A página abre uma fase de demonstração, a City of Vilcabamba. As outras fases você carrega dos arquivos da sua própria cópia."},"requirements":{"user_files":[{"what":"Arquivos de fase (.PHD ou .PSX)","needed_for":"full_game","where":"da sua cópia do jogo"}],"controls":["keyboard","gamepad","touch"],"notes":"Visão em primeira ou terceira pessoa e taxa de quadros destravada. Nem toda fase funciona, e o projeto parece parado."},"links":{"play":"http://xproger.info/projects/OpenLara/","project":null,"source":"https://github.com/XProger/OpenLara"},"curation":{"state":"approved","risk":"medium","reason":"O motor é original, mas a fase de demonstração é conteúdo do jogo. Está no ar desde 2017.","added":"2026-11-10","sources":[{"title":"PC Gamer: Play the original Tomb Raider in your browser with unlocked FPS","url":"https://pcgamer.com/play-the-original-tomb-raider-in-your-browser-with-unlocked-fps"},{"title":"PCsteps: como carregar as outras fases","url":"https://www.pcsteps.com/?p=8005"}]},"label":{"shape":"disc","color":"petroleo","pattern":"triangulos"},"seen":null,"last":{"checked_at":"2026-11-10","state":"unverified","method":"manual","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."},"history":[["2026-11-10","unverified"]]},{"id":"halo-ce-web","title":"Halo: Combat Evolved","game":{"year":2001,"platforms":["Xbox"],"genre":"Tiro em primeira pessoa","developer":"Bungie","rights_holder":"Microsoft"},"port":{"name":"web-halo","author":"Mitchell Hynes","released":"2026-09-29","technique":"decompilation","based_on":"Decompilação da versão de Xbox (build 2342), a partir dos projetos de bnunu e punpckhdq","code_license":null},"rights":{"status":"byo_files","content_license":null,"summary":"O site não fornece dados do jogo. Antes de carregar, pede a imagem de disco feita da sua própria cópia de Xbox."},"requirements":{"user_files":[{"what":"Imagem de disco do Xbox (.xiso ou .iso)","needed_for":"play","where":"feita a partir da sua cópia do jogo"}],"controls":["keyboard","mouse"],"notes":"Campanha completa, tela dividida e multiplayer online. Desde o lançamento, o site já foi bloqueado e saiu do ar mais de uma vez."},"links":{"play":"https://mitchellhynes.com/halo/halo.html","project":null,"source":"https://github.com/ecumene/web-halo"},"curation":{"state":"approved","risk":"high","reason":"Não distribui dados do jogo, mas o motor vem da decompilação de um jogo que a Microsoft ainda vende, e o port ganhou muita visibilidade.","added":"2026-11-10","sources":[{"title":"Digital Citizen: Halo: Combat Evolved Runs in a Browser With 128-Player Rooms and No Game Data","url":"https://www.digitalcitizen.life/halo-combat-evolved-browser-port-no-game-data/"},{"title":"TechSpot: You can now play the original Halo in your browser","url":"https://www.techspot.com/news/114042-you-can-now-play-original-halo-browser-128.html"}]},"label":{"shape":"disc","color":"oliva","pattern":"aneis"},"seen":null,"last":{"checked_at":"2026-11-10","state":"unverified","method":"manual","note":"Site fora do alcance da ferramenta de leitura. A Digital Citizen encontrou o site no ar em 3 e 4/10/2026."},"history":[["2026-11-10","unverified"]]},{"id":"pepsiman-recompiled","title":"Pepsiman","game":{"year":1999,"platforms":["PS1"],"genre":"Ação e corrida","developer":"KID"},"port":{"name":"Pepsiman Recompiled","author":"kem0x","released":"2026-07","technique":"recompilation","based_on":"PSXRecomp, que traduz o código de PlayStation para WebAssembly","code_license":"Uso não comercial (PSXRecomp: PolyForm Noncommercial 1.0.0)"},"rights":{"status":"byo_files","content_license":null,"summary":"O projeto diz que não distribui disco, executável nem código gerado do jogo. Você fornece os arquivos de disco da sua cópia. A BIOS já vem incluída, numa versão livre."},"requirements":{"user_files":[{"what":"Arquivos de disco (CUE/BIN)","needed_for":"play","where":"da sua cópia do jogo"}],"controls":["keyboard","gamepad"],"notes":"Roda a 60 quadros por segundo e em tela larga. Funciona melhor em navegadores Chromium. Há falhas em outros navegadores e no celular."},"links":{"play":"https://pepsiman.ol.mr/","project":null,"source":"https://github.com/kem0x/RepsiMan"},"curation":{"state":"approved","risk":"medium","reason":"Não distribui dados do jogo, mas a recompilação parte do código original. Jogo de 1999 lançado só no Japão.","added":"2026-11-10","sources":[{"title":"README do projeto","url":"https://raw.githubusercontent.com/FermataRest/RepsiMan/HEAD/README.md"},{"title":"Notebookcheck: A recompiled version of Pepsiman lets you play the PS1 cult classic natively in your browser","url":"https://www.notebookcheck.net/A-recompiled-version-of-Pepsiman-lets-you-play-the-PS1-cult-classic-natively-in-your-browser-at-60-FPS.1354060.0.html"}]},"label":{"shape":"disc","color":"grafite","pattern":"barras"},"seen":{"checked_at":"2026-11-11T02:55:00Z","state":"unstable","method":"manual","note":"Erro de acesso da Cloudflare ao abrir a página, relatado pelo curador."},"last":{"checked_at":"2026-11-11T02:55:00Z","state":"unstable","method":"manual","note":"Erro de acesso da Cloudflare ao abrir a página, relatado pelo curador."},"history":[["2026-11-10","unverified"],["2026-11-11T02:55:00Z","unstable"]]},{"id":"goldeneye-goldenweb64","title":"GoldenEye 007","game":{"year":1997,"platforms":["N64"],"genre":"Tiro em primeira pessoa","developer":"Rare"},"port":{"name":"GoldenWeb64","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Ainda não deu para confirmar como o site obtém a ROM: se pede a do jogador ou se já traz o jogo."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"pending","risk":null,"reason":"Falta confirmar de onde vêm os dados do jogo. Só entra na vitrine se pedir a ROM do jogador.","added":"2026-11-10","sources":[{"title":"Ultimate Catalog of Web Game Ports","url":"https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"}]},"seen":null,"last":{"checked_at":"2026-11-10","state":"unverified","method":"manual","note":"Site fora do alcance da ferramenta de leitura usada na curadoria."},"history":[["2026-11-10","unverified"]]},{"id":"gta-vice-city-doszone","title":"Grand Theft Auto: Vice City","game":{"year":2002,"platforms":["PS2","PC","Xbox"],"genre":"Ação em mundo aberto","developer":"Rockstar North","rights_holder":"Take-Two Interactive"},"port":{"name":"Vice City na DOS Zone","author":"DOS Zone","technique":"decompilation","based_on":"reVC, o motor do jogo reconstruído por engenharia reversa","code_license":null},"rights":{"status":"byo_files","content_license":null,"summary":"Pedia os arquivos ou a chave da cópia original para liberar o jogo completo."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Removido depois de um pedido da Take-Two.","added":"2026-11-10","sources":[{"title":"Generation Amiga: Take-Two's DMCA hammer falls on fan-made GTA browser revival","url":"https://www.generationamiga.com/2025/12/27/take-twos-dmca-hammer-falls-on-fan-made-gta-browser-revival/"}]}},{"id":"pso-reborn","title":"Phantasy Star Online","game":{"year":2000,"platforms":["Dreamcast"],"genre":"RPG online","developer":"Sonic Team","rights_holder":"Sega"},"port":{"name":"PSO Reborn","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Port de navegador feito por fãs."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Recebeu notificação da Sega.","added":"2026-11-10","sources":[{"title":"Power Up Gaming: Phantasy Star browser port PSO Reborn hit with Sega DMCA notice","url":"https://powerupgaming.co.uk/2026/09/24/phantasy-star-browser-port-pso-reborn-hit-with-sega-dmca-notice/"}]}},{"id":"cod-black-ops-2-web","title":"Call of Duty: Black Ops II","game":{"year":2012,"platforms":["Xbox 360","PS3","PC"],"genre":"Tiro em primeira pessoa","developer":"Treyarch","rights_holder":"Activision (Microsoft)"},"port":{"name":"Ports de multiplayer e Zombies","author":"Luckey Faraday","technique":"unknown","code_license":null},"rights":{"status":"bundled","content_license":null,"summary":"Segundo os relatos, reaproveitava mapas, modelos e animações tirados do jogo de PC."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Embutia conteúdo do jogo e saiu do ar depois de um DMCA da Activision.","added":"2026-11-10","sources":[{"title":"TweakTown: Activision takes down AI-made Black Ops 2 browser ports","url":"https://www.tweaktown.com/news/114029/activision-takes-down-ai-made-black-ops-2-browser-ports/index.html"}]}},{"id":"celeste-wasm","title":"Celeste","game":{"year":2018,"platforms":["Switch","PS4","Xbox One","PC"],"genre":"Plataforma","developer":"Maddy Makes Games","rights_holder":"Maddy Makes Games"},"port":{"name":"celeste-wasm","technique":"decompilation","code_license":null},"rights":{"status":"bundled","content_license":null,"summary":"O repositório trazia os dados comerciais do jogo."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Embutia os dados comerciais do jogo, alvo da notificação no GitHub.","added":"2026-11-10","sources":[{"title":"PBX Science: Browser Game Ports Meet a Wave of DMCA Takedowns","url":"https://pbxscience.com/?p=24442"}]}},{"id":"gta-v-playgta5","title":"Grand Theft Auto V","game":{"year":2013,"platforms":["PS3","Xbox 360","PS4","Xbox One","PC"],"genre":"Ação em mundo aberto","developer":"Rockstar North","rights_holder":"Take-Two Interactive"},"port":{"name":"playgta5.com","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Versão de navegador publicada em um site não oficial."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Saiu do ar em poucas horas. Não há como conferir o que distribuía.","added":"2026-11-10","sources":[{"title":"XenoSpectrum: Ported2Browser e o risco jurídico de diretórios","url":"https://xenospectrum.com/en/ported2browser-browser-game-ports-copyright/"}]}},{"id":"cod-mw2-open-victor-zulu","title":"Call of Duty: Modern Warfare 2","game":{"year":2009,"platforms":["Xbox 360","PS3","PC"],"genre":"Tiro em primeira pessoa","developer":"Infinity Ward","rights_holder":"Activision (Microsoft)"},"port":{"name":"Open Victor Zulu","technique":"unknown","code_license":null},"rights":{"status":"unknown","content_license":null,"summary":"Recriação do multiplayer para navegador."},"requirements":{"user_files":[],"controls":[]},"links":{"play":null,"project":null,"source":null},"curation":{"state":"rejected","risk":null,"reason":"Removido depois de um pedido de DMCA.","added":"2026-11-10","sources":[{"title":"PBX Science: Browser Game Ports Meet a Wave of DMCA Takedowns","url":"https://pbxscience.com/?p=24442"}]}}],"events":[{"id":"2025-12-vice-city-doszone-dmca","port_id":"gta-vice-city-doszone","date":"2025-12","date_basis":"reported","kind":"dmca_notice","actor":"Take-Two Interactive","summary":"A DOS Zone tirou o port do ar depois de um pedido de remoção da Take-Two, mesmo exigindo a cópia original para o jogo completo.","sources":[{"title":"Generation Amiga","url":"https://www.generationamiga.com/2025/12/27/take-twos-dmca-hammer-falls-on-fan-made-gta-browser-revival/"},{"title":"80 Level","url":"https://80.lv/articles/take-two-takes-down-browser-version-of-gta-vice-city-with-dmca-request"}]},{"id":"2026-07-pepsiman-launch","port_id":"pepsiman-recompiled","date":"2026-07","date_basis":"occurred","kind":"launch","actor":null,"summary":"Sai a versão 1.0, a primeira feita para WebAssembly.","sources":[{"title":"Notebookcheck","url":"https://www.notebookcheck.net/A-recompiled-version-of-Pepsiman-lets-you-play-the-PS1-cult-classic-natively-in-your-browser-at-60-FPS.1354060.0.html"}]},{"id":"2026-09-24-pso-reborn-dmca","port_id":"pso-reborn","date":"2026-09-24","date_basis":"reported","kind":"dmca_notice","actor":"Sega","summary":"O port de navegador feito por fãs recebeu uma notificação da Sega.","sources":[{"title":"Power Up Gaming","url":"https://powerupgaming.co.uk/2026/09/24/phantasy-star-browser-port-pso-reborn-hit-with-sega-dmca-notice/"}]},{"id":"2026-09-29-halo-launch","port_id":"halo-ce-web","date":"2026-09-29","date_basis":"occurred","kind":"launch","actor":null,"summary":"Mitchell Hynes publica o port, com campanha completa e multiplayer.","sources":[{"title":"TechSpot","url":"https://www.techspot.com/news/114042-you-can-now-play-original-halo-browser-128.html"}]},{"id":"2026-09-halo-cloudflare-block","port_id":"halo-ce-web","date":"2026-09","date_basis":"reported","kind":"outage","actor":"Cloudflare","summary":"Cerca de sete horas depois do lançamento, uma trava automática da Cloudflare bloqueou o site por pouco tempo, por causa do volume de acessos.","sources":[{"title":"Borns IT- und Windows-Blog","url":"https://borncity.com/news/halo-combat-evolved-im-browser-originalspiel-unterstuetzt-128-spieler/"}]},{"id":"2026-10-halo-repeated-outages","port_id":"halo-ce-web","date":"2026-10","date_basis":"reported","kind":"outage","actor":null,"summary":"Relato de que o site saiu do ar várias vezes e de que o link original parou de funcionar. O jogo seguia acessível por link direto.","sources":[{"title":"PC Guide","url":"https://www.pcguide.com/news/halo-ce-in-your-browser-with-splitscreen-co-op-and-128-player-multiplayer-gets-taken-down-but-its-still-playable/"}]},{"id":"2026-10-06-gta-v-offline","port_id":"gta-v-playgta5","date":"2026-10-06","date_basis":"occurred","kind":"outage","actor":null,"summary":"Saiu do ar poucas horas depois de viralizar. O motivo não foi confirmado.","sources":[{"title":"XenoSpectrum","url":"https://xenospectrum.com/en/ported2browser-browser-game-ports-copyright/"}]},{"id":"2026-10-10-cod-bo2-dmca","port_id":"cod-black-ops-2-web","date":"2026-10-10","date_basis":"reported","kind":"dmca_notice","actor":"Activision","summary":"O autor disse ter recebido um DMCA da Activision. Os dois ports, multiplayer e Zombies, saíram do ar.","sources":[{"title":"TweakTown","url":"https://www.tweaktown.com/news/114029/activision-takes-down-ai-made-black-ops-2-browser-ports/index.html"}]},{"id":"2026-10-14-celeste-wasm-dmca","port_id":"celeste-wasm","date":"2026-10-14","date_basis":"occurred","kind":"dmca_notice","actor":"Maddy Makes Games","summary":"Uma notificação no GitHub mirou os dados comerciais do jogo que estavam no repositório. O port estava no ar havia cerca de dez meses.","sources":[{"title":"PBX Science","url":"https://pbxscience.com/?p=24442"}]},{"id":"2026-10-17-mw2-ovz-removal","port_id":"cod-mw2-open-victor-zulu","date":"2026-10-17","date_basis":"reported","kind":"removal","actor":null,"summary":"A página passou a mostrar só um aviso de que o projeto foi removido depois de um pedido de DMCA.","sources":[{"title":"PBX Science","url":"https://pbxscience.com/?p=24442"}]}]}</script>
 <script>
-(function () {
+/* Funções que a vitrine e o observatório dividem: textos, datas e a regra da luz de status. */
+window.LOKGAM = (function () {
   'use strict';
-  var D = JSON.parse(document.getElementById('catalogo').textContent);
-  var $ = function (s, r) { return (r || document).querySelector(s); };
-  var esc = function (s) {
+  var L = {};
+
+  L.esc = function (s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   };
-  var norm = function (s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+  L.plural = function (n, um, varios) { return n + ' ' + (n === 1 ? um : varios); };
+  L.lista = function (a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1]; };
 
-  var SELO = { official: 'Oficial', free: 'Livre', demo: 'Demo', byo_files: 'Sua cópia' };
-  var SELO_LONGO = { official: 'Oficial', free: 'Livre', demo: 'Demo jogável', byo_files: 'Traga sua cópia' };
-  var ESTADO = { online: 'No ar', unverified: 'Não conferido', unstable: 'Instável', offline: 'Fora do ar' };
-  var TECNICA = {
+  L.ESTADO = { online: 'No ar', unstable: 'Instável', offline: 'Fora do ar', unverified: 'Não conferido' };
+  L.ESTADO_CURTO = { online: 'no ar', unstable: 'instável', offline: 'fora do ar', unverified: 'não conferido' };
+  L.TIPO = { launch: 'Lançamento', dmca_notice: 'Notificação de direitos autorais', removal: 'Remoção', outage: 'Queda', restored: 'Voltou ao ar', model_change: 'Mudou de modelo' };
+  L.TECNICA = {
     native_web: 'Feito para a web',
     source_port: 'Compilado do código-fonte aberto',
     reimplementation: 'Motor reescrito do zero',
     decompilation: 'Código reconstruído por engenharia reversa',
     recompilation: 'Recompilação estática do código original',
-    emulation: 'Emulação no navegador'
+    emulation: 'Emulação no navegador',
+    unknown: 'Ainda não identificada'
   };
-  var RISCO = { low: 'baixo', medium: 'médio', high: 'alto' };
-  var CONTROLE = { keyboard: 'teclado', mouse: 'mouse', gamepad: 'controle', touch: 'toque na tela' };
-  var TIPO = { launch: 'Lançamento', dmca_notice: 'Notificação de direitos autorais', removal: 'Remoção', outage: 'Queda', restored: 'Voltou ao ar', model_change: 'Mudou de modelo' };
-  var SIGLA = { 'Game Boy': 'GB', 'Game Boy Color': 'GBC', 'Game Boy Advance': 'GBA', 'Xbox 360': 'X360', 'Xbox One': 'XONE', 'Saturn': 'SAT', 'Dreamcast': 'DC', 'Mega Drive': 'MD', 'GameCube': 'GC' };
-  var MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  L.MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 
-  function data(s) {
+  /* "2026-11-10" vira 10/11/2026, "2026-09" vira set/2026, "2015" fica 2015 */
+  L.data = function (s) {
     if (!s) return '';
     var p = s.slice(0, 10).split('-');
     if (p[2]) return p[2] + '/' + p[1] + '/' + p[0];
-    if (p[1]) return MES[+p[1] - 1] + '/' + p[0];
+    if (p[1]) return L.MES[+p[1] - 1] + '/' + p[0];
     return p[0];
-  }
-  function plural(n, um, varios) { return n + ' ' + (n === 1 ? um : varios); }
-  function lista(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1]; }
+  };
   /* Data só com mês vai para o fim daquele mês na ordenação */
-  function chave(d) { return d.length === 7 ? d + '-99' : d; }
+  L.chave = function (d) { return d.length === 7 ? d + '-99' : d; };
+  L.temHora = function (s) { return s.length > 10; };
+  L.instante = function (s) { return Date.parse(L.temHora(s) ? s : s + 'T12:00:00Z'); };
+  L.dataHora = function (s) {
+    if (!L.temHora(s)) return L.data(s);
+    return new Date(s).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+  L.idadeCurta = function (ms) {
+    var min = Math.max(0, Math.round(ms / 60000));
+    if (min < 1) return 'agora';
+    if (min < 60) return min + ' min';
+    var h = Math.round(min / 60);
+    return h < 48 ? h + ' h' : Math.round(h / 24) + ' d';
+  };
+  L.ha = function (ms) {
+    var curta = L.idadeCurta(ms);
+    return curta === 'agora' ? 'agora há pouco' : 'há ' + curta;
+  };
+  /* Quando foi uma conferência: "há 3 h", ou "em 10/11" se ela só tem o dia */
+  L.quando = function (check, agora, curto) {
+    if (!check) return '';
+    if (!L.temHora(check.checked_at)) {
+      var p = check.checked_at.split('-');
+      return (curto ? '' : 'em ') + p[2] + '/' + p[1];
+    }
+    var ms = agora - Date.parse(check.checked_at);
+    return curto ? L.idadeCurta(ms) : L.ha(ms);
+  };
+
+  /* A regra da luz. Vale a última conferência que de fato viu o site, e ela vale
+     por 72 horas. Depois disso, ou sem nenhuma, a luz volta para "não conferido":
+     a página nunca afirma o estado de agora com base em dado velho. */
+  L.VALIDADE_MS = 72 * 3600 * 1000;
+  L.situacao = function (item, agora) {
+    var visto = item.seen;
+    if (visto && agora - L.instante(visto.checked_at) <= L.VALIDADE_MS) return { state: visto.state, check: visto, vencida: false };
+    return { state: 'unverified', check: visto || item.last || null, vencida: !!visto };
+  };
+
+  /* Faixa de conferências, da mais antiga para a mais recente. `vagas` completa
+     com traços à esquerda para todas as faixas de uma lista terem o mesmo tamanho. */
+  L.faixa = function (historico, vagas) {
+    var caixa = document.createElement('span');
+    caixa.className = 'faixa';
+    caixa.setAttribute('role', 'img');
+    var conta = { online: 0, unstable: 0, offline: 0, unverified: 0 };
+    for (var i = historico.length; i < (vagas || 0); i++) {
+      var vazio = document.createElement('i');
+      vazio.className = 'pulso pulso--vazio';
+      caixa.appendChild(vazio);
+    }
+    historico.forEach(function (h) {
+      var b = document.createElement('i');
+      b.className = 'pulso pulso--' + h[1];
+      b.title = L.dataHora(h[0]) + ': ' + L.ESTADO_CURTO[h[1]];
+      conta[h[1]]++;
+      caixa.appendChild(b);
+    });
+    var partes = Object.keys(conta).filter(function (k) { return conta[k]; }).map(function (k) { return conta[k] + ' ' + L.ESTADO_CURTO[k]; });
+    caixa.setAttribute('aria-label', historico.length
+      ? L.plural(historico.length, 'conferência', 'conferências') + ': ' + L.lista(partes)
+      : 'Nenhuma conferência ainda');
+    return caixa;
+  };
+
+  /* Letreiro: mantém a letra na largura máxima e ajusta o tamanho para ocupar a linha */
+  L.ajustarLetreiro = function (el, maximo) {
+    var letras = el.firstElementChild;
+    el.style.fontSize = '';
+    var fs = parseFloat(getComputedStyle(el).fontSize);
+    var w = letras.getBoundingClientRect().width;
+    if (w > 0) el.style.fontSize = Math.min(fs * el.clientWidth / w * 0.992, maximo || 190) + 'px';
+  };
+
+  L.aCadaMinuto = function (fn) { fn(); setInterval(fn, 60000); };
+  L.aoRedimensionar = function (fn) {
+    var espera;
+    window.addEventListener('resize', function () { clearTimeout(espera); espera = setTimeout(fn, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn);
+  };
+
+  return L;
+})();
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var L = window.LOKGAM;
+  var D = JSON.parse(document.getElementById('dados').textContent);
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var esc = L.esc, data = L.data;
+  var norm = function (s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+
+  var SELO = { official: 'Oficial', free: 'Livre', demo: 'Demo', byo_files: 'Sua cópia' };
+  var SELO_LONGO = { official: 'Oficial', free: 'Livre', demo: 'Demo jogável', byo_files: 'Traga sua cópia' };
+  var RISCO = { low: 'baixo', medium: 'médio', high: 'alto' };
+  var CONTROLE = { keyboard: 'teclado', mouse: 'mouse', gamepad: 'controle', touch: 'toque na tela' };
+  var SIGLA = { 'Game Boy': 'GB', 'Game Boy Color': 'GBC', 'Game Boy Advance': 'GBA', 'Xbox 360': 'X360', 'Xbox One': 'XONE', 'Saturn': 'SAT', 'Dreamcast': 'DC', 'Mega Drive': 'MD', 'GameCube': 'GC' };
 
   var porId = {};
   D.ports.forEach(function (p) { porId[p.id] = p; });
@@ -411,11 +522,11 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   });
 
   /* Balcão */
-  $('#base-data').textContent = data(D.base_date);
+  $('#link-repo').href = D.repo;
   $('#placar').innerHTML =
     '<li><b>' + aprovados.length + '</b> na vitrine</li>' +
     '<li><a href="#analise"><b>' + pendentes.length + '</b> em análise</a></li>' +
-    '<li><a href="#quedas"><b>' + rejeitados.length + '</b> fora da vitrine</a></li>';
+    '<li><a href="observatorio/#quedas"><b>' + rejeitados.length + '</b> fora da vitrine</a></li>';
 
   /* Capas */
   var parede = $('#parede');
@@ -428,8 +539,8 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     a.innerHTML =
       '<span class="capa__corpo"><span class="capa__topo" aria-hidden="true"></span>' +
       '<span class="capa__rotulo"><span class="capa__titulo">' + esc(p.title) + '</span></span>' +
-      '<span class="capa__rodape"><span>' + esc(plats) + '</span><span>' + p.game.year + '</span>' +
-      '<i class="led led--' + p.status.state + '"></i><span class="sr">' + ESTADO[p.status.state] + '</span></span></span>' +
+      '<span class="capa__rodape"><span class="capa__linha"><span>' + esc(plats) + '</span><span>' + p.game.year + '</span></span>' +
+      '<span class="capa__status"><i class="led"></i><span data-status></span></span></span></span>' +
       '<span class="selo selo--' + p.rights.status + '">' + SELO[p.rights.status] + '</span>';
     return a;
   }
@@ -440,8 +551,22 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   vaga.textContent = 'Falta um jogo? Veja o que entra na vitrine';
   parede.appendChild(vaga);
 
+  /* Luz e tempo da conferência: recalculados a cada minuto, porque a página pode ficar aberta por horas */
+  function pintarStatus() {
+    var agora = Date.now();
+    aprovados.forEach(function (p) {
+      var s = L.situacao(p, agora), c = capas[p.id];
+      $('.led', c).className = 'led led--' + s.state;
+      $('[data-status]', c).textContent = L.ESTADO_CURTO[s.state] + (s.state !== 'unverified' ? ' · ' + L.quando(s.check, agora, true) : '');
+    });
+    var ultima = D.last_check ? { checked_at: D.last_check } : null;
+    $('#conferencia').textContent = !ultima ? 'links ainda sem conferência'
+      : agora - L.instante(D.last_check) <= L.VALIDADE_MS ? 'links conferidos ' + L.quando(ultima, agora)
+      : 'última conferência dos links ' + L.quando(ultima, agora);
+  }
+
   /* Ajuste de largura da letra: cada título ocupa a etiqueta inteira */
-  function ajustar(el, min) {
+  function ajustar(el) {
     el.style.fontStretch = '';
     el.style.fontSize = '';
     /* Folga na altura: com entrelinha apertada, o desenho das letras passa uns pixels da caixa sem cortar linha nenhuma */
@@ -454,18 +579,11 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
       if (cabe()) return;
     }
     var fs = parseFloat(getComputedStyle(el).fontSize);
-    while (fs > (min || 11) && !cabe()) { fs -= 1; el.style.fontSize = fs + 'px'; }
-  }
-  function ajustarMarca() {
-    var el = $('#marca-nome'), letras = el.firstElementChild;
-    el.style.fontSize = '';
-    var fs = parseFloat(getComputedStyle(el).fontSize);
-    var w = letras.getBoundingClientRect().width;
-    if (w > 0) el.style.fontSize = Math.min(fs * el.clientWidth / w * 0.992, 190) + 'px';
+    while (fs > 11 && !cabe()) { fs -= 1; el.style.fontSize = fs + 'px'; }
   }
   function ajustarTudo() {
-    ajustarMarca();
-    parede.querySelectorAll('.capa:not([hidden]) .capa__titulo').forEach(function (el) { ajustar(el); });
+    L.ajustarLetreiro($('#marca-nome'));
+    parede.querySelectorAll('.capa:not([hidden]) .capa__titulo').forEach(ajustar);
   }
 
   /* Filtros */
@@ -509,7 +627,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
       if (ok) n++;
     });
     var filtrando = !!(q || ativos.length || estado.plat || estado.ctrl);
-    contagem.textContent = filtrando ? 'Mostrando ' + n + ' de ' + plural(aprovados.length, 'jogo', 'jogos') : plural(n, 'jogo', 'jogos') + ' na vitrine';
+    contagem.textContent = filtrando ? 'Mostrando ' + n + ' de ' + L.plural(aprovados.length, 'jogo', 'jogos') : L.plural(n, 'jogo', 'jogos') + ' na vitrine';
     vazio.hidden = n > 0;
     vaga.hidden = filtrando;
     limpar.hidden = !filtrando;
@@ -534,34 +652,42 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     busca.focus();
   });
 
-  /* Histórico de quedas e fila de análise */
-  var linhas = D.events.filter(function (e) { return e.kind !== 'launch'; })
-    .sort(function (a, b) { return chave(a.date) < chave(b.date) ? 1 : chave(a.date) > chave(b.date) ? -1 : 0; });
-  $('#quedas-corpo').innerHTML = linhas.map(function (e) {
-    var p = porId[e.port_id];
-    var quando = data(e.date) + (e.date_basis === 'reported' ? '<small>data da notícia</small>' : '');
-    var nome = esc(p.title) + (p.port.name ? '<small>' + esc(p.port.name) + '</small>' : '');
-    var fontes = e.sources.map(function (f) { return '<a href="' + esc(f.url) + '" rel="noopener noreferrer">' + esc(f.title) + '</a>'; }).join('<br>');
-    return '<tr><td>' + quando + '</td><td>' + nome + '</td><td data-rotulo="Quem agiu">' + (e.actor ? esc(e.actor) : 'Não informado') + '</td><td>' +
-      '<small>' + TIPO[e.kind] + '</small>' + esc(e.summary) + '</td><td data-rotulo="Fonte">' + fontes + '</td></tr>';
-  }).join('');
+  /* Fila de análise */
   $('#analise-lista').innerHTML = pendentes.map(function (p) {
     return '<li><b>' + esc(p.title) + (p.port.name ? ' · ' + esc(p.port.name) : '') + '</b><span>' + esc(p.curation.reason) + '</span></li>';
-  }).join('') || '<li><span>Nada na fila agora.</span></li>';
+  }).join('');
   if (!pendentes.length) $('#analise').hidden = true;
 
   /* Ficha */
   var dlg = $('#ficha'), cartao = $('#ficha-cartao');
   function campo(rotulo, valor) { return valor ? '<dt>' + rotulo + '</dt><dd>' + esc(valor) + '</dd>' : ''; }
+  function conferenciaHTML(p, agora) {
+    var s = L.situacao(p, agora), c = s.check;
+    var quando = !c ? 'ainda sem conferência'
+      : s.vencida ? 'visto pela última vez ' + L.quando(c, agora)
+      : s.state !== 'unverified' ? 'conferido ' + L.quando(c, agora)
+      : c.method === 'link_checker' ? 'o robô foi barrado ' + L.quando(c, agora)
+      : 'ainda sem conferência válida';
+    var linhas = [];
+    if (c && c.note) linhas.push(c.note);
+    else if (c && c.reason === 'ok') linhas.push('O site respondeu normalmente ao robô' + (c.response_ms != null ? ', em ' + c.response_ms + ' ms' : '') + '.');
+    if (c && s.vencida) linhas.push('Essa conferência passou de três dias, então não vale mais para a luz da capa.');
+    if (c && p.last && p.last.reason === 'bot_blocked' && p.last.checked_at > c.checked_at) {
+      linhas.push('Na última passagem, ' + L.quando(p.last, agora) + ', o site barrou o robô.');
+    }
+    return '<p class="carimbo carimbo--' + s.state + '">' + L.ESTADO[s.state] + '<small>' + esc(quando) + '</small></p>' +
+      linhas.map(function (t) { return '<p class="ficha__nota">' + esc(t) + '</p>'; }).join('') +
+      ((p.history || []).length > 1 ? '<div class="conferencias" data-faixa></div>' : '');
+  }
   function fichaHTML(p) {
-    var g = p.game, r = p.rights, q = p.requirements, c = p.curation, s = p.status;
+    var g = p.game, r = p.rights, q = p.requirements, c = p.curation;
     var arquivos = q.user_files.length ? q.user_files.map(function (f) {
       return '<li><b>' + esc(f.what) + '</b>' + (f.where ? ', ' + esc(f.where) : '') + '. ' +
         (f.needed_for === 'play' ? 'Sem isso o port não abre.' : 'Só para liberar o jogo completo.') + '</li>';
     }).join('') : '<li>Só o navegador. Nenhum arquivo seu é pedido.</li>';
-    var controles = lista(q.controls.map(function (x) { return CONTROLE[x]; }));
+    var controles = L.lista(q.controls.map(function (x) { return CONTROLE[x]; }));
     var licencas = [r.content_license ? 'Conteúdo: ' + r.content_license : '', p.port.code_license ? 'Código: ' + p.port.code_license : ''].filter(Boolean).join(' · ');
-    var eventos = D.events.filter(function (e) { return e.port_id === p.id; }).sort(function (a, b) { return chave(a.date) < chave(b.date) ? -1 : 1; });
+    var eventos = D.events.filter(function (e) { return e.port_id === p.id; }).sort(function (a, b) { return L.chave(a.date) < L.chave(b.date) ? -1 : 1; });
     var fontes = c.sources.map(function (f) { return '<a href="' + esc(f.url) + '" rel="noopener noreferrer">' + esc(f.title) + '</a>'; }).join(' · ');
     return '' +
       '<header class="ficha__faixa">' +
@@ -582,17 +708,16 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
           (q.notes ? '<p>' + esc(q.notes) + '</p>' : '') +
         '</section>' +
         '<section class="ficha__bloco"><h3>Como roda</h3><dl class="campos">' +
-          campo('Port', p.port.name) + campo('Autor', p.port.author) + campo('Técnica', TECNICA[p.port.technique]) +
+          campo('Port', p.port.name) + campo('Autor', p.port.author) + campo('Técnica', L.TECNICA[p.port.technique]) +
           campo('Base', p.port.based_on) + campo('Desde', data(p.port.released)) + campo('Dono do jogo', g.rights_holder) +
         '</dl></section>' +
-        '<section class="ficha__bloco"><h3>Link e risco</h3>' +
-          '<p class="carimbo carimbo--' + s.state + '">' + ESTADO[s.state] + '<small>conferência de ' + data(s.checked_at) + '</small></p>' +
-          (s.note ? '<p class="ficha__nota">' + esc(s.note) + '</p>' : '') +
-          '<p class="risco risco--' + c.risk + '"><span class="risco__barras" aria-hidden="true"><i></i><i></i><i></i></span>Risco de remoção ' + RISCO[c.risk] + '</p>' +
+        '<section class="ficha__bloco"><h3>Estado do link</h3>' + conferenciaHTML(p, Date.now()) + '</section>' +
+        '<section class="ficha__bloco ficha__bloco--largo"><h3>Risco de remoção</h3>' +
+          '<p class="risco risco--' + c.risk + '"><span class="risco__barras" aria-hidden="true"><i></i><i></i><i></i></span>Risco ' + RISCO[c.risk] + '</p>' +
           '<p>' + esc(c.reason) + '</p>' +
         '</section>' +
         (eventos.length ? '<section class="ficha__bloco ficha__bloco--largo"><h3>Histórico</h3><ol class="linha-tempo">' +
-          eventos.map(function (e) { return '<li><time>' + data(e.date) + '</time><span><b>' + TIPO[e.kind] + '.</b> ' + esc(e.summary) + '</span></li>'; }).join('') +
+          eventos.map(function (e) { return '<li><time>' + data(e.date) + '</time><span><b>' + L.TIPO[e.kind] + '.</b> ' + esc(e.summary) + '</span></li>'; }).join('') +
         '</ol></section>' : '') +
       '</div>' +
       '<footer class="ficha__acoes">' +
@@ -607,6 +732,13 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   function abrir(p) {
     cartao.className = 'ficha__cartao cor-' + p.label.color + ' pad-' + p.label.pattern;
     cartao.innerHTML = fichaHTML(p);
+    var faixa = $('[data-faixa]', cartao);
+    if (faixa) {
+      faixa.appendChild(L.faixa(p.history));
+      var legenda = document.createElement('small');
+      legenda.textContent = 'Últimas ' + p.history.length + ' conferências, da mais antiga para a mais nova';
+      faixa.appendChild(legenda);
+    }
     if (!dlg.open) dlg.showModal();
     dlg.scrollTop = 0;
   }
@@ -622,6 +754,8 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     if (e.target === dlg || e.target.closest('[data-fechar]')) dlg.close();
   });
   dlg.addEventListener('close', function () {
+    /* O aviso de fechamento chega atrasado: se outra ficha já abriu nesse meio-tempo, não é para limpar o endereço */
+    if (dlg.open) return;
     if (location.hash.indexOf('#ficha-') === 0) {
       var y = window.scrollY;
       location.hash = '';
@@ -630,24 +764,10 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
   });
   window.addEventListener('hashchange', rota);
 
-  /* Partida: guarda os filtros entre republicações da página */
-  var hot = window.claude && window.claude.hot;
-  if (hot && hot.snapshot) hot.snapshot(function () { return estado; });
-  function iniciar(salvo) {
-    if (salvo && typeof salvo === 'object') {
-      estado.q = salvo.q || '';
-      estado.selos = salvo.selos || {};
-      estado.plat = salvo.plat || '';
-      estado.ctrl = salvo.ctrl || '';
-    }
-    aplicar();
-    rota();
-  }
-  if (hot && hot.ready) hot.ready(iniciar); else iniciar((hot && hot.data) || {});
-
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarTudo);
-  var espera;
-  window.addEventListener('resize', function () { clearTimeout(espera); espera = setTimeout(ajustarTudo, 120); });
+  aplicar();
+  rota();
+  L.aCadaMinuto(pintarStatus);
+  L.aoRedimensionar(ajustarTudo);
 })();
 </script>
 </body>

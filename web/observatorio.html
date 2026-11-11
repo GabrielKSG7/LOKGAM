@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observatório LOKGAM</title>
+<meta name="description" content="Quanto tempo um port de navegador fica no ar, o que o derruba e quem derruba. Medido a partir da base aberta da LOKGAM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+/*__BASE_CSS__*/
+
+.subtitulo{margin:0;font-family:var(--font-mono);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.nota{margin:0;max-width:70ch;font-size:.88rem;color:var(--ink-2)}
+
+/* Agora: quatro números */
+.agora{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.agora li{display:grid;gap:6px;padding:16px 18px 18px 0}
+.agora li + li{padding-left:18px;border-left:1px solid var(--wall-2)}
+.agora__rotulo{display:flex;align-items:flex-end;gap:8px;font-size:.9rem;color:var(--ink-2);line-height:1.2}
+.agora__valor{font-size:clamp(2rem,5vw,3.1rem);font-weight:700;line-height:1;letter-spacing:-.02em}
+
+/* Disponibilidade por port */
+.disp{margin:0;padding:0;list-style:none;border-top:2px solid var(--ink)}
+.disp__linha{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,330px) 10.5rem;align-items:center;gap:6px 24px;padding:13px 0;border-bottom:1px solid var(--wall-2)}
+.disp__nome{display:grid;gap:3px;min-width:0}
+.disp__nome a,.disp__nome b{font-weight:700;text-underline-offset:3px;overflow-wrap:anywhere}
+.disp__estado{display:block;font-family:var(--font-mono);font-size:.68rem;line-height:1.5;color:var(--ink-2)}
+.disp__estado .pulso{width:5px;height:11px;margin-right:7px;vertical-align:-1px}
+.disp__estado .pulso--unstable{height:7px}
+.disp__estado .pulso--offline{height:4px}
+.disp__numero{display:grid;gap:2px;justify-items:end;text-align:right}
+.disp__numero strong{font-size:1.25rem;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.disp__numero strong.espera{font-size:.84rem;font-weight:500;color:var(--ink-2)}
+.disp__numero small{font-family:var(--font-mono);font-size:.64rem;color:var(--ink-2)}
+
+/* Gráfico por mês */
+.figura{margin:0;display:grid;gap:14px}
+.figura__topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.legenda{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0;padding:0;list-style:none;font-size:.86rem}
+.legenda li{display:inline-flex;align-items:center;gap:8px}
+.legenda small{color:var(--ink-2);font-size:.8rem}
+.amostra{flex:none;width:12px;height:12px;border-radius:3px}
+.amostra--1{background:var(--serie-1)}
+.amostra--2{background:var(--serie-2)}
+.plot{position:relative}
+.plot svg{display:block;width:100%;height:auto;overflow:visible}
+.plot .grade{stroke:var(--wall-2);stroke-width:1}
+.plot .eixo{stroke:var(--ink-2);stroke-width:1}
+.plot text{font-family:var(--font-mono);font-size:10px;fill:var(--ink-2)}
+.plot .rotulo-valor{font-family:var(--font-body);font-size:12px;font-weight:700;fill:var(--ink)}
+.plot .seg-1{fill:var(--serie-1)}
+.plot .seg-2{fill:var(--serie-2)}
+.plot .faixa-alvo{fill:var(--ink);opacity:0}
+.plot .coluna{cursor:default;outline:none}
+.plot .coluna:hover .faixa-alvo,.plot .coluna:focus-visible .faixa-alvo{opacity:.07}
+.plot .coluna:hover .seg-1,.plot .coluna:hover .seg-2,.plot .coluna:focus-visible .seg-1,.plot .coluna:focus-visible .seg-2{filter:brightness(1.14)}
+.plot .coluna:focus-visible .faixa-alvo{stroke:var(--ink);stroke-width:2;opacity:.1}
+.dica{position:absolute;z-index:3;pointer-events:none;min-width:11rem;padding:10px 12px;border-radius:6px;background:var(--ink);color:var(--wall);font-size:.82rem;line-height:1.35;box-shadow:0 8px 20px rgba(8,5,25,.3)}
+.dica__valor{font-size:1rem;font-weight:700}
+.dica__rotulo{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;opacity:.75;padding-bottom:6px}
+.dica__linha{display:flex;align-items:center;gap:8px}
+.dica__linha b{font-variant-numeric:tabular-nums}
+.chave{flex:none;width:12px;height:3px;border-radius:2px}
+.chave--1{background:var(--serie-1)}
+.chave--2{background:var(--serie-2)}
+.alternar{justify-self:start;font:inherit;font-family:var(--font-mono);font-size:.72rem;color:var(--ink);background:none;border:0;padding:.4em 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* Tabelas */
+.tabela-rolagem{overflow-x:auto}
+.tabela{width:100%;border-collapse:collapse;font-size:.92rem}
+.tabela th{text-align:left;font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:0 14px 8px 0;border-bottom:2px solid var(--ink);vertical-align:bottom}
+.tabela td{vertical-align:top;padding:11px 14px 11px 0;border-bottom:1px solid var(--wall-2)}
+.tabela .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tabela th.num{text-align:right;white-space:normal}
+.tabela small{display:block;font-weight:400;color:var(--ink-2)}
+.tabela--estreita{max-width:34rem}
+.barra{display:block;height:8px;min-width:2px;border-radius:4px;background:var(--serie-1)}
+.celula-barra{width:26%;vertical-align:middle !important}
+.tabela td.tecnica{min-width:9.5rem}
+.quedas{min-width:640px}
+.quedas td:first-child{font-family:var(--font-mono);font-size:.76rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.quedas td:nth-child(2){font-weight:700;min-width:11rem}
+.quedas a{text-underline-offset:3px;white-space:nowrap}
+.quedas td[data-rotulo]::before{content:none}
+.duas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(30px,5vw,60px) 48px;align-items:start}
+.duas > *{min-width:0}
+
+@media (max-width:760px){
+  .celula-barra,.coluna-barra{display:none}
+  .tabela td.tecnica{min-width:7.5rem}
+  .agora{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .agora li:nth-child(3){padding-left:0;border-left:0}
+  .agora li:nth-child(n+3){border-top:1px solid var(--wall-2)}
+  .disp__linha{grid-template-columns:minmax(0,1fr) auto}
+  .disp__linha .faixa{grid-column:1/-1;grid-row:2;justify-content:flex-start}
+  .disp__linha .pulso--vazio{display:none}
+  .quedas{min-width:0}
+  .quedas thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .quedas tbody{display:grid}
+  .quedas tr{display:grid;gap:5px;padding:16px 0;border-bottom:1px solid var(--wall-2)}
+  .quedas td{display:block;padding:0;border:0}
+  .quedas td:nth-child(2){min-width:0}
+  .quedas td:first-child small{display:inline;margin-left:8px}
+  .quedas td[data-rotulo]{font-size:.86rem}
+  .quedas td[data-rotulo]::before{content:attr(data-rotulo) ": ";font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+  .quedas td[data-rotulo] br{display:none}
+  .quedas td[data-rotulo] a{margin-right:10px}
+}
+</style>
+</head>
+<body>
+<div class="pagina">
+
+  <nav class="trilho" aria-label="Páginas do site">
+    <a href="../">Vitrine</a>
+    <a href="./" aria-current="page">Observatório</a>
+    <a class="trilho__fora" id="link-repo" href="https://github.com/GabrielKSG7/LOKGAM" rel="noopener noreferrer">Código e dados no GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+
+  <header class="balcao">
+    <div class="marca">
+      <p class="marca__sobre">LOKGAM · <span id="conferencia"></span></p>
+      <h1 class="marca__nome" id="marca-nome"><span>Observatório</span></h1>
+      <p class="marca__sub">quanto dura um port de navegador</p>
+    </div>
+    <p class="tese">Ports de jogos para navegador aparecem e somem depressa. Aqui fica o registro: quais estão no ar agora, com que frequência respondem e o que já tirou outros do ar.</p>
+    <ul class="placar" id="placar"></ul>
+  </header>
+
+  <main class="secao" id="agora" aria-labelledby="agora-titulo">
+    <h2 class="secao__titulo" id="agora-titulo">Agora</h2>
+    <ul class="agora" id="agora-numeros"></ul>
+    <p class="nota" id="agora-nota"></p>
+  </main>
+
+  <section class="secao" id="disponibilidade" aria-labelledby="disp-titulo">
+    <h2 class="secao__titulo" id="disp-titulo">Disponibilidade por port</h2>
+    <p class="secao__lide">Cada barrinha é uma conferência, da mais antiga à esquerda para a mais nova à direita. A porcentagem é a parcela das conferências em que o site respondeu normalmente.</p>
+    <ul class="legenda-pulso" aria-label="Como ler as barrinhas">
+      <li><i class="pulso pulso--online"></i>no ar</li>
+      <li><i class="pulso pulso--unstable"></i>instável</li>
+      <li><i class="pulso pulso--offline"></i>fora do ar</li>
+      <li><i class="pulso pulso--unverified"></i>não conferido</li>
+    </ul>
+    <ul class="disp" id="disp-lista"></ul>
+  </section>
+
+  <section class="secao" id="por-mes" aria-labelledby="mes-titulo">
+    <h2 class="secao__titulo" id="mes-titulo">Notificações e quedas por mês</h2>
+    <p class="secao__lide">Registros com fonte publicada, de toda a base: inclui os ports que ficaram fora da vitrine.</p>
+    <figure class="figura" id="figura-meses">
+      <div class="figura__topo">
+        <ul class="legenda">
+          <li><i class="amostra amostra--1"></i>Ação de dono de jogo <small>notificação ou remoção</small></li>
+          <li><i class="amostra amostra--2"></i>Queda <small>saiu do ar por outro motivo, ou sem motivo confirmado</small></li>
+        </ul>
+      </div>
+      <div class="plot" id="plot-meses"></div>
+      <button class="alternar" id="alternar-tabela" type="button" aria-expanded="false" aria-controls="tabela-meses">Ver os números em tabela</button>
+      <div class="tabela-rolagem" id="tabela-meses" hidden>
+        <table class="tabela tabela--estreita">
+          <thead><tr><th scope="col">Mês</th><th scope="col" class="num">Ações de donos</th><th scope="col" class="num">Quedas</th><th scope="col" class="num">Total</th></tr></thead>
+          <tbody id="tabela-meses-corpo"></tbody>
+        </table>
+      </div>
+    </figure>
+  </section>
+
+  <div class="duas">
+    <section class="secao" id="quem-agiu" aria-labelledby="quem-titulo">
+      <h2 class="secao__titulo" id="quem-titulo">Quem agiu</h2>
+      <p class="secao__lide">Donos de jogos que notificaram ou removeram ports de navegador.</p>
+      <div class="tabela-rolagem"><table class="tabela">
+        <thead><tr><th scope="col">Quem</th><th scope="col" class="num">Ações</th><th scope="col">Ports atingidos</th></tr></thead>
+        <tbody id="quem-corpo"></tbody>
+      </table></div>
+    </section>
+
+    <section class="secao" id="raio-x" aria-labelledby="raiox-titulo">
+      <h2 class="secao__titulo" id="raiox-titulo">Raio-x da base</h2>
+      <p class="secao__lide">Fichas por técnica de port, e onde cada grupo foi parar na curadoria.</p>
+      <div class="tabela-rolagem"><table class="tabela">
+        <thead><tr><th scope="col">Técnica</th><th scope="col" class="coluna-barra"><span class="sr">Total em barra</span></th><th scope="col" class="num">Na vitrine</th><th scope="col" class="num">Em análise</th><th scope="col" class="num">Fora</th></tr></thead>
+        <tbody id="raiox-corpo"></tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <section class="secao" id="quedas" aria-labelledby="quedas-titulo">
+    <h2 class="secao__titulo" id="quedas-titulo">Histórico de quedas</h2>
+    <p class="secao__lide">Cada notificação, remoção e sumiço registrado, com a fonte. Ports que saíram do ar ou que embutem o jogo aparecem sem link.</p>
+    <div class="tabela-rolagem">
+      <table class="tabela quedas">
+        <thead><tr><th scope="col">Quando</th><th scope="col">Port</th><th scope="col">Quem agiu</th><th scope="col">O que aconteceu</th><th scope="col">Fonte</th></tr></thead>
+        <tbody id="quedas-corpo"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao" id="metodo" aria-labelledby="metodo-titulo">
+    <h2 class="secao__titulo" id="metodo-titulo">Como isto é medido</h2>
+    <dl class="notas">
+      <div><dt>O robô</dt><dd>Passa quatro vezes por dia e se identifica como LOKGAM-conferencia. Abre só a página inicial de cada port e lê a resposta. Ele não testa se o jogo roda.</dd></div>
+      <div><dt>Disponibilidade</dt><dd>Conferências com resposta normal, divididas pelas conferências em que o robô conseguiu ver o site. Quando o site barra o robô, a conferência não conta para nenhum lado. A porcentagem só aparece depois de <span id="minimo"></span> conferências válidas.</dd></div>
+      <div><dt>O que não é medido</dt><dd>A LOKGAM não guarda link de port que embute o jogo, então esses ports não são conferidos. O que se sabe deles vem de notícias e está no histórico de quedas.</dd></div>
+      <div><dt>Dados abertos</dt><dd>As três tabelas estão no repositório: <a id="dado-ports" href="#">ports.json</a>, <a id="dado-events" href="#">events.json</a> e <a id="dado-checks" href="#">checks.jsonl</a>.</dd></div>
+    </dl>
+  </section>
+
+  <footer class="rodape">
+    <p>Jogos, nomes e marcas pertencem aos seus donos. A classificação de cada port é uma avaliação editorial, não um parecer jurídico.</p>
+  </footer>
+</div>
+
+<script type="application/json" id="dados">__DADOS__</script>
+<script>
+/*__BASE_JS__*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var L = window.LOKGAM;
+  var D = JSON.parse(document.getElementById('dados').textContent);
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var NS = 'http://www.w3.org/2000/svg';
+  function no(tag, classe, texto) {
+    var n = document.createElement(tag);
+    if (classe) n.className = classe;
+    if (texto != null) n.textContent = texto;
+    return n;
+  }
+  function svg(tag, attrs, texto) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (texto != null) n.textContent = texto;
+    return n;
+  }
+
+  /* Balcão */
+  $('#link-repo').href = D.repo;
+  $('#dado-ports').href = D.repo + '/blob/main/data/ports.json';
+  $('#dado-events').href = D.repo + '/blob/main/data/events.json';
+  $('#dado-checks').href = D.repo + '/blob/main/data/checks.jsonl';
+  $('#minimo').textContent = D.min_samples;
+  var placar = $('#placar');
+  [
+    [D.totals.checks, 'conferências desde ' + L.data(D.totals.first_check || '')],
+    [D.totals.events, 'eventos com fonte'],
+    [D.totals.ports, 'fichas na base']
+  ].forEach(function (par) {
+    var li = no('li');
+    li.appendChild(no('b', '', par[0]));
+    li.appendChild(document.createTextNode(' ' + par[1]));
+    placar.appendChild(li);
+  });
+
+  var vitrine = D.availability.filter(function (r) { return r.curation === 'approved'; });
+  var GRAVIDADE = { offline: 0, unstable: 1, unverified: 2, online: 3 };
+  var TECNICA_CURTA = { native_web: 'Feito para a web', source_port: 'Código-fonte aberto', reimplementation: 'Motor reescrito', decompilation: 'Engenharia reversa', recompilation: 'Recompilação', emulation: 'Emulação', unknown: 'Não identificada' };
+
+  /* Agora e disponibilidade dependem da hora: são refeitos a cada minuto */
+  function pintarAgora() {
+    var agora = Date.now();
+    var ultima = D.totals.last_check ? { checked_at: D.totals.last_check } : null;
+    $('#conferencia').textContent = !ultima ? 'links ainda sem conferência'
+      : agora - L.instante(D.totals.last_check) <= L.VALIDADE_MS ? 'links conferidos ' + L.quando(ultima, agora)
+      : 'última conferência dos links ' + L.quando(ultima, agora);
+
+    var conta = { online: 0, unstable: 0, offline: 0, unverified: 0 };
+    vitrine.forEach(function (r) { conta[L.situacao(r, agora).state]++; });
+    var lista = $('#agora-numeros');
+    lista.textContent = '';
+    ['online', 'unstable', 'offline', 'unverified'].forEach(function (estado) {
+      var li = no('li');
+      var rotulo = no('span', 'agora__rotulo');
+      rotulo.appendChild(no('i', 'pulso pulso--' + estado));
+      rotulo.appendChild(document.createTextNode(L.ESTADO[estado]));
+      li.appendChild(rotulo);
+      li.appendChild(no('span', 'agora__valor', conta[estado]));
+      lista.appendChild(li);
+    });
+    $('#agora-nota').textContent = 'Dos ' + vitrine.length + ' ports da vitrine. Uma conferência vale por três dias; sem outra mais nova, o port volta para "não conferido". Também fica assim o port cujo site barra o robô.';
+
+    var linhas = D.availability.map(function (r) { return { r: r, s: L.situacao(r, agora) }; });
+    linhas.sort(function (a, b) {
+      return GRAVIDADE[a.s.state] - GRAVIDADE[b.s.state] ||
+        (a.r.pct == null ? 2 : a.r.pct) - (b.r.pct == null ? 2 : b.r.pct) ||
+        a.r.title.localeCompare(b.r.title, 'pt-BR');
+    });
+    var disp = $('#disp-lista');
+    disp.textContent = '';
+    linhas.forEach(function (x) {
+      var r = x.r, s = x.s;
+      var li = no('li', 'disp__linha');
+      var nome = no('div', 'disp__nome');
+      if (r.curation === 'approved') {
+        var a = no('a', '', r.title);
+        a.href = '../#ficha-' + r.id;
+        nome.appendChild(a);
+      } else {
+        nome.appendChild(no('b', '', r.title));
+      }
+      var estado = no('span', 'disp__estado');
+      estado.appendChild(no('i', 'pulso pulso--' + s.state));
+      estado.appendChild(document.createTextNode(
+        L.ESTADO_CURTO[s.state] + (s.state !== 'unverified' ? ' ' + L.quando(s.check, agora) : '') +
+        (r.port_name ? ' · ' + r.port_name : '') + (r.curation === 'pending' ? ' · em análise' : '')));
+      nome.appendChild(estado);
+      li.appendChild(nome);
+      li.appendChild(L.faixa(r.strip, 40));
+      var numero = no('div', 'disp__numero');
+      if (r.pct != null) {
+        numero.appendChild(no('strong', '', Math.round(r.pct * 100) + '%'));
+        numero.appendChild(no('small', '', r.online + ' de ' + r.observed + ' no ar'));
+      } else {
+        numero.appendChild(no('strong', 'espera', 'aguardando dados'));
+        numero.appendChild(no('small', '', r.observed + ' de ' + D.min_samples + ' conferências'));
+      }
+      li.appendChild(numero);
+      disp.appendChild(li);
+    });
+  }
+
+  /* Gráfico: colunas empilhadas por mês, uma escala só */
+  var meses = D.events_by_month;
+  var plot = $('#plot-meses');
+  var dica = no('div', 'dica');
+  dica.hidden = true;
+  function rotuloMes(m, longo) {
+    var p = m.split('-');
+    return L.MES[+p[1] - 1] + (longo ? '/' + p[0] : '');
+  }
+  function textoColuna(m) {
+    var total = m.rights_actions + m.outages;
+    if (!total) return rotuloMes(m.month, true) + ': nenhum registro';
+    return rotuloMes(m.month, true) + ': ' + L.plural(m.rights_actions, 'ação de dono de jogo', 'ações de donos de jogos') + ' e ' + L.plural(m.outages, 'queda', 'quedas');
+  }
+  function mostrarDica(m, x, y) {
+    var total = m.rights_actions + m.outages;
+    dica.textContent = '';
+    dica.appendChild(no('div', 'dica__valor', total ? L.plural(total, 'registro', 'registros') : 'Nenhum registro'));
+    dica.appendChild(no('div', 'dica__rotulo', rotuloMes(m.month, true)));
+    [[m.rights_actions, 'chave--1', 'de donos de jogos'], [m.outages, 'chave--2', 'quedas']].forEach(function (linha) {
+      var d = no('div', 'dica__linha');
+      d.appendChild(no('i', 'chave ' + linha[1]));
+      d.appendChild(no('b', '', linha[0]));
+      d.appendChild(document.createTextNode(linha[2]));
+      dica.appendChild(d);
+    });
+    dica.hidden = false;
+    var largura = dica.offsetWidth, altura = dica.offsetHeight, folga = 22;
+    var direita = x + folga, esquerda = x - folga - largura;
+    dica.style.left = Math.max(0, direita + largura <= plot.clientWidth ? direita : esquerda) + 'px';
+    dica.style.top = Math.max(0, Math.min(y - 6, plot.clientHeight - altura)) + 'px';
+  }
+  function topoArredondado(x, y, w, h) {
+    var r = Math.min(4, h, w / 2);
+    return 'M' + x + ',' + (y + h) + ' L' + x + ',' + (y + r) + ' Q' + x + ',' + y + ' ' + (x + r) + ',' + y +
+      ' L' + (x + w - r) + ',' + y + ' Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) + ' L' + (x + w) + ',' + (y + h) + ' Z';
+  }
+  function desenharMeses() {
+    plot.textContent = '';
+    plot.appendChild(dica);
+    if (!meses.length) { plot.appendChild(no('p', 'nota', 'Ainda não há registros para mostrar.')); return; }
+    var W = Math.max(280, plot.clientWidth), esq = 30, dir = 6, topo = 24, alturaPlot = 190, base = 34;
+    var H = topo + alturaPlot + base;
+    var banda = (W - esq - dir) / meses.length;
+    var larguraBarra = Math.min(24, Math.max(6, banda * 0.5));
+    var maior = Math.max.apply(null, meses.map(function (m) { return m.rights_actions + m.outages; }));
+    var passo = maior <= 5 ? 1 : maior <= 10 ? 2 : Math.ceil(maior / 5);
+    var teto = Math.max(passo, Math.ceil(maior / passo) * passo);
+    var y = function (v) { return topo + alturaPlot - v / teto * alturaPlot; };
+    var desenho = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': 'Notificações e quedas por mês, em colunas empilhadas' });
+    for (var t = 0; t <= teto; t += passo) {
+      desenho.appendChild(svg('line', { x1: esq, x2: W - dir, y1: y(t), y2: y(t), 'class': t ? 'grade' : 'eixo' }));
+      desenho.appendChild(svg('text', { x: esq - 8, y: y(t) + 3.5, 'text-anchor': 'end' }, t));
+    }
+    var pico = -1, valorPico = 0;
+    meses.forEach(function (m, i) { var total = m.rights_actions + m.outages; if (total > valorPico) { valorPico = total; pico = i; } });
+    var pular = banda < 34 ? 2 : 1, anoMostrado = '';
+    meses.forEach(function (m, i) {
+      var total = m.rights_actions + m.outages;
+      var cx = esq + banda * (i + 0.5), x = cx - larguraBarra / 2;
+      var g = svg('g', { 'class': 'coluna', tabindex: 0, role: 'img', 'aria-label': textoColuna(m) });
+      g.appendChild(svg('rect', { 'class': 'faixa-alvo', x: esq + banda * i, y: topo - 14, width: banda, height: alturaPlot + 14 }));
+      var h1 = m.rights_actions / teto * alturaPlot, h2 = m.outages / teto * alturaPlot;
+      /* 2px da cor da parede separam os dois segmentos; só a ponta de cima é arredondada */
+      var vao = h1 && h2 ? 2 : 0;
+      if (h1) {
+        if (h2) g.appendChild(svg('rect', { 'class': 'seg-1', x: x, y: y(m.rights_actions) + vao / 2, width: larguraBarra, height: Math.max(1, h1 - vao / 2) }));
+        else g.appendChild(svg('path', { 'class': 'seg-1', d: topoArredondado(x, y(m.rights_actions), larguraBarra, h1) }));
+      }
+      if (h2) g.appendChild(svg('path', { 'class': 'seg-2', d: topoArredondado(x, y(total), larguraBarra, Math.max(1, h2 - vao / 2)) }));
+      if (i === pico) g.appendChild(svg('text', { 'class': 'rotulo-valor', x: cx, y: y(total) - 7, 'text-anchor': 'middle' }, total));
+      if (i % pular === 0) {
+        g.appendChild(svg('text', { x: cx, y: topo + alturaPlot + 15, 'text-anchor': 'middle' }, rotuloMes(m.month)));
+        /* O ano aparece só no primeiro mês mostrado de cada ano */
+        var ano = m.month.slice(0, 4);
+        if (ano !== anoMostrado) g.appendChild(svg('text', { x: cx, y: topo + alturaPlot + 28, 'text-anchor': 'middle' }, ano));
+        anoMostrado = ano;
+      }
+      var mostrar = function () { mostrarDica(m, cx * (plot.clientWidth / W), y(total) * (plot.clientWidth / W)); };
+      g.addEventListener('pointerenter', mostrar);
+      g.addEventListener('focus', mostrar);
+      g.addEventListener('pointerleave', function () { dica.hidden = true; });
+      g.addEventListener('blur', function () { dica.hidden = true; });
+      desenho.appendChild(g);
+    });
+    plot.appendChild(desenho);
+  }
+  var corpoMeses = $('#tabela-meses-corpo');
+  meses.forEach(function (m) {
+    var tr = no('tr');
+    tr.appendChild(no('td', '', rotuloMes(m.month, true)));
+    tr.appendChild(no('td', 'num', m.rights_actions));
+    tr.appendChild(no('td', 'num', m.outages));
+    tr.appendChild(no('td', 'num', m.rights_actions + m.outages));
+    corpoMeses.appendChild(tr);
+  });
+  var alternar = $('#alternar-tabela'), tabelaMeses = $('#tabela-meses');
+  alternar.addEventListener('click', function () {
+    tabelaMeses.hidden = !tabelaMeses.hidden;
+    alternar.setAttribute('aria-expanded', String(!tabelaMeses.hidden));
+    alternar.textContent = tabelaMeses.hidden ? 'Ver os números em tabela' : 'Esconder a tabela';
+  });
+
+  /* Quem agiu */
+  var quem = $('#quem-corpo');
+  D.actors.forEach(function (a) {
+    var tr = no('tr');
+    tr.appendChild(no('td', '', a.actor || 'Não informado'));
+    tr.appendChild(no('td', 'num', a.count));
+    tr.appendChild(no('td', '', a.ports.join(', ')));
+    quem.appendChild(tr);
+  });
+
+  /* Raio-x da base */
+  var raiox = $('#raiox-corpo');
+  var maiorGrupo = Math.max.apply(null, D.composition.map(function (c) { return c.total; }).concat([1]));
+  D.composition.forEach(function (c) {
+    var tr = no('tr');
+    var nome = no('td', 'tecnica', TECNICA_CURTA[c.technique] || c.technique);
+    nome.appendChild(no('small', '', L.plural(c.total, 'ficha', 'fichas')));
+    tr.appendChild(nome);
+    var celula = no('td', 'celula-barra');
+    var barra = no('span', 'barra');
+    barra.style.width = (c.total / maiorGrupo * 100) + '%';
+    celula.appendChild(barra);
+    tr.appendChild(celula);
+    tr.appendChild(no('td', 'num', c.approved));
+    tr.appendChild(no('td', 'num', c.pending));
+    tr.appendChild(no('td', 'num', c.rejected));
+    raiox.appendChild(tr);
+  });
+
+  /* Histórico de quedas */
+  var quedas = $('#quedas-corpo');
+  D.events.filter(function (e) { return e.kind !== 'launch'; })
+    .sort(function (a, b) { return L.chave(a.date) < L.chave(b.date) ? 1 : L.chave(a.date) > L.chave(b.date) ? -1 : 0; })
+    .forEach(function (e) {
+      var tr = no('tr');
+      var quando = no('td', '', L.data(e.date));
+      if (e.date_basis === 'reported') quando.appendChild(no('small', '', 'data da notícia'));
+      tr.appendChild(quando);
+      var port = no('td', '', e.title);
+      if (e.port_name) port.appendChild(no('small', '', e.port_name));
+      tr.appendChild(port);
+      var ator = no('td', '', e.actor || 'Não informado');
+      ator.dataset.rotulo = 'Quem agiu';
+      tr.appendChild(ator);
+      var fato = no('td');
+      fato.appendChild(no('small', '', L.TIPO[e.kind]));
+      fato.appendChild(document.createTextNode(e.summary));
+      tr.appendChild(fato);
+      var fontes = no('td');
+      fontes.dataset.rotulo = 'Fonte';
+      e.sources.forEach(function (f, i) {
+        if (i) fontes.appendChild(no('br'));
+        var a = no('a', '', f.title);
+        a.href = f.url;
+        a.rel = 'noopener noreferrer';
+        fontes.appendChild(a);
+      });
+      tr.appendChild(fontes);
+      quedas.appendChild(tr);
+    });
+
+  function ajustar() {
+    L.ajustarLetreiro($('#marca-nome'));
+    desenharMeses();
+  }
+  L.aCadaMinuto(pintarAgora);
+  ajustar();
+  L.aoRedimensionar(ajustar);
+})();
+</script>
+</body>
+</html>

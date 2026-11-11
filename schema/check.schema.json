@@ -2,26 +2,37 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "check.schema.json",
   "title": "Check",
-  "description": "Uma conferência do link de um port. Uma linha por conferência, em ordem de chegada (JSON Lines). A vitrine mostra a mais recente de cada ficha; o histórico inteiro alimenta o observatório.",
+  "description": "Uma conferência do link de um port. Uma linha por conferência, em ordem de chegada (JSON Lines). A vitrine mostra a última conferência que de fato viu o site; o histórico inteiro alimenta o observatório.",
   "type": "object",
   "additionalProperties": false,
   "required": ["port_id", "checked_at", "state", "method"],
   "properties": {
     "port_id": { "description": "Ficha conferida (ports.id).", "type": "string" },
     "checked_at": {
-      "description": "Dia ou instante da conferência, em UTC: AAAA-MM-DD ou AAAA-MM-DDTHH:MM:SSZ.",
+      "description": "Dia ou instante da conferência, em UTC: AAAA-MM-DD ou AAAA-MM-DDTHH:MM:SSZ. As linhas de uma mesma passagem do robô têm o mesmo instante.",
       "type": "string",
       "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}Z)?$"
     },
     "state": {
-      "description": "online: respondeu normalmente. unstable: respondeu com erro intermitente ou bloqueio. offline: não respondeu ou mostra aviso de remoção. unverified: não foi possível conferir.",
+      "description": "O que a luz da capa mostra. online: respondeu normalmente. unstable: respondeu com erro, demorou demais ou pede conferência à mão. offline: o endereço ou a página não existe mais. unverified: não deu para ver o site, em geral porque ele barrou o robô.",
       "enum": ["online", "unstable", "offline", "unverified"]
     },
+    "reason": {
+      "description": "Por que a conferência deu esse estado, para análise. ok: resposta normal. bot_blocked: o site barrou o robô (401, 403, 429 ou desafio). not_found: 404 ou 410. legal_block: 451. server_error: 5xx. timeout, dns_error, connection_error, tls_error: falhas de rede. takedown_notice: a página mostra aviso de remoção. other_http: qualquer outra resposta. Obrigatório nas linhas do robô.",
+      "enum": [
+        "ok", "bot_blocked", "not_found", "legal_block", "server_error",
+        "timeout", "dns_error", "connection_error", "tls_error",
+        "takedown_notice", "other_http"
+      ]
+    },
     "method": {
-      "description": "manual: alguém abriu a página. link_checker: conferência automática.",
+      "description": "manual: alguém abriu a página. link_checker: conferência automática (scripts/check_links.py).",
       "enum": ["manual", "link_checker"]
     },
-    "http_status": { "type": ["integer", "null"] },
-    "note": { "type": "string" }
-  }
+    "http_status": { "description": "Código HTTP da resposta final, quando houve resposta.", "type": ["integer", "null"] },
+    "response_ms": { "description": "Tempo da última tentativa, em milissegundos.", "type": ["integer", "null"], "minimum": 0 },
+    "note": { "description": "Frase curta que aparece na ficha.", "type": "string" }
+  },
+  "if": { "properties": { "method": { "const": "link_checker" } } },
+  "then": { "required": ["reason", "http_status", "response_ms"] }
 }
