@@ -1,0 +1,196 @@
+[
+  {
+    "id": "ported2browser",
+    "name": "Ported2Browser",
+    "kind": "directory",
+    "hosts_games": false,
+    "url": "https://ported2browser.com/",
+    "summary": "Diretório de ports de navegador lançado em setembro de 2026, que passou de pouco mais de 100 para quase 300 jogos em um mês. Não hospeda nada: leva ao site de cada port. Mistura demos oficiais, jogos livres, ports de fãs e ports que pedem os seus arquivos.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "XenoSpectrum: Ported2Browser and the copyright risk of a link directory",
+        "url": "https://xenospectrum.com/en/ported2browser-browser-game-ports-copyright/"
+      },
+      {
+        "title": "Korben: Ported2Browser, 200+ games in your browser",
+        "url": "https://korben.info/en/ported2browser-200-games-in-your-browser.html"
+      }
+    ]
+  },
+  {
+    "id": "ultimate-catalog-of-web-game-ports",
+    "name": "Ultimate Catalog of Web Game Ports",
+    "kind": "list",
+    "hosts_games": false,
+    "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports",
+    "summary": "Lista comunitária, em ordem alfabética, que marca o que tem versão jogável e o que tem código-fonte. Avisa que muitos ports pedem os arquivos do jogo. Também lista espelhos que hospedam jogos comerciais.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "Ultimate Catalog of Web Game Ports",
+        "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+      }
+    ]
+  },
+  {
+    "id": "ps2-web-recomp",
+    "name": "PS2 Web Recomp",
+    "kind": "toolkit",
+    "hosts_games": false,
+    "url": "https://github.com/snuri00/ps2-web-recomp",
+    "summary": "Ferramenta que recompila jogos de PS2 para WebAssembly e WebGPU. Não traz dados de jogo: cada pessoa monta a página a partir do próprio disco. É a origem das fichas de Gran Turismo 4 e God of War II.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "DigiTechBytes: PS2 games statically recompiled to WebAssembly",
+        "url": "https://digitechbytes.com/technology-news-gadgets/show-hn-ps2-games-statically-recompiled-to-webassembly/"
+      }
+    ]
+  },
+  {
+    "id": "bottleship",
+    "name": "BottleShip",
+    "kind": "toolkit",
+    "hosts_games": false,
+    "url": "https://github.com/jenissimo/bottleship",
+    "summary": "Ambiente para rodar no navegador jogos de Windows de 1997 a 2004, a partir do instalador de uma cópia sua.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "BottleShip: lista de compatibilidade",
+        "url": "https://raw.githubusercontent.com/jenissimo/bottleship/main/docs/compatibility.md"
+      }
+    ]
+  },
+  {
+    "id": "ported2browser-outros-enderecos",
+    "name": "Ported2Browser em outros endereços (.net, .org e .sbs)",
+    "kind": "directory",
+    "hosts_games": null,
+    "url": null,
+    "summary": "Três sites usam o mesmo nome em outros endereços. Não foi possível confirmar quem os mantém nem se algum deles roda os jogos na própria página.",
+    "added": "2026-11-11",
+    "sources": []
+  },
+  {
+    "id": "inxanity-labs",
+    "name": "INXANITY Labs",
+    "kind": "portal",
+    "hosts_games": null,
+    "url": null,
+    "summary": "Indicado ao projeto como portal com mais de 170 ports jogáveis. Ainda não foi possível abrir e conferir se só aponta para os ports ou se também hospeda jogos.",
+    "added": "2026-11-11",
+    "sources": []
+  },
+  {
+    "id": "awesome-decomp-games",
+    "name": "Awesome Decomp Games",
+    "kind": "list",
+    "hosts_games": null,
+    "url": null,
+    "summary": "Indicado ao projeto como índice de mais de 1.300 decompilações, recompilações e ports para a web. Ainda não foi possível abrir e conferir se só aponta para os ports ou se também hospeda jogos.",
+    "added": "2026-11-11",
+    "sources": []
+  },
+  {
+    "id": "browser-games-directory",
+    "name": "Browser Games Directory",
+    "kind": "directory",
+    "hosts_games": null,
+    "url": null,
+    "summary": "Indicado ao projeto como coleção de clássicos portados em WebGL e WebAssembly. Ainda não foi possível abrir e conferir se só aponta para os ports ou se também hospeda jogos.",
+    "added": "2026-11-11",
+    "sources": []
+  },
+  {
+    "id": "wasm-arcade",
+    "name": "WASM Arcade",
+    "kind": "portal",
+    "hosts_games": null,
+    "url": null,
+    "summary": "Indicado ao projeto como portal de ports de código aberto em WebAssembly. Ainda não foi possível abrir e conferir se só aponta para os ports ou se também hospeda jogos.",
+    "added": "2026-11-11",
+    "sources": []
+  },
+  {
+    "id": "playported",
+    "name": "PlayPorted",
+    "kind": "directory",
+    "hosts_games": null,
+    "url": null,
+    "summary": "Indicado ao projeto como rastreador de mais de 1.300 ports de 35 sistemas. Ainda não foi possível abrir e conferir se só aponta para os ports ou se também hospeda jogos.",
+    "added": "2026-11-11",
+    "sources": []
+  },
+  {
+    "id": "heldgames-recompiled-list",
+    "name": "HeldGames: lista de recompilações",
+    "kind": "list",
+    "hosts_games": null,
+    "url": null,
+    "summary": "Indicado ao projeto como levantamento de recompilações de N64, PS1, PS2, GameCube, Wii e Xbox 360. Ainda não foi possível abrir e conferir se só aponta para os ports ou se também hospeda jogos.",
+    "added": "2026-11-11",
+    "sources": []
+  },
+  {
+    "id": "retro-games-center",
+    "name": "Retro Games Center (rgc.zone)",
+    "kind": "portal",
+    "hosts_games": true,
+    "url": null,
+    "summary": "Hospeda builds prontas para jogar. O catálogo comunitário aponta para ele como endereço de jogos como Animal Crossing e Carmageddon.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "Ultimate Catalog of Web Game Ports",
+        "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+      }
+    ]
+  },
+  {
+    "id": "wasm-rip",
+    "name": "WASM.rip",
+    "kind": "mirror",
+    "hosts_games": true,
+    "url": null,
+    "summary": "Espelho que hospeda dezenas de ports prontos para abrir, entre eles jogos comerciais que ainda estão à venda.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "Ultimate Catalog of Web Game Ports",
+        "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+      }
+    ]
+  },
+  {
+    "id": "gn-math",
+    "name": "GN-Math (dois endereços)",
+    "kind": "mirror",
+    "hosts_games": true,
+    "url": null,
+    "summary": "Espelho que hospeda builds de jogos comerciais como Cuphead e Celeste.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "Ultimate Catalog of Web Game Ports",
+        "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+      }
+    ]
+  },
+  {
+    "id": "truffled",
+    "name": "Truffled",
+    "kind": "mirror",
+    "hosts_games": true,
+    "url": null,
+    "summary": "Portal que hospeda versões de navegador de jogos comerciais como Castle Crashers.",
+    "added": "2026-11-11",
+    "sources": [
+      {
+        "title": "Ultimate Catalog of Web Game Ports",
+        "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+      }
+    ]
+  }
+]

@@ -276,5 +276,24 @@
         "url": "https://insider-gaming.com/dragon-ball-z-budokai-now-playable-through-your-browser/"
       }
     ]
+  },
+  {
+    "id": "2026-10-21-re-outbreak-web-launch",
+    "port_id": "resident-evil-outbreak-web",
+    "date": "2026-10-21",
+    "date_basis": "reported",
+    "kind": "launch",
+    "actor": null,
+    "summary": "A versão de navegador de Resident Evil Outbreak e File #2 começou a circular, com os cinco cenários de cada jogo e salas online.",
+    "sources": [
+      {
+        "title": "GamesRadar+",
+        "url": "https://www.gamesradar.com/hardware/retro/you-can-now-play-my-favorite-resident-evil-multiplayer-romp-for-free-in-a-web-browser-without-a-ps2-but-wretched-ai-vibecoding-could-be-lurking/"
+      },
+      {
+        "title": "Hardware.com.br",
+        "url": "https://www.hardware.com.br/?p=385408"
+      }
+    ]
   }
 ]

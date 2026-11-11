@@ -100,10 +100,24 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 .regras .selo{justify-self:start}
 .legenda-led{display:flex;flex-wrap:wrap;gap:6px 16px;padding-top:4px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink)}
 .legenda-led span{display:inline-flex;align-items:center;gap:6px}
-.analise{margin:0;padding:0;list-style:none;display:grid;gap:10px}
-.analise li{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--ink-2)}
+.analise{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:16px 32px}
+.analise li{display:grid;gap:3px;align-content:start;padding-left:14px;border-left:3px solid var(--ink-2)}
 .analise b{font-weight:700}
+.analise small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.03em;color:var(--ink-2)}
+.analise__luz{display:inline-flex;align-items:center;gap:6px;color:var(--ink) !important}
 .analise span{color:var(--ink-2);font-size:.93rem}
+
+/* Antes de jogar e outros catálogos */
+.notas--soltas{border-top:0;padding-top:0}
+.catalogos{display:grid;gap:28px}
+.catalogos__grupo{display:grid;gap:14px}
+.catalogos__grupo h3{margin:0;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding-bottom:8px;border-bottom:2px solid var(--wall-2)}
+.catalogos ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px 32px}
+.catalogos li{display:grid;gap:4px;align-content:start}
+.catalogos__nome{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font-weight:700}
+.catalogos__nome a{text-underline-offset:3px}
+.catalogos__nome small{font-family:var(--font-mono);font-weight:400;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.catalogos li span{color:var(--ink-2);font-size:.92rem}
 
 /* Ficha */
 .ficha{border:0;padding:0;margin:auto;background:transparent;color:var(--paper-ink);width:min(780px,calc(100vw - 20px));max-width:none;max-height:calc(100dvh - 20px);overflow:auto;overscroll-behavior:contain}
@@ -229,10 +243,25 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     </dl>
   </section>
 
+  <section class="secao" id="antes-de-jogar" aria-labelledby="antes-titulo">
+    <h2 class="secao__titulo" id="antes-titulo">Antes de jogar</h2>
+    <dl class="notas notas--soltas">
+      <div><dt>Navegador</dt><dd>Use Chrome ou Edge atualizados, com a aceleração de hardware ligada. Os ports mais novos desenham com WebGPU, que nem todo navegador de celular ou de TV tem.</dd></div>
+      <div><dt>Arquivos do jogo</dt><dd>Há dois tipos de port. Um baixa o jogo inteiro sozinho. O outro pede, uma única vez, a ISO ou a pasta de dados da sua cópia, que fica guardada só no seu navegador. A LOKGAM só dá link para o segundo tipo, além dos oficiais, dos livres e das demos.</dd></div>
+      <div><dt>Controle</dt><dd>Cada ficha diz com o que o port joga. Se for usar controle, aperte um botão dele com a página do jogo aberta: o navegador só mostra o controle ao site depois disso.</dd></div>
+    </dl>
+  </section>
+
   <section class="secao" id="analise" aria-labelledby="analise-titulo">
     <h2 class="secao__titulo" id="analise-titulo">Em análise</h2>
-    <p class="secao__lide">Ports já descobertos que ainda não entraram. Uns esperam a confirmação de onde vêm os dados do jogo, outros ainda não têm um endereço para abrir. Até lá, ficam sem link.</p>
+    <p class="secao__lide">Ports já descobertos que ainda não entraram. Uns esperam a confirmação de onde vêm os dados do jogo, outros ainda não têm um endereço para abrir. Os que mostram uma luz já têm o endereço guardado e são conferidos pelo robô, mas o link só aparece se a ficha for aprovada.</p>
     <ul class="analise" id="analise-lista"></ul>
+  </section>
+
+  <section class="secao" id="catalogos" aria-labelledby="catalogos-titulo">
+    <h2 class="secao__titulo" id="catalogos-titulo">Outros catálogos</h2>
+    <p class="secao__lide">Quem mais lista ports de navegador. Eles reúnem tudo o que existe, sem o filtro de direitos da LOKGAM, então aqui só ganha link o catálogo que comprovadamente não hospeda jogos.</p>
+    <div class="catalogos" id="catalogos-lista"></div>
   </section>
 
   <footer class="rodape">
@@ -426,11 +455,37 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
     busca.focus();
   });
 
-  /* Fila de análise */
-  $('#analise-lista').innerHTML = pendentes.map(function (p) {
-    return '<li><b>' + esc(p.title) + (p.port.name ? ' · ' + esc(p.port.name) : '') + '</b><span>' + esc(p.curation.reason) + '</span></li>';
-  }).join('');
+  /* Fila de análise: primeiro as fichas com endereço guardado, que o robô já confere */
+  var filaAnalise = pendentes.slice().sort(function (a, b) { return (b.history ? 1 : 0) - (a.history ? 1 : 0); });
+  function pintarAnalise() {
+    var agora = Date.now();
+    $('#analise-lista').innerHTML = filaAnalise.map(function (p) {
+      var s = p.history ? L.situacao(p, agora) : null;
+      var plats = p.game.platforms.slice(0, 3).map(function (x) { return SIGLA[x] || x; }).join(' · ');
+      return '<li><b>' + esc(p.title) + (p.port.name ? ' · ' + esc(p.port.name) : '') + '</b>' +
+        '<small>' + esc(plats) + ' · ' + p.game.year + '</small>' +
+        (s ? '<small class="analise__luz"><i class="led led--' + s.state + '"></i>endereço ' + L.ESTADO_CURTO[s.state] + '</small>' : '') +
+        '<span>' + esc(p.curation.reason) + '</span></li>';
+    }).join('');
+  }
   if (!pendentes.length) $('#analise').hidden = true;
+
+  /* Outros catálogos: link só para quem comprovadamente não hospeda jogos */
+  var catalogos = D.catalogs || [];
+  var TIPO_CATALOGO = { directory: 'diretório', list: 'lista', toolkit: 'ferramenta', portal: 'portal', mirror: 'espelho' };
+  var GRUPOS = [
+    ['Com link', false],
+    ['Ainda não conferidos, sem link por enquanto', null],
+    ['Hospedam os jogos, ficam sem link', true]
+  ];
+  $('#catalogos-lista').innerHTML = GRUPOS.map(function (g) {
+    var itens = catalogos.filter(function (c) { return c.hosts_games === g[1]; });
+    return itens.length ? '<div class="catalogos__grupo"><h3>' + g[0] + '</h3><ul>' + itens.map(function (c) {
+      var nome = c.url ? '<a href="' + esc(c.url) + '" rel="noopener noreferrer">' + esc(c.name) + '</a>' : esc(c.name);
+      return '<li><div class="catalogos__nome">' + nome + '<small>' + TIPO_CATALOGO[c.kind] + '</small></div><span>' + esc(c.summary) + '</span></li>';
+    }).join('') + '</ul></div>' : '';
+  }).join('');
+  if (!catalogos.length) $('#catalogos').hidden = true;
 
   /* Ficha */
   var dlg = $('#ficha'), cartao = $('#ficha-cartao');
@@ -577,7 +632,7 @@ button.selo[aria-pressed="true"]{transform:rotate(-2deg);box-shadow:0 2px 0 var(
 
   aplicar();
   rota();
-  L.aCadaMinuto(pintarStatus);
+  L.aCadaMinuto(function () { pintarStatus(); pintarAnalise(); });
   L.aoRedimensionar(ajustarTudo);
 })();
 </script>

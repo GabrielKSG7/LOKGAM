@@ -13,7 +13,7 @@ import json
 import sys
 
 from metrics import build_metrics, by_port, check_summary, is_monitored, latest
-from validate import ROOT, load_base, validate
+from validate import ROOT, load_base, load_catalogs, validate
 
 REPO_URL = "https://github.com/GabrielKSG7/LOKGAM"
 # Quantas conferências recentes cada ficha da vitrine mostra.
@@ -34,7 +34,7 @@ def render(template_name: str, replacements: dict[str, str]) -> str:
     return page
 
 
-def storefront_payload(ports: list[dict], events: list[dict], checks: list[dict]) -> dict:
+def storefront_payload(ports: list[dict], events: list[dict], checks: list[dict], catalogs: list[dict] | None = None) -> dict:
     grouped = by_port(checks)
     stamps = [check["checked_at"] for check in checks]
     cards = []
@@ -49,7 +49,13 @@ def storefront_payload(ports: list[dict], events: list[dict], checks: list[dict]
             card["last"] = check_summary(latest(history))
             card["history"] = [[row["checked_at"], row["state"]] for row in history[-HISTORY_LENGTH:]]
         cards.append(card)
-    return {"repo": REPO_URL, "last_check": max(stamps) if stamps else None, "ports": cards, "events": events}
+    return {
+        "repo": REPO_URL,
+        "last_check": max(stamps) if stamps else None,
+        "ports": cards,
+        "events": events,
+        "catalogs": catalogs or [],
+    }
 
 
 def observatory_payload(ports: list[dict], events: list[dict], checks: list[dict]) -> dict:
@@ -79,7 +85,7 @@ def main() -> int:
         "/*__BASE_JS__*/": (ROOT / "web" / "base.js").read_text(encoding="utf-8"),
     }
     pages = {
-        "index.html": render("vitrine.html", {**shared, "__DADOS__": embed(storefront_payload(ports, events, checks))}),
+        "index.html": render("vitrine.html", {**shared, "__DADOS__": embed(storefront_payload(ports, events, checks, load_catalogs()))}),
         "observatorio/index.html": render(
             "observatorio.html", {**shared, "__DADOS__": embed(observatory_payload(ports, events, checks))}
         ),

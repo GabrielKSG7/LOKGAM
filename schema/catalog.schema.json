@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "catalog.schema.json",
+  "title": "Catalog",
+  "description": "Outro catálogo, lista, ferramenta ou portal de ports de navegador. A página só dá link para os que comprovadamente não hospedam jogos.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "kind", "hosts_games", "url", "summary", "added", "sources"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "kind": {
+      "description": "directory: diretório com busca e filtros. list: lista simples. toolkit: ferramenta ou motor de código aberto. portal: site que roda os jogos na própria página. mirror: espelho de builds.",
+      "enum": ["directory", "list", "toolkit", "portal", "mirror"]
+    },
+    "hosts_games": {
+      "description": "true: hospeda jogos. false: só aponta para os ports, ou só traz código. null: ainda não conferido.",
+      "type": ["boolean", "null"]
+    },
+    "url": {
+      "description": "Endereço do catálogo. Só é guardado quando hosts_games é false.",
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "summary": { "type": "string", "minLength": 1 },
+    "added": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "sources": {
+      "description": "De onde veio a informação sobre o que o catálogo hospeda.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    }
+  }
+}

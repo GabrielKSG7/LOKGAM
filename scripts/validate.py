@@ -33,6 +33,11 @@ def load_base() -> tuple[list[dict], list[dict], list[dict]]:
     )
 
 
+def load_catalogs() -> list[dict]:
+    path = ROOT / "data" / "catalogs.json"
+    return load_json(path) if path.exists() else []
+
+
 def schema_errors(rows: list[dict], schema_name: str, key: str) -> list[str]:
     validator = Draft202012Validator(
         load_json(ROOT / "schema" / schema_name), format_checker=FormatChecker()
@@ -91,6 +96,8 @@ def rule_errors(ports: list[dict], events: list[dict], checks: list[dict]) -> li
                 errors.append(f"{pid}: selo '{status}' não combina com arquivo exigido para jogar")
         if state == "rejected" and p["links"]["play"]:
             errors.append(f"{pid}: ficha rejeitada não guarda links.play")
+        if state != "pending" and not p["curation"]["sources"]:
+            errors.append(f"{pid}: ficha aprovada ou rejeitada precisa de fonte")
         if state == "rejected" and "label" not in p:
             errors.append(f"{pid}: ficha rejeitada sem capa (label)")
         route = p.get("own_copy_route")
@@ -105,6 +112,20 @@ def rule_errors(ports: list[dict], events: list[dict], checks: list[dict]) -> li
     return errors
 
 
+def catalog_errors(catalogs: list[dict]) -> list[str]:
+    """Catálogo só guarda endereço quando há fonte dizendo que ele não hospeda jogos."""
+    errors = []
+    ids = [c["id"] for c in catalogs]
+    for dup in sorted({i for i in ids if ids.count(i) > 1}):
+        errors.append(f"catalogs: id repetido: {dup}")
+    for c in catalogs:
+        if c["url"] and c["hosts_games"] is not False:
+            errors.append(f"catalogs [{c['id']}]: só catálogo que não hospeda jogos guarda url")
+        if c["hosts_games"] is not None and not c["sources"]:
+            errors.append(f"catalogs [{c['id']}]: dizer o que o catálogo hospeda exige fonte")
+    return errors
+
+
 def validate() -> list[str]:
     ports, events, checks = load_base()
     return (
@@ -112,6 +133,8 @@ def validate() -> list[str]:
         + schema_errors(events, "event.schema.json", "id")
         + schema_errors(checks, "check.schema.json", "port_id")
         + rule_errors(ports, events, checks)
+        + schema_errors(load_catalogs(), "catalog.schema.json", "id")
+        + catalog_errors(load_catalogs())
     )
 
 
@@ -124,7 +147,7 @@ def main() -> int:
     print(
         f"{len(ports)} fichas ({states.count('approved')} aprovadas, "
         f"{states.count('pending')} em análise, {states.count('rejected')} rejeitadas), "
-        f"{len(events)} eventos, {len(checks)} conferências, {len(errors)} erros"
+        f"{len(events)} eventos, {len(checks)} conferências, {len(load_catalogs())} catálogos, {len(errors)} erros"
     )
     return 1 if errors else 0
 

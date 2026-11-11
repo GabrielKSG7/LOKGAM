@@ -1492,5 +1492,1725 @@
       ]
     },
     "label": { "shape": "cartridge", "color": "areia", "pattern": "bolinhas" }
+  },
+  {
+    "id": "gta-vice-city-wasm",
+    "title": "Grand Theft Auto: Vice City",
+    "game": {
+      "year": 2002,
+      "platforms": ["PS2", "PC", "Xbox"],
+      "genre": "Ação em mundo aberto",
+      "developer": "Rockstar North",
+      "rights_holder": "Take-Two Interactive"
+    },
+    "port": {
+      "name": "GTA: Vice City — WASM Port",
+      "author": "joncodeofficial, sobre o reVCDOS de Lolendor",
+      "technique": "decompilation",
+      "based_on": "reVC, o motor do jogo reconstruído por engenharia reversa, compilado para WebAssembly pela equipe DOS Zone",
+      "code_license": "MIT"
+    },
+    "rights": {
+      "status": "byo_files",
+      "content_license": null,
+      "summary": "O repositório não traz modelos, texturas, áudio nem mapas. Você importa uma vez o pacote de dados do jogo, e ele fica guardado só no seu navegador. Os autores pedem uma cópia legítima de Vice City."
+    },
+    "requirements": {
+      "user_files": [
+        {
+          "what": "Pacote game.tar.gz com os dados do jogo",
+          "needed_for": "play",
+          "where": "montado a partir da sua cópia de GTA: Vice City"
+        }
+      ],
+      "controls": ["keyboard", "mouse", "gamepad"],
+      "notes": "Depois da importação, roda sem internet e pode ser instalado como aplicativo. Aceita saves e skins da versão de PC."
+    },
+    "links": {
+      "play": "https://joncodeofficial.github.io/gta-vice-city-wasm/",
+      "project": null,
+      "source": "https://github.com/joncodeofficial/gta-vice-city-wasm"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Selo confirmado: pede os dados da cópia de quem joga. Entra na vitrine depois da primeira conferência do robô.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "README do projeto (espelho no Gitea)",
+          "url": "https://gitea.com/10224530/gta-vice-city-wasm"
+        },
+        {
+          "title": "Tom's Hardware: GTA Vice City and GTA III return to web browsers after a DMCA takedown",
+          "url": "https://www.tomshardware.com/video-games/gta-vice-city-and-gta-iii-return-to-web-browsers-after-a-dmca-takedown-open-source-reverse-engineering-brings-the-classics-to-the-web-with-over-100-fps-performance"
+        }
+      ]
+    },
+    "label": { "shape": "disc", "color": "chiclete", "pattern": "aneis" }
+  },
+  {
+    "id": "red-alert-2-chrono-divide",
+    "title": "Command & Conquer: Red Alert 2",
+    "game": {
+      "year": 2000,
+      "platforms": ["PC"],
+      "genre": "Estratégia em tempo real",
+      "developer": "Westwood Pacific",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "name": "Chrono Divide",
+      "author": "Equipe Chrono Divide",
+      "released": "2021-03",
+      "technique": "reimplementation",
+      "based_on": "Cliente escrito do zero em TypeScript",
+      "code_license": null
+    },
+    "rights": {
+      "status": "byo_files",
+      "content_license": null,
+      "summary": "O site não distribui o jogo: na primeira vez, pede que você importe os arquivos originais de Red Alert 2. Ele mesmo sugere uma cópia guardada no Internet Archive."
+    },
+    "requirements": {
+      "user_files": [
+        {
+          "what": "Arquivos originais de Red Alert 2",
+          "needed_for": "play",
+          "where": "da sua instalação ou do seu CD"
+        }
+      ],
+      "controls": ["keyboard", "mouse", "touch"],
+      "notes": "Por enquanto só o multijogador, com os mapas originais e suporte a mods; a campanha está em desenvolvimento. Os autores recomendam evitar o Firefox."
+    },
+    "links": {
+      "play": "https://chronodivide.com/",
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Selo confirmado: pede os arquivos originais. Entra na vitrine depois da primeira conferência do robô.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "heise online: Red Alert 2 in the Browser",
+          "url": "https://heise.de/-11087986"
+        },
+        {
+          "title": "Engadget: You can now play Command & Conquer: Red Alert 2 in your browser",
+          "url": "https://engadget.com/gaming/you-can-now-play-command--conquer-red-alert-2-in-your-browser-213815557.html"
+        }
+      ]
+    },
+    "label": { "shape": "disc", "color": "tomate", "pattern": "barras" }
+  },
+  {
+    "id": "silent-hill-web",
+    "title": "Silent Hill",
+    "game": {
+      "year": 1999,
+      "platforms": ["PS1"],
+      "genre": "Terror de sobrevivência",
+      "developer": "Konami (Team Silent)",
+      "rights_holder": "Konami"
+    },
+    "port": {
+      "name": "Silent Hill no navegador",
+      "technique": "decompilation",
+      "based_on": "Port de PC feito sobre a decompilação do jogo de PS1 (projeto silent-hill-decomp)",
+      "code_license": null
+    },
+    "rights": {
+      "status": "byo_files",
+      "content_license": null,
+      "summary": "Nenhum arquivo do jogo vem junto: o port pede a imagem de disco (.bin) da sua cópia."
+    },
+    "requirements": {
+      "user_files": [
+        {
+          "what": "Imagem de disco do jogo (.bin)",
+          "needed_for": "play",
+          "where": "feita a partir do seu disco de PS1; o port de PC usa a versão americana 1.1"
+        }
+      ],
+      "controls": ["keyboard", "gamepad"],
+      "notes": "Tem tela dividida para até quatro pessoas e multijogador online em fase beta. A equipe da decompilação diz que este port partiu de uma versão inacabada do trabalho dela e fica mais instável conforme o jogo avança."
+    },
+    "links": {
+      "play": "https://sh1pc.com/playonline",
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Selo confirmado: pede o disco de quem joga. Entra na vitrine depois da primeira conferência do robô.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Korben: 10 RECOMP projects that pull your old games out of their console",
+          "url": "https://korben.info/en/10-recomp-projects-that-pull-your-old-games-out-of-their-console.html"
+        },
+        {
+          "title": "FRVR: Silent Hill decompilation has hit 100%",
+          "url": "https://frvr.com/blog/news/silent-hill-decompilation-with-no-ai-generated-code-has-hit-100-decompilation-reviving-konamis-lost-source-code/"
+        },
+        {
+          "title": "GAMINGbible: Silent Hill 1 unofficial PC port",
+          "url": "https://www.gamingbible.com/news/silent-hill-1-unofficial-pc-port-180657-20260512"
+        }
+      ]
+    },
+    "label": { "shape": "disc", "color": "grafite", "pattern": "hachura" }
+  },
+  {
+    "id": "beneath-a-steel-sky-scummweb",
+    "title": "Beneath a Steel Sky",
+    "game": {
+      "year": 1994,
+      "platforms": ["PC"],
+      "genre": "Aventura de apontar e clicar",
+      "developer": "Revolution Software",
+      "rights_holder": "Revolution Software"
+    },
+    "port": {
+      "name": "ScummWeb",
+      "technique": "source_port",
+      "based_on": "ScummVM compilado para WebAssembly",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": "https://scummweb.tsilva.eu/",
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "O jogo é distribuído de graça pelos autores há anos, então tem tudo para entrar com o selo Livre. Falta abrir o site e confirmar que é só ele que está lá.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "arx-fatalis-arxwasm",
+    "title": "Arx Fatalis",
+    "game": {
+      "year": 2002,
+      "platforms": ["PC", "Xbox"],
+      "genre": "RPG em primeira pessoa",
+      "developer": "Arkane Studios",
+      "rights_holder": "Arkane Studios (Microsoft)"
+    },
+    "port": {
+      "name": "Arxwasm",
+      "based_on": "Indicado como build em WebAssembly do motor do jogo",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": "https://wasm.continuation-labs.com/",
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicado como demonstração jogável. Falta confirmar que o site traz só a demo e o que pede para o jogo completo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "duke-nukem-3d-build-engine-web",
+    "title": "Duke Nukem 3D e outros jogos da Build Engine",
+    "game": {
+      "year": 1996,
+      "platforms": ["PC", "PS1", "Saturn", "N64"],
+      "genre": "Tiro em primeira pessoa",
+      "developer": "3D Realms",
+      "rights_holder": "Gearbox"
+    },
+    "port": {
+      "name": "Build Engine Web Showcase",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": "https://buildenginegames.online/",
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Reúne vários jogos do mesmo motor (Duke Nukem 3D, Blood, Shadow Warrior, Powerslave). Falta confirmar, jogo a jogo, se roda o shareware ou a versão completa.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "atlantis-the-lost-tales-native",
+    "title": "Atlantis: The Lost Tales",
+    "game": {
+      "year": 1997,
+      "platforms": ["PC", "Saturn", "PS1"],
+      "genre": "Aventura",
+      "developer": "Cryo Interactive",
+      "rights_holder": "Microids"
+    },
+    "port": {
+      "name": "atlantis-native",
+      "author": "ripleyXLR8",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": "https://ripleyxlr8.github.io/",
+      "project": null,
+      "source": "https://github.com/ripleyXLR8/atlantis-native"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "renegade-open-commando",
+    "title": "Command & Conquer: Renegade",
+    "game": {
+      "year": 2002,
+      "platforms": ["PC"],
+      "genre": "Tiro em primeira pessoa",
+      "developer": "Westwood Studios",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "name": "Open Commando",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": "https://open-commando.netanelgilad.workers.dev/",
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicado como recriação para a web. Falta confirmar o que ela usa do jogo original.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "bottleship-windows-1997-2004",
+    "title": "Jogos de Windows de 1997 a 2004 (BottleShip)",
+    "game": {
+      "year": 1997,
+      "platforms": ["PC"],
+      "genre": "Ambiente inteiro (camada de compatibilidade)"
+    },
+    "port": {
+      "name": "BottleShip",
+      "author": "jenissimo",
+      "based_on": "Roda jogos nativos de Windows da era DirectDraw e Direct3D 3 a 9",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "byo_files",
+      "content_license": null,
+      "summary": "Não é um jogo: é o ambiente que roda o jogo. Você fornece o instalador de uma cópia que é sua; os títulos vendidos sem DRM na GOG entram direto."
+    },
+    "requirements": {
+      "user_files": [
+        {
+          "what": "Instalador do jogo",
+          "needed_for": "play",
+          "where": "de uma cópia sua, por exemplo o instalador offline da GOG"
+        }
+      ],
+      "controls": [],
+      "notes": "Entre os jogáveis listados pelo projeto estão Max Payne, Need for Speed: Underground, Diablo II, StarCraft, Tomb Raider II e Morrowind. XIII ainda está em andamento."
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": "https://github.com/jenissimo/bottleship"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Ainda não se conhece um endereço público para abrir e usar. Entra na vitrine, com o selo Sua cópia, se houver um.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "BottleShip: lista de compatibilidade",
+          "url": "https://raw.githubusercontent.com/jenissimo/bottleship/main/docs/compatibility.md"
+        },
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "downhill-domination-revived",
+    "title": "Downhill Domination",
+    "game": {
+      "year": 2003,
+      "platforms": ["PS2"],
+      "genre": "Corrida de mountain bike",
+      "developer": "Incognito Entertainment",
+      "rights_holder": "Sony Interactive Entertainment"
+    },
+    "port": {
+      "name": "Downhill Revived",
+      "author": "skuza-oss",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": "https://github.com/skuza-oss/downhill-revived"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "simpsons-hit-and-run-web",
+    "title": "The Simpsons: Hit & Run",
+    "game": {
+      "year": 2003,
+      "platforms": ["PS2", "Xbox", "GameCube", "PC"],
+      "genre": "Ação em mundo aberto",
+      "developer": "Radical Entertainment",
+      "rights_holder": "Activision e Disney"
+    },
+    "port": {
+      "name": "hit-and-run-web",
+      "author": "Vheissu",
+      "technique": "source_port",
+      "based_on": "Código-fonte do jogo que vazou em 2021, levado para WebAssembly",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": "https://github.com/Vheissu/hit-and-run-web"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Há mais de um port, todos derivados do código que vazou em 2021. Falta confirmar se trazem os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Cultura Geek: Todos los juegos de PS2, PC y consola que podés jugar gratis en el navegador web",
+          "url": "https://culturageek.com.ar/juegos-ps2-pc-navegador-web-gratis/"
+        },
+        {
+          "title": "Kotaku: The Vibe-Coders Have Come For Nintendo",
+          "url": "https://kotaku.com/the-vibe-coders-have-come-for-nintendo-and-obviously-this-wont-end-well-2000745258"
+        },
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "animal-crossing-gamecube-web",
+    "title": "Animal Crossing",
+    "game": {
+      "year": 2001,
+      "platforms": ["GameCube"],
+      "genre": "Simulação de vida",
+      "developer": "Nintendo EAD",
+      "rights_holder": "Nintendo"
+    },
+    "port": {
+      "name": "ac-gamecube",
+      "author": "web-ports",
+      "technique": "decompilation",
+      "based_on": "Decompilação da versão de GameCube",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": "https://github.com/web-ports/ac-gamecube"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "O código vem da decompilação da versão de GameCube, mas as cópias jogáveis ficam em portais que hospedam jogos. Falta confirmar de onde vêm os dados.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gta-iii-web",
+    "title": "Grand Theft Auto III",
+    "game": {
+      "year": 2001,
+      "platforms": ["PS2", "PC", "Xbox"],
+      "genre": "Ação em mundo aberto",
+      "developer": "DMA Design",
+      "rights_holder": "Take-Two Interactive"
+    },
+    "port": {
+      "technique": "decompilation",
+      "based_on": "re3, o motor do jogo reconstruído por engenharia reversa",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Existem várias cópias no ar. A da DOS Zone voltou pedindo que o jogador envie os arquivos do jogo; falta confirmar o endereço e as outras.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Tom's Hardware: GTA Vice City and GTA III return to web browsers after a DMCA takedown",
+          "url": "https://www.tomshardware.com/video-games/gta-vice-city-and-gta-iii-return-to-web-browsers-after-a-dmca-takedown-open-source-reverse-engineering-brings-the-classics-to-the-web-with-over-100-fps-performance"
+        },
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "dbz-budokai-2-web",
+    "title": "Dragon Ball Z: Budokai 2",
+    "game": {
+      "year": 2003,
+      "platforms": ["PS2", "GameCube"],
+      "genre": "Luta",
+      "developer": "Dimps",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "dbz-budokai-3-web",
+    "title": "Dragon Ball Z: Budokai 3",
+    "game": {
+      "year": 2004,
+      "platforms": ["PS2"],
+      "genre": "Luta",
+      "developer": "Dimps",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "crash-nitro-kart-web",
+    "title": "Crash Nitro Kart",
+    "game": {
+      "year": 2003,
+      "platforms": ["PS2", "GameCube", "Xbox"],
+      "genre": "Corrida de kart",
+      "developer": "Vicarious Visions",
+      "rights_holder": "Activision"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "burnout-3-takedown-web",
+    "title": "Burnout 3: Takedown",
+    "game": {
+      "year": 2004,
+      "platforms": ["PS2", "Xbox"],
+      "genre": "Corrida",
+      "developer": "Criterion Games",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "battle-stadium-don-web",
+    "title": "Battle Stadium D.O.N",
+    "game": {
+      "year": 2006,
+      "platforms": ["PS2", "GameCube"],
+      "genre": "Luta",
+      "developer": "Eighting",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "fifa-street-2-web",
+    "title": "FIFA Street 2",
+    "game": {
+      "year": 2006,
+      "platforms": ["PS2", "Xbox", "GameCube"],
+      "genre": "Futebol de rua",
+      "developer": "EA Canada",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "ssx-3-web",
+    "title": "SSX 3",
+    "game": {
+      "year": 2003,
+      "platforms": ["PS2", "Xbox", "GameCube"],
+      "genre": "Snowboard",
+      "developer": "EA Canada",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "formula-one-06-web",
+    "title": "Formula One 06",
+    "game": {
+      "year": 2006,
+      "platforms": ["PS2", "PSP"],
+      "genre": "Corrida",
+      "developer": "Studio Liverpool",
+      "rights_holder": "Sony Interactive Entertainment"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nba-street-v3-recomp",
+    "title": "NBA Street V3",
+    "game": {
+      "year": 2005,
+      "platforms": ["PS2", "Xbox", "GameCube"],
+      "genre": "Basquete de rua",
+      "developer": "EA Canada",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "name": "street-recomp-v3",
+      "author": "recomp-code",
+      "technique": "recompilation",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": "https://github.com/recomp-code/street-recomp-v3"
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "wwe-smackdown-hctp-web",
+    "title": "WWE SmackDown! Here Comes the Pain",
+    "game": {
+      "year": 2003,
+      "platforms": ["PS2"],
+      "genre": "Luta livre",
+      "developer": "Yuke's",
+      "rights_holder": "WWE"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "tekken-4-web",
+    "title": "Tekken 4",
+    "game": {
+      "year": 2002,
+      "platforms": ["Arcade", "PS2"],
+      "genre": "Luta",
+      "developer": "Namco",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "tekken-5-web",
+    "title": "Tekken 5",
+    "game": {
+      "year": 2005,
+      "platforms": ["Arcade", "PS2"],
+      "genre": "Luta",
+      "developer": "Namco",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "resident-evil-4-web",
+    "title": "Resident Evil 4",
+    "game": {
+      "year": 2005,
+      "platforms": ["GameCube", "PS2", "Wii", "PC"],
+      "genre": "Terror de sobrevivência",
+      "developer": "Capcom",
+      "rights_holder": "Capcom"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "marvel-vs-capcom-2-web",
+    "title": "Marvel vs. Capcom 2",
+    "game": {
+      "year": 2000,
+      "platforms": ["Arcade", "Dreamcast", "PS2", "Xbox"],
+      "genre": "Luta",
+      "developer": "Capcom",
+      "rights_holder": "Capcom e Marvel"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ctr-turbocharged-web",
+    "title": "CTR: Crash Team Racing",
+    "game": {
+      "year": 1999,
+      "platforms": ["PS1"],
+      "genre": "Corrida de kart",
+      "developer": "Naughty Dog",
+      "rights_holder": "Activision"
+    },
+    "port": {
+      "name": "Crash Team Racing Turbocharged",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "ctr-high-octane",
+    "title": "CTR: Crash Team Racing",
+    "game": {
+      "year": 1999,
+      "platforms": ["PS1"],
+      "genre": "Corrida de kart",
+      "developer": "Naughty Dog",
+      "rights_holder": "Activision"
+    },
+    "port": {
+      "name": "Crash Team Racing: High Octane",
+      "author": "Rinnegatamante",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "tekken-dark-resurrection-web",
+    "title": "Tekken: Dark Resurrection",
+    "game": {
+      "year": 2006,
+      "platforms": ["PSP", "PS3"],
+      "genre": "Luta",
+      "developer": "Namco",
+      "rights_holder": "Bandai Namco"
+    },
+    "port": {
+      "author": "Lauta (@LautaTWT)",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "A reportagem diz que o port segue no ar, mas não como ele obtém os dados do jogo. Outro port do mesmo autor, o de Mortal Kombat 9, caiu por notificação de direitos.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Cultura Geek: Todos los juegos de PS2, PC y consola que podés jugar gratis en el navegador web",
+          "url": "https://culturageek.com.ar/juegos-ps2-pc-navegador-web-gratis/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "pes-6-app",
+    "title": "Pro Evolution Soccer 6",
+    "game": {
+      "year": 2006,
+      "platforms": ["PS2", "PC", "Xbox 360", "PSP"],
+      "genre": "Futebol",
+      "developer": "Konami",
+      "rights_holder": "Konami"
+    },
+    "port": {
+      "name": "PES 6 Web (segunda versão)",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "alice-web",
+    "title": "American McGee's Alice",
+    "game": {
+      "year": 2000,
+      "platforms": ["PC", "PS3", "Xbox 360"],
+      "genre": "Ação e aventura",
+      "developer": "Rogue Entertainment",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "name": "alice-web",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Aparece em catálogo de ports, mas falta fonte que diga de onde vêm os dados do jogo. Se o site já traz o jogo, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "Ultimate Catalog of Web Game Ports",
+          "url": "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports"
+        }
+      ]
+    }
+  },
+  {
+    "id": "pinball-space-cadet-web",
+    "title": "3D Pinball: Space Cadet",
+    "game": {
+      "year": 1995,
+      "platforms": ["PC"],
+      "genre": "Pinball",
+      "developer": "Cinematronics",
+      "rights_holder": "Microsoft"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "counter-strike-surf-web",
+    "title": "Counter-Strike (mapas de surf)",
+    "game": {
+      "year": 2000,
+      "platforms": ["PC"],
+      "genre": "Tiro em primeira pessoa",
+      "developer": "Valve",
+      "rights_holder": "Valve"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "counter-strike-bunnyhop-web",
+    "title": "Counter-Strike (mapas de bunnyhop)",
+    "game": {
+      "year": 2000,
+      "platforms": ["PC"],
+      "genre": "Tiro em primeira pessoa",
+      "developer": "Valve",
+      "rights_holder": "Valve"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "counter-strike-2-cs2go",
+    "title": "Counter-Strike 2",
+    "game": {
+      "year": 2023,
+      "platforms": ["PC"],
+      "genre": "Tiro em primeira pessoa",
+      "developer": "Valve",
+      "rights_holder": "Valve"
+    },
+    "port": {
+      "name": "cs2go",
+      "based_on": "Indicado como recriação leve em Three.js",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, ainda sem fonte independente. Falta confirmar que o port existe como descrito e de onde vêm os dados do jogo.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "binding-of-isaac-repentance-web",
+    "title": "The Binding of Isaac: Repentance+",
+    "game": {
+      "year": 2021,
+      "platforms": ["PC", "Switch", "PS4", "Xbox One"],
+      "genre": "Roguelike",
+      "developer": "Nicalis e Edmund McMillen",
+      "rights_holder": "Edmund McMillen e Nicalis"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto, descrita como port completo de um jogo que ainda está à venda. Sem fonte independente; se confirmar, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "gta-v-grandv",
+    "title": "Grand Theft Auto V",
+    "game": {
+      "year": 2013,
+      "platforms": ["PS3", "Xbox 360", "PS4", "Xbox One", "PC"],
+      "genre": "Ação em mundo aberto",
+      "developer": "Rockstar North",
+      "rights_holder": "Take-Two Interactive"
+    },
+    "port": {
+      "name": "GrandV (fiveplay)",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "Indicação recebida pelo projeto: seria um ambiente de navegador que transmite os arquivos do jogo. Sem fonte independente; se confirmar, vira ficha sem link.",
+      "added": "2026-11-11",
+      "sources": []
+    }
+  },
+  {
+    "id": "cod-black-ops-zombies-web",
+    "title": "Call of Duty: Black Ops (Zombies)",
+    "game": {
+      "year": 2010,
+      "platforms": ["Xbox 360", "PS3", "PC"],
+      "genre": "Tiro em primeira pessoa",
+      "developer": "Treyarch",
+      "rights_holder": "Activision"
+    },
+    "port": {
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "unknown",
+      "content_license": null,
+      "summary": "Ainda não deu para confirmar se o site pede os arquivos da sua cópia ou se já traz o jogo."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "pending",
+      "risk": null,
+      "reason": "A imprensa cita o modo Zombies rodando no navegador, inclusive no celular, mas não diz de onde vêm os dados. A Activision já notificou ports de Call of Duty.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "TweakTown: You can now play Skate 3, Black Ops, and 20+ classic games in your web browser",
+          "url": "https://www.tweaktown.com/news/113993/you-can-now-play-skate-3-black-ops-and-20-classic-games-in-your-web-browser/index.html"
+        }
+      ]
+    }
+  },
+  {
+    "id": "resident-evil-outbreak-web",
+    "title": "Resident Evil Outbreak",
+    "game": {
+      "year": 2003,
+      "platforms": ["PS2"],
+      "genre": "Terror de sobrevivência",
+      "developer": "Capcom",
+      "rights_holder": "Capcom"
+    },
+    "port": {
+      "name": "Outbreakweb",
+      "author": "Lucas Gonzalez Falcon",
+      "released": "2026-10",
+      "technique": "unknown",
+      "based_on": "Sem código público: não dá para saber se é recompilação ou emulação",
+      "code_license": null
+    },
+    "rights": {
+      "status": "bundled",
+      "content_license": null,
+      "summary": "Abre e joga direto, sozinho ou em salas online, sem PS2, emulador ou imagem de disco: Outbreak e File #2 vêm dentro do site."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Embute os dois jogos, então fica sem link. A imprensa lembra que a Capcom pode agir; até a data desta ficha, não agiu.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "GamesRadar+: Resident Evil Outbreak is now playable for free in a web browser",
+          "url": "https://www.gamesradar.com/hardware/retro/you-can-now-play-my-favorite-resident-evil-multiplayer-romp-for-free-in-a-web-browser-without-a-ps2-but-wretched-ai-vibecoding-could-be-lurking/"
+        },
+        {
+          "title": "Hardware.com.br: Resident Evil Outbreak 1 e 2 agora podem ser jogados de graça pelo navegador",
+          "url": "https://www.hardware.com.br/?p=385408"
+        }
+      ]
+    },
+    "own_copy_route": "ps2-play-js",
+    "label": { "shape": "disc", "color": "petroleo", "pattern": "xadrez" }
+  },
+  {
+    "id": "skate-3-web",
+    "title": "Skate 3",
+    "game": {
+      "year": 2010,
+      "platforms": ["PS3", "Xbox 360"],
+      "genre": "Skate",
+      "developer": "EA Black Box",
+      "rights_holder": "Electronic Arts"
+    },
+    "port": {
+      "name": "Skate 3 no navegador",
+      "author": "Asher",
+      "technique": "unknown",
+      "code_license": null
+    },
+    "rights": {
+      "status": "bundled",
+      "content_license": null,
+      "summary": "Quem testou só abriu o site e jogou: os arquivos do jogo são baixados pelo próprio site. O autor avisa que o projeto não tem vínculo com a EA."
+    },
+    "requirements": {
+      "user_files": [],
+      "controls": []
+    },
+    "links": {
+      "play": null,
+      "project": null,
+      "source": null
+    },
+    "curation": {
+      "state": "rejected",
+      "risk": null,
+      "reason": "Embute o jogo, então fica sem link. Existe uma recompilação de Skate 3 para PC que pede os arquivos da sua cópia, mas ela não roda no navegador.",
+      "added": "2026-11-11",
+      "sources": [
+        {
+          "title": "TweakTown: You can now play Skate 3, Black Ops, and 20+ classic games in your web browser",
+          "url": "https://www.tweaktown.com/news/113993/you-can-now-play-skate-3-black-ops-and-20-classic-games-in-your-web-browser/index.html"
+        }
+      ]
+    },
+    "label": { "shape": "disc", "color": "ceu", "pattern": "triangulos" }
   }
 ]

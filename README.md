@@ -22,6 +22,7 @@ A base são três arquivos de texto versionados no Git. O robô acrescenta linha
 data/ports.json         fichas dos ports (uma por port, não por jogo)
 data/events.json        fatos datados: lançamentos, notificações, remoções, quedas
 data/checks.jsonl       conferências de link, uma linha por conferência
+data/catalogs.json      outros catálogos, listas e portais de ports
 schema/                 JSON Schema das três tabelas
 scripts/validate.py     valida formato e regras de curadoria
 scripts/format_base.py  regrava ports.json no formato canônico
@@ -35,13 +36,14 @@ docs/                   site gerado; não edite à mão
 
 ## Modelo de dados
 
-Três tabelas, ligadas por `ports.id`.
+Três tabelas ligadas por `ports.id`, mais uma de apoio.
 
 | Tabela | Grão | Muda como | Para que serve |
 |---|---|---|---|
 | `ports` | um port (jogo + quem publicou + endereço) | editada pela curadoria | a ficha que aparece na vitrine |
 | `events` | um fato datado sobre um port | só cresce | histórico de quedas e linha do tempo da ficha |
 | `checks` | uma conferência de link | só cresce | a luz de status na capa e a disponibilidade no observatório |
+| `catalogs` | outro catálogo, lista, ferramenta ou portal | editada pela curadoria | a seção "Outros catálogos" da vitrine |
 
 Os campos que sustentam a curadoria ficam em `ports`:
 
@@ -66,6 +68,8 @@ O `validate.py` recusa a base se alguma destas regras falhar:
 - Port que embute o jogo de terceiros (`bundled`) só existe como ficha rejeitada.
 - Ficha rejeitada não guarda link para jogar, mas tem capa: aparece na prateleira "Só a ficha", sem botão de jogar, e seus eventos alimentam o histórico de quedas.
 - `own_copy_route` só pode apontar para uma ficha `byo_files` que não esteja rejeitada.
+- Ficha aprovada ou rejeitada precisa de fonte. Ficha em análise pode entrar sem fonte, como indicação a conferir.
+- Catálogo só guarda endereço quando há fonte dizendo que ele não hospeda jogos. Os que hospedam, e os ainda não conferidos, aparecem só pelo nome.
 
 O risco é uma avaliação editorial, não um parecer jurídico.
 
@@ -147,8 +151,9 @@ Para rodar a conferência na hora: aba **Actions**, workflow **Conferir links**,
 
 ## Próximos passos
 
-- Confirmar no próprio site o que Driver 2 (REDRIVER2) e Super Mario 64 (sm64js) pedem ao jogador, para saírem da análise.
-- Mais fichas da geração PS1, PS2, N64, GameCube e Dreamcast: GTA III, The Simpsons: Hit & Run, Perfect Dark, Twilight Princess e os ports de PS2 que ainda não têm fonte confiável.
+- Esvaziar a fila de análise: abrir cada site e confirmar se pede a cópia do jogador, se é livre ou demo, ou se já traz o jogo.
+- Importador de catálogos: ler as listas de "Outros catálogos" e gerar candidatos automaticamente, em uma tabela de entrada separada das fichas.
+- Conferir os catálogos que ainda estão sem link.
 - Emuladores de PS1 e N64 que abram o disco ou a ROM do jogador, como já existe para o PS2.
 - Envio de jogos por formulário, que cai na fila "Em análise" e só entra na vitrine depois de aprovado.
 - Canal para corrigir ou pedir a remoção de uma ficha.

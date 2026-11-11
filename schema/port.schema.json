@@ -137,9 +137,9 @@
         "reason": { "description": "Por que a ficha está nesse estado e nesse risco.", "type": "string", "minLength": 1 },
         "added": { "type": "string", "format": "date" },
         "sources": {
-          "description": "De onde vieram as informações da ficha.",
+          "description": "De onde vieram as informações da ficha. Ficha aprovada ou rejeitada precisa de ao menos uma fonte.",
           "type": "array",
-          "minItems": 1,
+          "minItems": 0,
           "items": { "$ref": "#/$defs/source" }
         }
       }

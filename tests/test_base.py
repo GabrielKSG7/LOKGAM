@@ -63,6 +63,37 @@ def test_own_copy_route_must_point_to_a_port_that_asks_for_the_players_copy():
     assert any("own_copy_route" in line for line in validate.rule_errors([port, target], [], checks))
 
 
+def test_decided_port_needs_a_source_but_a_pending_one_does_not():
+    port = approved_port()
+    port["curation"]["sources"] = []
+    assert any("fonte" in line for line in errors_for(port))
+    port["curation"]["state"] = "pending"
+    assert not any("fonte" in line for line in errors_for(port))
+
+
+def catalog(**changes):
+    row = {"id": "x", "name": "X", "kind": "directory", "hosts_games": False, "url": "https://example.org/",
+           "summary": "s", "added": "2026-11-11", "sources": [{"title": "t", "url": "https://example.org/fonte"}]}
+    return {**row, **changes}
+
+
+def test_catalog_keeps_a_link_only_when_a_source_says_it_hosts_no_games():
+    assert validate.catalog_errors([catalog()]) == []
+    assert validate.catalog_errors([catalog(hosts_games=None, url=None, sources=[])]) == []
+    for hosts in (True, None):
+        assert any("guarda url" in line for line in validate.catalog_errors([catalog(hosts_games=hosts)]))
+    assert any("exige fonte" in line for line in validate.catalog_errors([catalog(sources=[])]))
+    assert any("exige fonte" in line for line in validate.catalog_errors([catalog(hosts_games=True, url=None, sources=[])]))
+
+
+def test_storefront_carries_no_address_of_catalogs_that_host_games():
+    ports, events, checks = validate.load_base()
+    payload = build.storefront_payload(ports, events, checks, validate.load_catalogs())
+    assert payload["catalogs"], "o teste precisa de catálogos na base"
+    for row in payload["catalogs"]:
+        assert row["hosts_games"] is False or row["url"] is None
+
+
 def test_ports_file_is_in_canonical_format():
     current = format_base.PORTS.read_text(encoding="utf-8")
     assert current == format_base.format_ports(validate.load_json(format_base.PORTS))
