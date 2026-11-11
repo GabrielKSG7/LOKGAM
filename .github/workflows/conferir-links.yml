@@ -10,9 +10,10 @@ on:
 permissions:
   contents: write
 
-# Uma passagem por vez: a seguinte espera a anterior terminar de gravar.
+# Uma gravação por vez: este robô e o de coleta de catálogos dividem a mesma fila,
+# porque os dois gravam no repositório e regeneram o site.
 concurrency:
-  group: conferir-links
+  group: gravar-na-base
   cancel-in-progress: false
 
 jobs:

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bronze_run.schema.json",
+  "title": "BronzeRun",
+  "description": "Uma tentativa de coleta de uma fonte, com o resultado e as medidas de qualidade da leitura.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_at",
+    "source",
+    "status",
+    "reason",
+    "origin",
+    "http_status",
+    "bytes",
+    "sha256",
+    "parser_version",
+    "rows",
+    "baseline",
+    "added",
+    "removed",
+    "changed",
+    "quality"
+  ],
+  "properties": {
+    "run_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "status": {
+      "description": "ok: retrato novo gravado. unchanged: o original não mudou. failed: nada foi substituído.",
+      "enum": [
+        "ok",
+        "unchanged",
+        "failed"
+      ]
+    },
+    "reason": {
+      "description": "Por que falhou.",
+      "enum": [
+        null,
+        "no_urls",
+        "robots",
+        "network",
+        "http_error",
+        "bad_size",
+        "parse_empty",
+        "shrunk"
+      ]
+    },
+    "origin": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)+$",
+      "description": "Domínio que respondeu."
+    },
+    "http_status": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "bytes": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Hash do original, que não é guardado."
+    },
+    "parser_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "rows": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "baseline": {
+      "description": "Retrato inicial (ou refeito por troca de leitor): não gera mudanças.",
+      "type": "boolean"
+    },
+    "added": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "removed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "changed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "quality": {
+      "description": "Contagens da leitura: tabelas, linhas vistas, linhas sem link, chaves repetidas, entradas descartadas.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "reason": {
+            "type": "null"
+          },
+          "rows": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  ]
+}

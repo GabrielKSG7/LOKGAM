@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source.schema.json",
+  "title": "Source",
+  "description": "Uma fonte de coleta: de qual catálogo vem, por onde é lida e com qual leitor.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "catalog_id",
+    "status",
+    "parser",
+    "urls",
+    "respect_robots",
+    "notes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "catalog_id": {
+      "description": "Id do catálogo em catalogs.json.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "status": {
+      "description": "active: coletada. paused: desligada por enquanto. blocked: não pode ser lida por robô.",
+      "enum": [
+        "active",
+        "paused",
+        "blocked"
+      ]
+    },
+    "parser": {
+      "enum": [
+        null,
+        "ultimate_catalog",
+        "bottleship_compat"
+      ]
+    },
+    "urls": {
+      "description": "Endereços tentados em ordem; os seguintes são espelhos.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https://"
+      }
+    },
+    "respect_robots": {
+      "description": "Consultar o robots.txt antes de ler. Só fica desligado para endereços de arquivo bruto e de API, feitos para leitura por programa.",
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

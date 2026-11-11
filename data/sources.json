@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ultimate-catalog",
+    "catalog_id": "ultimate-catalog-of-web-game-ports",
+    "status": "active",
+    "parser": "ultimate_catalog",
+    "urls": [
+      "https://raw.githubusercontent.com/Carter54git/Ultimate-Catalog-Of-Web-Game-Ports/HEAD/README.md",
+      "https://gitea.com/api/v1/repos/10224530/Ultimate-Catalog-Of-Web-Game-Ports/raw/README.md",
+      "https://gitea.com/10224530/Ultimate-Catalog-Of-Web-Game-Ports/raw/branch/main/README.md"
+    ],
+    "respect_robots": false,
+    "notes": "Lê o README da lista, um arquivo de texto público, pelo endereço de arquivo bruto. Tenta primeiro o GitHub e, se falhar, o espelho no Gitea."
+  },
+  {
+    "id": "bottleship-compat",
+    "catalog_id": "bottleship",
+    "status": "active",
+    "parser": "bottleship_compat",
+    "urls": [
+      "https://raw.githubusercontent.com/jenissimo/bottleship/main/docs/compatibility.md"
+    ],
+    "respect_robots": false,
+    "notes": "Lê a lista de compatibilidade publicada no repositório do projeto."
+  },
+  {
+    "id": "ported2browser",
+    "catalog_id": "ported2browser",
+    "status": "blocked",
+    "parser": null,
+    "urls": [],
+    "respect_robots": true,
+    "notes": "O site pede, no robots.txt, que leitores automáticos não o leiam (conferido em 11/11/2026). Só entra com autorização do site ou se ele publicar um arquivo de dados."
+  }
+]

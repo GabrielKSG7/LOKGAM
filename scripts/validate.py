@@ -126,6 +126,64 @@ def catalog_errors(catalogs: list[dict]) -> list[str]:
     return errors
 
 
+def load_sources() -> list[dict]:
+    path = ROOT / "data" / "sources.json"
+    return load_json(path) if path.exists() else []
+
+
+def load_bronze(root: Path | None = None) -> dict:
+    """A camada bronze: execuções, e o retrato e as mudanças de cada fonte."""
+    root = root or ROOT / "data" / "bronze"
+    bronze = {"runs": [], "snapshots": {}, "changes": {}}
+    if not root.exists():
+        return bronze
+    if (root / "runs.jsonl").exists():
+        bronze["runs"] = load_jsonl(root / "runs.jsonl")
+    for folder in sorted(path for path in root.iterdir() if path.is_dir()):
+        for name, group in (("snapshot.jsonl", "snapshots"), ("changes.jsonl", "changes")):
+            if (folder / name).exists():
+                bronze[group][folder.name] = load_jsonl(folder / name)
+    return bronze
+
+
+def pipeline_errors(sources: list[dict], catalogs: list[dict], bronze: dict) -> list[str]:
+    """Regras das fontes de coleta e do que elas gravaram."""
+    errors = []
+    ids = [s["id"] for s in sources]
+    for dup in sorted({i for i in ids if ids.count(i) > 1}):
+        errors.append(f"sources: id repetido: {dup}")
+    catalog_ids = {c["id"] for c in catalogs}
+    for s in sources:
+        if s["catalog_id"] not in catalog_ids:
+            errors.append(f"sources [{s['id']}]: catálogo inexistente: {s['catalog_id']}")
+        if s["status"] == "active" and not (s["parser"] and s["urls"]):
+            errors.append(f"sources [{s['id']}]: fonte ativa precisa de leitor e de endereço")
+        if s["status"] == "blocked" and s["urls"]:
+            errors.append(f"sources [{s['id']}]: fonte que não pode ser lida por robô não guarda endereço")
+    for name in sorted(set(bronze["snapshots"]) | set(bronze["changes"])):
+        if name not in ids:
+            errors.append(f"bronze: pasta sem fonte correspondente: {name}")
+    for name, rows in bronze["snapshots"].items():
+        keys = [row.get("key", "") for row in rows]
+        if keys != sorted(keys) or len(set(keys)) != len(keys):
+            errors.append(f"bronze [{name}]: retrato fora de ordem ou com chave repetida")
+    for run in bronze["runs"]:
+        if run.get("source") not in ids:
+            errors.append(f"bronze: execução de fonte desconhecida: {run.get('source')}")
+    return errors
+
+
+def pipeline_checks() -> list[str]:
+    sources, bronze = load_sources(), load_bronze()
+    errors = schema_errors(sources, "source.schema.json", "id")
+    errors += schema_errors(bronze["runs"], "bronze_run.schema.json", "source")
+    for rows in bronze["snapshots"].values():
+        errors += schema_errors(rows, "bronze_entry.schema.json", "key")
+    for rows in bronze["changes"].values():
+        errors += schema_errors(rows, "bronze_change.schema.json", "key")
+    return errors + pipeline_errors(sources, load_catalogs(), bronze)
+
+
 def validate() -> list[str]:
     ports, events, checks = load_base()
     return (
@@ -135,6 +193,7 @@ def validate() -> list[str]:
         + rule_errors(ports, events, checks)
         + schema_errors(load_catalogs(), "catalog.schema.json", "id")
         + catalog_errors(load_catalogs())
+        + pipeline_checks()
     )
 
 
@@ -147,7 +206,8 @@ def main() -> int:
     print(
         f"{len(ports)} fichas ({states.count('approved')} aprovadas, "
         f"{states.count('pending')} em análise, {states.count('rejected')} rejeitadas), "
-        f"{len(events)} eventos, {len(checks)} conferências, {len(load_catalogs())} catálogos, {len(errors)} erros"
+        f"{len(events)} eventos, {len(checks)} conferências, {len(load_catalogs())} catálogos, "
+        f"{sum(len(rows) for rows in load_bronze()['snapshots'].values())} entradas coletadas, {len(errors)} erros"
     )
     return 1 if errors else 0
 

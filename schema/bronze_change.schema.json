@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bronze_change.schema.json",
+  "title": "BronzeChange",
+  "description": "Uma diferença entre dois retratos seguidos da mesma fonte.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "seen_at",
+    "source",
+    "change",
+    "key",
+    "title",
+    "entry",
+    "fields"
+  ],
+  "properties": {
+    "seen_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "change": {
+      "enum": [
+        "added",
+        "removed",
+        "changed"
+      ]
+    },
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*(~[0-9]+)?$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entry": {
+      "description": "A entrada que entrou ou saiu. Nulo quando ela só mudou.",
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "fields": {
+      "description": "Campo -> [antes, depois], quando a entrada mudou.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+name: Coletar catálogos
+
+# Uma vez por dia (04:43 UTC) e também sob demanda, pelo botão "Run workflow".
+# O coletor lê cada fonte ativa de data/sources.json, guarda o retrato em data/bronze
+# e registra a execução mesmo quando nada mudou ou quando a fonte falhou.
+on:
+  schedule:
+    - cron: "43 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Mesma fila do robô de links: os dois gravam no repositório e regeneram o site.
+concurrency:
+  group: gravar-na-base
+  cancel-in-progress: false
+
+jobs:
+  coletar:
+    name: Coletar, gerar o site e gravar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Coletar os catálogos
+        run: python scripts/collect_catalogs.py --summary-file "$RUNNER_TEMP/resumo.txt"
+
+      - name: Gerar o site
+        run: python scripts/build.py
+
+      - name: Gravar no repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/bronze docs
+          if git diff --cached --quiet; then
+            echo "Nada mudou."
+            exit 0
+          fi
+          git commit --quiet -F "$RUNNER_TEMP/resumo.txt"
+          git pull --quiet --rebase origin "$GITHUB_REF_NAME"
+          git push --quiet origin "HEAD:$GITHUB_REF_NAME"

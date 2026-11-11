@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bronze_entry.schema.json",
+  "title": "BronzeEntry",
+  "description": "Uma entrada de catálogo, do jeito que o retrato a guarda: identidade sem endereço. Só o domínio da versão jogável e o dono do repositório ficam legíveis; do endereço completo fica a impressão digital.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "key",
+    "title",
+    "section",
+    "play_host",
+    "play_fingerprint",
+    "source_host",
+    "source_owner",
+    "source_fingerprint",
+    "extra"
+  ],
+  "properties": {
+    "key": {
+      "description": "Chave única dentro da fonte, derivada do título.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*(~[0-9]+)?$",
+      "maxLength": 100
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "section": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 24
+    },
+    "play_host": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)+$",
+      "description": "Domínio da versão jogável. Nunca o caminho."
+    },
+    "play_fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{12}$"
+    },
+    "source_host": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)+$"
+    },
+    "source_owner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Za-z0-9._-]{1,60}$",
+      "description": "Dono do repositório no site de código. Nunca o repositório."
+    },
+    "source_fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{12}$"
+    },
+    "extra": {
+      "description": "Campos próprios da fonte.",
+      "type": "object",
+      "maxProperties": 6,
+      "additionalProperties": {
+        "type": "string",
+        "maxLength": 60
+      }
+    }
+  }
+}
