@@ -1532,9 +1532,9 @@
       "source": "https://github.com/joncodeofficial/gta-vice-city-wasm"
     },
     "curation": {
-      "state": "pending",
-      "risk": null,
-      "reason": "Selo confirmado: pede os dados da cópia de quem joga. Entra na vitrine depois da primeira conferência do robô.",
+      "state": "approved",
+      "risk": "high",
+      "reason": "A Take-Two já mandou tirar do ar outro port de Vice City, o da DOS Zone, mesmo com a exigência da cópia original. Este é uma página pessoal no GitHub, fácil de derrubar.",
       "added": "2026-11-11",
       "sources": [
         {
@@ -1589,9 +1589,9 @@
       "source": null
     },
     "curation": {
-      "state": "pending",
-      "risk": null,
-      "reason": "Selo confirmado: pede os arquivos originais. Entra na vitrine depois da primeira conferência do robô.",
+      "state": "approved",
+      "risk": "medium",
+      "reason": "O projeto existe há anos sem ação da EA e não distribui o jogo. Pesa contra o uso da marca e o fato de o site apontar para uma cópia dos arquivos no Internet Archive.",
       "added": "2026-11-11",
       "sources": [
         {
@@ -1644,9 +1644,9 @@
       "source": null
     },
     "curation": {
-      "state": "pending",
-      "risk": null,
-      "reason": "Selo confirmado: pede o disco de quem joga. Entra na vitrine depois da primeira conferência do robô.",
+      "state": "approved",
+      "risk": "high",
+      "reason": "A Konami tem um remake do jogo em produção, e o port nasceu de uma decompilação, alvo comum de notificações. Os dois fatores pesam.",
       "added": "2026-11-11",
       "sources": [
         {
