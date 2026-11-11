@@ -10,3 +10,4 @@
 {"port_id": "halo-ce-web", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura. A Digital Citizen encontrou o site no ar em 3 e 4/10/2026."}
 {"port_id": "pepsiman-recompiled", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
 {"port_id": "goldeneye-goldenweb64", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
+{"port_id": "pepsiman-recompiled", "checked_at": "2026-11-11T02:55:00Z", "state": "unstable", "method": "manual", "http_status": null, "note": "Erro de acesso da Cloudflare ao abrir a página, relatado pelo curador."}
