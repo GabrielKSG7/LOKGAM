@@ -11,3 +11,15 @@
 {"port_id": "pepsiman-recompiled", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
 {"port_id": "goldeneye-goldenweb64", "checked_at": "2026-11-10", "state": "unverified", "method": "manual", "http_status": null, "note": "Site fora do alcance da ferramenta de leitura usada na curadoria."}
 {"port_id": "pepsiman-recompiled", "checked_at": "2026-11-11T02:55:00Z", "state": "unstable", "method": "manual", "http_status": null, "note": "Erro de acesso da Cloudflare ao abrir a página, relatado pelo curador."}
+{"port_id": "minecraft-classic", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 85}
+{"port_id": "celeste-classic", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 285}
+{"port_id": "celeste-classic-2", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 243}
+{"port_id": "warzone-2100", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 101}
+{"port_id": "quake-qwasm", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 74}
+{"port_id": "tobu-tobu-girl-deluxe", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 341}
+{"port_id": "libbet-magic-floor", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 458}
+{"port_id": "diablo-web", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 54}
+{"port_id": "tomb-raider-openlara", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 1112}
+{"port_id": "halo-ce-web", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 151}
+{"port_id": "pepsiman-recompiled", "checked_at": "2026-11-11T03:35:38Z", "state": "unverified", "reason": "bot_blocked", "method": "link_checker", "http_status": 403, "response_ms": 251, "note": "O site barrou o robô (HTTP 403)."}
+{"port_id": "goldeneye-goldenweb64", "checked_at": "2026-11-11T03:35:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 230}
