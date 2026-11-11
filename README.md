@@ -4,8 +4,8 @@ Observatório dos ports de jogos de console para navegador. A LOKGAM acompanha a
 
 O projeto nasceu como uma vitrine no espírito do Click Jogos e do FRIV, e a vitrine continua. Cada jogo com link tem uma ficha que diz o que o port distribui, o que o jogador precisa ter e qual o risco de ele sumir, e um robô confere quatro vezes por dia se o link continua no ar.
 
-- **Vitrine:** https://gabrielksg7.github.io/LOKGAM/
-- **Observatório:** https://gabrielksg7.github.io/LOKGAM/observatorio/
+- **Observatório (página inicial):** https://gabrielksg7.github.io/LOKGAM/
+- **Onde jogar (vitrine):** https://gabrielksg7.github.io/LOKGAM/vitrine/
 
 O projeto é um protótipo em evolução.
 
@@ -178,6 +178,16 @@ Limites conhecidos: o agrupamento por nome erra quando duas listas chamam o mesm
 
 As respostas do observatório, como quanto tempo um port sobrevive, quais donos de jogos agem e como a onda cresce mês a mês. Dependem de algumas semanas de coleta acumulada.
 
+## As páginas
+
+| Endereço | O que é |
+|---|---|
+| `/` | o observatório: panorama, últimos acontecimentos, onde jogar, catálogos, disponibilidade e histórico de quedas |
+| `/vitrine/` | a vitrine: capas dos jogos com link, fichas sem link, fila de análise e outros catálogos |
+| `/observatorio/` | endereço antigo do observatório; redireciona para a página inicial |
+
+A vitrine era a página inicial até 11/11/2026. Links antigos para fichas (`/#ficha-...`) são levados para `/vitrine/`.
+
 ## Limites conhecidos
 
 - **O agendamento atrasa.** O GitHub não garante o horário dos workflows agendados; já houve conferência saindo mais de duas horas depois do previsto. Por isso uma conferência vale por três dias na vitrine.
@@ -226,7 +236,6 @@ Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repo
 - Conferir a disponibilidade das entradas de catálogo por domínio, sem gravar o endereço.
 - Camada ouro, com dbt e DuckDB: sobrevivência dos ports, quedas por dono de jogo e crescimento por mês.
 - Mais fontes: catálogos que publiquem um arquivo de dados ou autorizem a leitura.
-- Observatório como página inicial, com a vitrine como a seção "onde jogar".
 - Conjunto de dados aberto, atualizado todo dia.
 - Esvaziar a fila de análise: abrir cada site e confirmar se pede a cópia do jogador, se é livre ou demo, ou se já traz o jogo.
 - Canal para corrigir ou pedir a remoção de uma ficha.

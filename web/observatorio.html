@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Observatório LOKGAM</title>
-<meta name="description" content="Quanto tempo um port de navegador fica no ar, o que o derruba e quem derruba. Medido a partir da base aberta da LOKGAM.">
+<title>LOKGAM: observatório dos ports de console no navegador</title>
+<meta name="description" content="A onda de jogos de console rodando no navegador, medida todo dia: quantos ports existem, o que surgiu, o que caiu, quem derrubou e onde dá para jogar de forma legítima.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&amp;display=swap" rel="stylesheet">
@@ -78,6 +78,21 @@
 .tabela th.num{text-align:right;white-space:normal}
 .tabela small{display:block;font-weight:400;color:var(--ink-2)}
 .tabela--estreita{max-width:34rem}
+.agora__valor a{text-decoration:none}
+.agora__valor a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
+.feed{margin:0;padding:0;list-style:none;display:grid;gap:16px}
+.feed li{display:grid;grid-template-columns:5.4rem minmax(0,1fr);gap:2px 14px}
+.feed time{grid-row:span 2;padding-top:.25em;font-family:var(--font-mono);font-size:.7rem;color:var(--ink-2)}
+.feed b{font-weight:700}
+.feed b small{display:inline;margin-left:.6em;font-family:var(--font-mono);font-weight:400;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.feed span{color:var(--ink-2);font-size:.92rem}
+.jogar{margin:0;padding:0;list-style:none;border-top:2px solid var(--ink)}
+.jogar a{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:11px 0;border-bottom:1px solid var(--wall-2);text-decoration:none}
+.jogar a:hover .jogar__nome{text-decoration:underline;text-underline-offset:3px}
+.jogar__nome{flex:1 1 9rem;min-width:0;font-weight:600}
+.jogar__luz{display:inline-flex;align-items:center;gap:6px;min-width:6.5rem;font-family:var(--font-mono);font-size:.68rem;color:var(--ink-2)}
+.chamada{font-family:var(--font-mono);font-size:.8rem;font-weight:600;color:var(--ink);text-underline-offset:4px}
+@media (max-width:560px){.feed li{grid-template-columns:1fr}.feed time{grid-row:auto}}
 .agora__detalhe{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.02em;color:var(--ink-2)}
 .tabela td.fonte{min-width:11rem;font-weight:600}
 @media (max-width:560px){.tabela--fontes td.fonte{min-width:0}.tabela--fontes th,.tabela--fontes td{padding-right:10px}.tabela--fontes th:last-child,.tabela--fontes td:last-child{padding-right:0}}
@@ -121,23 +136,43 @@
 <div class="pagina">
 
   <nav class="trilho" aria-label="Páginas do site">
-    <a href="../">Vitrine</a>
     <a href="./" aria-current="page">Observatório</a>
+    <a href="vitrine/">Onde jogar</a>
     <a class="trilho__fora" id="link-repo" href="https://github.com/GabrielKSG7/LOKGAM" rel="noopener noreferrer">Código e dados no GitHub <span aria-hidden="true">↗</span></a>
   </nav>
 
   <header class="balcao">
     <div class="marca">
-      <p class="marca__sobre">LOKGAM · <span id="conferencia"></span></p>
-      <h1 class="marca__nome" id="marca-nome"><span>Observatório</span></h1>
-      <p class="marca__sub">quanto dura um port de navegador</p>
+      <p class="marca__sobre">Observatório · <span id="conferencia"></span></p>
+      <h1 class="marca__nome" id="marca-nome"><span>LOKGAM</span></h1>
+      <p class="marca__sub">os ports de console no navegador</p>
     </div>
-    <p class="tese">Ports de jogos para navegador aparecem e somem depressa. Aqui fica o registro: quais estão no ar agora, com que frequência respondem e o que já tirou outros do ar.</p>
+    <p class="tese">Jogos de console passaram a rodar direto no navegador, e os ports aparecem e somem depressa. Aqui fica a medida dessa onda: quantos existem, o que surgiu, o que caiu, quem derrubou e onde dá para jogar de forma legítima.</p>
     <ul class="placar" id="placar"></ul>
   </header>
 
+  <section class="secao" id="panorama" aria-labelledby="panorama-titulo">
+    <h2 class="secao__titulo" id="panorama-titulo">Panorama</h2>
+    <ul class="agora" id="panorama-numeros"></ul>
+  </section>
+
+  <div class="duas">
+    <section class="secao" id="acontecimentos" aria-labelledby="acontecimentos-titulo">
+      <h2 class="secao__titulo" id="acontecimentos-titulo">Últimos acontecimentos</h2>
+      <p class="secao__lide">Lançamentos, notificações e quedas noticiados, do mais recente para o mais antigo. Cada um tem fonte no <a href="#quedas">histórico</a> ou na ficha do port.</p>
+      <ol class="feed" id="feed"></ol>
+    </section>
+
+    <section class="secao" id="onde-jogar" aria-labelledby="jogar-titulo">
+      <h2 class="secao__titulo" id="jogar-titulo">Onde jogar</h2>
+      <p class="secao__lide">Só entra na vitrine o port oficial, livre, de demonstração ou que pede a cópia de quem joga. O robô confere cada link.</p>
+      <ul class="jogar" id="jogar-lista"></ul>
+      <p class="nota"><a class="chamada" href="vitrine/" id="jogar-todos"></a></p>
+    </section>
+  </div>
+
   <main class="secao" id="agora" aria-labelledby="agora-titulo">
-    <h2 class="secao__titulo" id="agora-titulo">Agora</h2>
+    <h2 class="secao__titulo" id="agora-titulo">Links da vitrine agora</h2>
     <ul class="agora" id="agora-numeros"></ul>
     <p class="nota" id="agora-nota"></p>
   </main>
@@ -354,7 +389,7 @@
       var nome = no('div', 'disp__nome');
       if (r.curation === 'approved') {
         var a = no('a', '', r.title);
-        a.href = '../#ficha-' + r.id;
+        a.href = 'vitrine/#ficha-' + r.id;
         nome.appendChild(a);
       } else {
         nome.appendChild(no('b', '', r.title));
@@ -493,9 +528,71 @@
     quem.appendChild(tr);
   });
 
+  /* Endereços antigos: a vitrine morava nesta página */
+  if (/^#(ficha-|sem-link|analise|antes-de-jogar|curadoria)/.test(location.hash)) location.replace('vitrine/' + location.hash);
+
+  var milhar = function (n) { return n.toLocaleString('pt-BR'); };
+  var SELO = { official: 'Oficial', free: 'Livre', demo: 'Demo', byo_files: 'Sua cópia' };
+
+  /* Panorama */
+  var acoes = D.events.filter(function (e) { return e.kind === 'dmca_notice' || e.kind === 'removal'; }).length;
+  [
+    [milhar(D.base.ports), 'ports conhecidos', 'lidos de ' + L.plural(D.catalogs.sources.filter(function (f) { return f.rows; }).length, 'catálogo', 'catálogos'), '#base'],
+    [milhar(D.base.games), 'jogos diferentes', milhar(D.base.console_games) + ' de console ou fliperama já reconhecidos', '#origem'],
+    [D.storefront.length, 'para jogar agora', 'com link conferido e direitos em ordem', 'vitrine/'],
+    [acoes, 'ações de donos de jogos', 'notificações e remoções registradas', '#quedas']
+  ].forEach(function (x) {
+    var li = no('li');
+    li.appendChild(no('span', 'agora__rotulo', x[1]));
+    var valor = no('span', 'agora__valor');
+    var a = no('a', '', x[0]);
+    a.href = x[3];
+    valor.appendChild(a);
+    li.appendChild(valor);
+    li.appendChild(no('small', 'agora__detalhe', x[2]));
+    $('#panorama-numeros').appendChild(li);
+  });
+
+  /* Últimos acontecimentos */
+  D.events.slice().sort(function (a, b) { return L.chave(a.date) < L.chave(b.date) ? 1 : L.chave(a.date) > L.chave(b.date) ? -1 : 0; })
+    .slice(0, 6).forEach(function (e) {
+      var li = no('li');
+      li.appendChild(no('time', '', L.data(e.date)));
+      var titulo = no('b', '', e.title);
+      titulo.appendChild(no('small', '', L.TIPO[e.kind]));
+      li.appendChild(titulo);
+      li.appendChild(no('span', '', e.summary));
+      $('#feed').appendChild(li);
+    });
+
+  /* Onde jogar: os primeiros da vitrine, com a luz do robô */
+  var situacaoDe = {};
+  D.availability.forEach(function (r) { situacaoDe[r.id] = r; });
+  var MOSTRAR = 8;
+  function pintarJogar() {
+    var agora = Date.now();
+    var lista = $('#jogar-lista');
+    lista.textContent = '';
+    D.storefront.slice(0, MOSTRAR).forEach(function (p) {
+      var li = no('li');
+      var a = no('a');
+      a.href = 'vitrine/#ficha-' + p.id;
+      a.appendChild(no('span', 'jogar__nome', p.title));
+      a.appendChild(no('span', 'selo selo--' + p.status, SELO[p.status]));
+      var estado = situacaoDe[p.id] ? L.situacao(situacaoDe[p.id], agora).state : 'unverified';
+      var luz = no('span', 'jogar__luz');
+      luz.appendChild(no('i', 'led led--' + estado));
+      luz.appendChild(document.createTextNode(L.ESTADO_CURTO[estado]));
+      a.appendChild(luz);
+      li.appendChild(a);
+      lista.appendChild(li);
+    });
+  }
+  L.aCadaMinuto(pintarJogar);
+  $('#jogar-todos').textContent = (D.storefront.length > MOSTRAR ? 'Ver os ' + D.storefront.length + ' jogos na vitrine' : 'Abrir a vitrine') + ' →';
+
   /* Catálogos acompanhados */
   var C = D.catalogs;
-  var milhar = function (n) { return n.toLocaleString('pt-BR'); };
   $('#dado-bronze').href = D.repo + '/tree/main/data/bronze';
   $('#dado-silver').href = D.repo + '/tree/main/data/silver';
   function linhaDaFonte(f, agora) {

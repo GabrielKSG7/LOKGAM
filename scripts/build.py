@@ -21,6 +21,20 @@ REPO_URL = "https://github.com/GabrielKSG7/LOKGAM"
 HISTORY_LENGTH = 30
 
 
+MOVED = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>LOKGAM</title>
+<link rel="canonical" href="../">
+<meta http-equiv="refresh" content="0; url=../">
+<script>location.replace('../' + location.hash);</script>
+</head>
+<body><p>O observatório agora é a <a href="../">página inicial da LOKGAM</a>.</p></body>
+</html>
+"""
+
+
 def embed(data: dict) -> str:
     """JSON pronto para ir dentro de uma tag <script>."""
     return json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -75,6 +89,12 @@ def observatory_payload(ports: list[dict], events: list[dict], checks: list[dict
         "events": timeline,
         "catalogs": catalog_coverage(load_sources(), load_catalogs(), load_bronze()),
         "base": base_summary(load_jsonl(silver.SILVER / "ports.jsonl"), load_jsonl(silver.SILVER / "games.jsonl"), ports),
+        # O que a página inicial mostra em "Onde jogar": só fichas aprovadas, e sem o endereço.
+        "storefront": [
+            {"id": port["id"], "title": port["title"], "status": port["rights"]["status"]}
+            for port in ports
+            if port["curation"]["state"] == "approved"
+        ],
     }
 
 
@@ -94,10 +114,12 @@ def main() -> int:
         "/*__BASE_JS__*/": (ROOT / "web" / "base.js").read_text(encoding="utf-8"),
     }
     pages = {
-        "index.html": render("vitrine.html", {**shared, "__DADOS__": embed(storefront_payload(ports, events, checks, load_catalogs()))}),
-        "observatorio/index.html": render(
-            "observatorio.html", {**shared, "__DADOS__": embed(observatory_payload(ports, events, checks))}
+        "index.html": render("observatorio.html", {**shared, "__DADOS__": embed(observatory_payload(ports, events, checks))}),
+        "vitrine/index.html": render(
+            "vitrine.html", {**shared, "__DADOS__": embed(storefront_payload(ports, events, checks, load_catalogs()))}
         ),
+        # O observatório morava aqui antes de virar a página inicial.
+        "observatorio/index.html": MOVED,
     }
     docs = ROOT / "docs"
     for name, page in pages.items():
