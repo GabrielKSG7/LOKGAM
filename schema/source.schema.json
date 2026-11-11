@@ -8,6 +8,7 @@
   "required": [
     "id",
     "catalog_id",
+    "kind",
     "status",
     "parser",
     "urls",
@@ -55,6 +56,13 @@
     "notes": {
       "type": "string",
       "minLength": 1
+    },
+    "kind": {
+      "description": "ports: cada entrada é um port. compatibility: cada entrada diz se um jogo roda em uma ferramenta.",
+      "enum": [
+        "ports",
+        "compatibility"
+      ]
     }
   }
 }

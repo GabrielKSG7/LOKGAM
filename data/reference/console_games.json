@@ -1,0 +1,526 @@
+[
+ {
+  "title": "Animal Crossing",
+  "platform": "GameCube"
+ },
+ {
+  "title": "Battle City",
+  "platform": "NES"
+ },
+ {
+  "title": "Battle Stadium D.O.N",
+  "platform": "PS2"
+ },
+ {
+  "title": "Bubble Bobble",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Burnout 3: Takedown",
+  "platform": "PS2"
+ },
+ {
+  "title": "Crash Bash",
+  "platform": "PS1"
+ },
+ {
+  "title": "Crash Bash Online",
+  "platform": "PS1"
+ },
+ {
+  "title": "Crash Nitro Kart",
+  "platform": "PS2"
+ },
+ {
+  "title": "Crash Team Racing",
+  "platform": "PS1"
+ },
+ {
+  "title": "Crisis Core: Final Fantasy VII",
+  "platform": "PSP"
+ },
+ {
+  "title": "Daytona USA",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Def Jam: Fight for NY",
+  "platform": "PS2"
+ },
+ {
+  "title": "Devil May Cry",
+  "platform": "PS2"
+ },
+ {
+  "title": "Diddy Kong Racing",
+  "platform": "N64"
+ },
+ {
+  "title": "Downhill Domination",
+  "platform": "PS2"
+ },
+ {
+  "title": "Dragon Ball Z: Budokai",
+  "platform": "PS2"
+ },
+ {
+  "title": "Dragon Ball Z: Budokai 2",
+  "platform": "PS2"
+ },
+ {
+  "title": "Dragon Ball Z: Budokai 3",
+  "platform": "PS2"
+ },
+ {
+  "title": "Dragon Ball Z: Budokai Tenkaichi 2",
+  "platform": "PS2"
+ },
+ {
+  "title": "Dragon Ball Z: Budokai Tenkaichi 3",
+  "platform": "PS2"
+ },
+ {
+  "title": "F-Zero X",
+  "platform": "N64"
+ },
+ {
+  "title": "FIFA Street",
+  "platform": "PS2"
+ },
+ {
+  "title": "FIFA Street 2",
+  "platform": "PS2"
+ },
+ {
+  "title": "Formula One 06",
+  "platform": "PS2"
+ },
+ {
+  "title": "God of War II",
+  "platform": "PS2"
+ },
+ {
+  "title": "God of War: Chains of Olympus",
+  "platform": "PSP"
+ },
+ {
+  "title": "God of War: Ghost of Sparta",
+  "platform": "PSP"
+ },
+ {
+  "title": "Golden Sun",
+  "platform": "Game Boy Advance"
+ },
+ {
+  "title": "GoldenEye 007",
+  "platform": "N64"
+ },
+ {
+  "title": "Gran Turismo 2",
+  "platform": "PS1"
+ },
+ {
+  "title": "Gran Turismo 4",
+  "platform": "PS2"
+ },
+ {
+  "title": "Grand Theft Auto III",
+  "platform": "PS2"
+ },
+ {
+  "title": "Grand Theft Auto IV",
+  "platform": "Xbox 360"
+ },
+ {
+  "title": "Grand Theft Auto V",
+  "platform": "Xbox 360"
+ },
+ {
+  "title": "Grand Theft Auto: Chinatown Wars",
+  "platform": "DS"
+ },
+ {
+  "title": "Grand Theft Auto: Vice City",
+  "platform": "PS2"
+ },
+ {
+  "title": "Guitar Hero III",
+  "platform": "Xbox 360"
+ },
+ {
+  "title": "Halo: Combat Evolved",
+  "platform": "Xbox"
+ },
+ {
+  "title": "Haze",
+  "platform": "PS3"
+ },
+ {
+  "title": "Hot Shots Tennis",
+  "platform": "PS2"
+ },
+ {
+  "title": "Jak and Daxter: The Lost Frontier",
+  "platform": "PSP"
+ },
+ {
+  "title": "Kingdom Hearts: Chain of Memories",
+  "platform": "Game Boy Advance"
+ },
+ {
+  "title": "Kirby & The Amazing Mirror",
+  "platform": "Game Boy Advance"
+ },
+ {
+  "title": "Legend of Legaia",
+  "platform": "PS1"
+ },
+ {
+  "title": "Mario Kart Wii",
+  "platform": "Wii"
+ },
+ {
+  "title": "Mario Party",
+  "platform": "N64"
+ },
+ {
+  "title": "Mario Party 2",
+  "platform": "N64"
+ },
+ {
+  "title": "Mario Party 3",
+  "platform": "N64"
+ },
+ {
+  "title": "Mario Party 4",
+  "platform": "GameCube"
+ },
+ {
+  "title": "Marvel vs. Capcom 2",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Medabots AX",
+  "platform": "Game Boy Advance"
+ },
+ {
+  "title": "Metal Gear Solid",
+  "platform": "PS1"
+ },
+ {
+  "title": "Midnight Club 3: DUB Edition",
+  "platform": "PS2"
+ },
+ {
+  "title": "Mobile Suit Gundam: Federation vs. Zeon DX",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Mobile Suit Gundam: Gundam vs. Zeta Gundam",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Monster Hunter Freedom Unite",
+  "platform": "PSP"
+ },
+ {
+  "title": "Mortal Kombat: Armageddon",
+  "platform": "PS2"
+ },
+ {
+  "title": "Mortal Kombat: Shaolin Monks",
+  "platform": "PS2"
+ },
+ {
+  "title": "Naruto Shippuden: Ultimate Ninja 5",
+  "platform": "PS2"
+ },
+ {
+  "title": "Naruto Shippuden: Ultimate Ninja Impact",
+  "platform": "PSP"
+ },
+ {
+  "title": "NBA Street V3",
+  "platform": "PS2"
+ },
+ {
+  "title": "New Super Mario Bros. Wii",
+  "platform": "Wii"
+ },
+ {
+  "title": "NFL Street",
+  "platform": "PS2"
+ },
+ {
+  "title": "NFL Street 2",
+  "platform": "PS2"
+ },
+ {
+  "title": "NHL '94",
+  "platform": "Mega Drive"
+ },
+ {
+  "title": "Ogre Battle 64: Person of Lordly Caliber",
+  "platform": "N64"
+ },
+ {
+  "title": "Paper Mario",
+  "platform": "N64"
+ },
+ {
+  "title": "Pepsiman",
+  "platform": "PS1"
+ },
+ {
+  "title": "Perfect Dark",
+  "platform": "N64"
+ },
+ {
+  "title": "Phantasy Star Online",
+  "platform": "Dreamcast"
+ },
+ {
+  "title": "Phantasy Star Online Episode I & II",
+  "platform": "Dreamcast"
+ },
+ {
+  "title": "Pikmin",
+  "platform": "GameCube"
+ },
+ {
+  "title": "Pokémon Emerald",
+  "platform": "Game Boy Advance"
+ },
+ {
+  "title": "Pokémon Snap",
+  "platform": "N64"
+ },
+ {
+  "title": "Pokémon Yellow",
+  "platform": "Game Boy"
+ },
+ {
+  "title": "Pro Evolution Soccer 6",
+  "platform": "PS2"
+ },
+ {
+  "title": "Rabbids Go Home",
+  "platform": "Wii"
+ },
+ {
+  "title": "Ratchet & Clank",
+  "platform": "PS2"
+ },
+ {
+  "title": "Ratchet & Clank: Size Matters",
+  "platform": "PSP"
+ },
+ {
+  "title": "Resident Evil 4",
+  "platform": "GameCube"
+ },
+ {
+  "title": "Resident Evil Outbreak",
+  "platform": "PS2"
+ },
+ {
+  "title": "San Francisco Rush 2049",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Saturday Night Slam Masters",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Silent Hill",
+  "platform": "PS1"
+ },
+ {
+  "title": "Silent Hill: Origins",
+  "platform": "PSP"
+ },
+ {
+  "title": "Skate 3",
+  "platform": "Xbox 360"
+ },
+ {
+  "title": "SOCOM II: U.S. Navy SEALs",
+  "platform": "PS2"
+ },
+ {
+  "title": "Sonic CD",
+  "platform": "Mega CD"
+ },
+ {
+  "title": "Sonic the Fighters",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Sonic the Hedgehog 1 & 2",
+  "platform": "Mega Drive"
+ },
+ {
+  "title": "Sonic the Hedgehog 2",
+  "platform": "Mega Drive"
+ },
+ {
+  "title": "Spider-Man 2",
+  "platform": "PS2"
+ },
+ {
+  "title": "SSX 3",
+  "platform": "PS2"
+ },
+ {
+  "title": "Star Fox Adventures",
+  "platform": "GameCube"
+ },
+ {
+  "title": "Street Fighter Anniversary Collection",
+  "platform": "PS2"
+ },
+ {
+  "title": "Street Fighter III: 3rd Strike",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Super Mario 64",
+  "platform": "N64"
+ },
+ {
+  "title": "Super Mario 64 DS",
+  "platform": "DS"
+ },
+ {
+  "title": "Super Mario Galaxy",
+  "platform": "Wii"
+ },
+ {
+  "title": "Super Mario Kart",
+  "platform": "SNES"
+ },
+ {
+  "title": "Super Mario Sunshine",
+  "platform": "GameCube"
+ },
+ {
+  "title": "Super Monkey Ball",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Super Smash Bros.",
+  "platform": "N64"
+ },
+ {
+  "title": "Super Smash Bros. Melee",
+  "platform": "GameCube"
+ },
+ {
+  "title": "Super Smash Bros. Ultimate",
+  "platform": "Switch"
+ },
+ {
+  "title": "Taiko no Tatsujin",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Tekken 3",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Tekken 4",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Tekken 5",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Tekken 5: Dark Resurrection",
+  "platform": "PSP"
+ },
+ {
+  "title": "Tekken: Dark Resurrection",
+  "platform": "PSP"
+ },
+ {
+  "title": "Tenchu: Shinobi Gaisen",
+  "platform": "PS1"
+ },
+ {
+  "title": "The Legend of Zelda",
+  "platform": "NES"
+ },
+ {
+  "title": "The Legend of Zelda - A Link to the Past",
+  "platform": "SNES"
+ },
+ {
+  "title": "The Legend of Zelda: Link's Awakening DX",
+  "platform": "Game Boy Color"
+ },
+ {
+  "title": "The Legend of Zelda: Twilight Princess",
+  "platform": "GameCube"
+ },
+ {
+  "title": "The Simpsons: Hit & Run",
+  "platform": "PS2"
+ },
+ {
+  "title": "The Warriors",
+  "platform": "PS2"
+ },
+ {
+  "title": "Tony Hawk's Pro Skater",
+  "platform": "PS1"
+ },
+ {
+  "title": "Tony Hawk's Pro Skater 3",
+  "platform": "PS2"
+ },
+ {
+  "title": "Tony Hawk's Underground 2",
+  "platform": "PS2"
+ },
+ {
+  "title": "Urban Reign",
+  "platform": "PS2"
+ },
+ {
+  "title": "Virtua Fighter",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Virtua Tennis 2",
+  "platform": "Arcade"
+ },
+ {
+  "title": "Virtual On: Cyber Troopers",
+  "platform": "Arcade"
+ },
+ {
+  "title": "WipEout",
+  "platform": "PS1"
+ },
+ {
+  "title": "WWE SmackDown vs. Raw 2010",
+  "platform": "Xbox 360"
+ },
+ {
+  "title": "WWE SmackDown vs. Raw 2011",
+  "platform": "Xbox 360"
+ },
+ {
+  "title": "WWE SmackDown! Here Comes the Pain",
+  "platform": "PS2"
+ },
+ {
+  "title": "WWE SmackDown! vs. RAW",
+  "platform": "PS2"
+ },
+ {
+  "title": "Zelda II: The Adventure of Link",
+  "platform": "NES"
+ }
+]

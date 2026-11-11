@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reference_game.schema.json",
+  "title": "ReferenceGame",
+  "description": "Um jogo que nasceu em console ou fliperama, e em qual. Tabela de referência mantida à mão.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "platform"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platform": {
+      "enum": [
+        "Arcade",
+        "PC",
+        "PICO-8",
+        "NES",
+        "SNES",
+        "N64",
+        "GameCube",
+        "Switch",
+        "Game Boy",
+        "Game Boy Color",
+        "Game Boy Advance",
+        "Mega Drive",
+        "Saturn",
+        "Dreamcast",
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "Xbox",
+        "Xbox 360",
+        "Xbox One",
+        "3DO",
+        "PSP",
+        "Wii",
+        "DS",
+        "Mega CD"
+      ]
+    }
+  }
+}

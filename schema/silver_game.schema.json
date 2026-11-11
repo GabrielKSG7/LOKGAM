@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "silver_game.schema.json",
+  "title": "SilverGame",
+  "description": "Um jogo, com os ports que as listas trazem para ele e o que a curadoria sabe.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "ports",
+    "listed_ports",
+    "playable_ports",
+    "sources",
+    "ficha_ids",
+    "platforms",
+    "platforms_basis",
+    "origin",
+    "console",
+    "compat",
+    "flags"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ports": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "listed_ports": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "playable_ports": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ficha_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "Arcade",
+          "PC",
+          "PICO-8",
+          "NES",
+          "SNES",
+          "N64",
+          "GameCube",
+          "Switch",
+          "Game Boy",
+          "Game Boy Color",
+          "Game Boy Advance",
+          "Mega Drive",
+          "Saturn",
+          "Dreamcast",
+          "PS1",
+          "PS2",
+          "PS3",
+          "PS4",
+          "Xbox",
+          "Xbox 360",
+          "Xbox One",
+          "3DO",
+          "PSP",
+          "Wii",
+          "DS",
+          "Mega CD"
+        ]
+      }
+    },
+    "platforms_basis": {
+      "description": "De onde vêm as plataformas: da ficha curada ou da tabela de referência.",
+      "enum": [
+        null,
+        "ficha",
+        "reference"
+      ]
+    },
+    "origin": {
+      "description": "Plataforma em que o jogo nasceu. Vem da tabela de referência; sem ela, da primeira plataforma da ficha.",
+      "enum": [
+        null,
+        "Arcade",
+        "PC",
+        "PICO-8",
+        "NES",
+        "SNES",
+        "N64",
+        "GameCube",
+        "Switch",
+        "Game Boy",
+        "Game Boy Color",
+        "Game Boy Advance",
+        "Mega Drive",
+        "Saturn",
+        "Dreamcast",
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "Xbox",
+        "Xbox 360",
+        "Xbox One",
+        "3DO",
+        "PSP",
+        "Wii",
+        "DS",
+        "Mega CD"
+      ]
+    },
+    "console": {
+      "description": "true: nasceu em console ou fliperama. false: nasceu no PC. null: não classificado.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "compat": {
+      "description": "Fonte de compatibilidade -> situação informada.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "flags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "adult",
+          "sensitive"
+        ]
+      }
+    }
+  }
+}

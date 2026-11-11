@@ -2,6 +2,7 @@
   {
     "id": "ultimate-catalog",
     "catalog_id": "ultimate-catalog-of-web-game-ports",
+    "kind": "ports",
     "status": "active",
     "parser": "ultimate_catalog",
     "urls": [
@@ -15,6 +16,7 @@
   {
     "id": "bottleship-compat",
     "catalog_id": "bottleship",
+    "kind": "compatibility",
     "status": "active",
     "parser": "bottleship_compat",
     "urls": [
@@ -26,6 +28,7 @@
   {
     "id": "ported2browser",
     "catalog_id": "ported2browser",
+    "kind": "ports",
     "status": "blocked",
     "parser": null,
     "urls": [],

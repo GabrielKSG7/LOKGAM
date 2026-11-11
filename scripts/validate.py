@@ -184,6 +184,25 @@ def pipeline_checks() -> list[str]:
     return errors + pipeline_errors(sources, load_catalogs(), bronze)
 
 
+def silver_checks() -> list[str]:
+    """A camada prata e a tabela de referência: formato, e se a prata está em dia com o resto."""
+    import silver  # aqui dentro porque silver.py importa este módulo
+
+    reference = silver.load_reference()
+    errors = schema_errors(reference, "reference_game.schema.json", "title")
+    ids = [silver.game_id(row["title"]) for row in reference]
+    for dup in sorted({i for i in ids if ids.count(i) > 1}):
+        errors.append(f"reference: jogo repetido: {dup}")
+    wanted = dict(zip(("ports.jsonl", "games.jsonl"), silver.current()))
+    for name, schema in (("ports.jsonl", "silver_port.schema.json"), ("games.jsonl", "silver_game.schema.json")):
+        path = silver.SILVER / name
+        if not path.exists() or path.read_text(encoding="utf-8") != wanted[name]:
+            errors.append(f"data/silver/{name} está desatualizado. Rode: python3 scripts/silver.py")
+        else:
+            errors += schema_errors(load_jsonl(path), schema, "id")
+    return errors
+
+
 def validate() -> list[str]:
     ports, events, checks = load_base()
     return (
@@ -194,6 +213,7 @@ def validate() -> list[str]:
         + schema_errors(load_catalogs(), "catalog.schema.json", "id")
         + catalog_errors(load_catalogs())
         + pipeline_checks()
+        + silver_checks()
     )
 
 

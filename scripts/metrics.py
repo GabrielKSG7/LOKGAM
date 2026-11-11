@@ -191,6 +191,31 @@ def catalog_coverage(sources: list[dict], catalogs: list[dict], bronze: dict, to
     }
 
 
+def base_summary(silver_ports: list[dict], silver_games: list[dict], fichas: list[dict], top: int = 8) -> dict:
+    """O caminho da lista à base: quantos ports e jogos há, o que já foi classificado e ligado às fichas."""
+    listed = [port for port in silver_ports if port["listed"]]
+    games = [game for game in silver_games if game["listed_ports"]]
+    console = [game for game in games if game["console"]]
+    by_origin: Counter = Counter()
+    for game in console:
+        by_origin[game["origin"]] += game["listed_ports"]
+    # Jogos marcados como adultos ou sensíveis não entram em lista pública.
+    ranked = sorted((game for game in games if not game["flags"]), key=lambda game: (-game["listed_ports"], game["title"]))
+    return {
+        "listings": sum(len(port["listings"]) for port in listed),
+        "ports": len(listed),
+        "removed_ports": len(silver_ports) - len(listed),
+        "games": len(games),
+        "classified_games": sum(1 for game in games if game["console"] is not None),
+        "console_games": len(console),
+        "console_ports": sum(by_origin.values()),
+        "fichas": len(fichas),
+        "fichas_linked": len({ficha for port in silver_ports for ficha in port["ficha_ids"]}),
+        "top_games": [{"title": game["title"], "ports": game["listed_ports"]} for game in ranked[:top]],
+        "by_origin": [{"platform": name, "ports": count} for name, count in sorted(by_origin.items(), key=lambda pair: (-pair[1], pair[0]))[:top]],
+    }
+
+
 def build_metrics(ports: list[dict], events: list[dict], checks: list[dict]) -> dict:
     stamps = [check["checked_at"] for check in checks]
     last_check = max(stamps) if stamps else None

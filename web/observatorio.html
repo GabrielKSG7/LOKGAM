@@ -78,6 +78,7 @@
 .tabela th.num{text-align:right;white-space:normal}
 .tabela small{display:block;font-weight:400;color:var(--ink-2)}
 .tabela--estreita{max-width:34rem}
+.agora__detalhe{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.02em;color:var(--ink-2)}
 .tabela td.fonte{min-width:11rem;font-weight:600}
 @media (max-width:560px){.tabela--fontes td.fonte{min-width:0}.tabela--fontes th,.tabela--fontes td{padding-right:10px}.tabela--fontes th:last-child,.tabela--fontes td:last-child{padding-right:0}}
 .tabela td.fonte small{max-width:44ch;margin-top:2px}
@@ -161,6 +162,33 @@
     </section>
   </div>
 
+  <section class="secao" id="base" aria-labelledby="base-titulo">
+    <h2 class="secao__titulo" id="base-titulo">Da lista à base</h2>
+    <p class="secao__lide">O que sobra das entradas de catálogo depois de juntar as repetidas, agrupar os ports por jogo e cruzar com as fichas curadas.</p>
+    <ul class="agora" id="base-numeros"></ul>
+    <p class="nota" id="base-nota"></p>
+  </section>
+
+  <div class="duas">
+    <section class="secao" id="mais-ports" aria-labelledby="maisports-titulo">
+      <h2 class="secao__titulo" id="maisports-titulo">Jogos com mais ports</h2>
+      <p class="secao__lide">Versões diferentes do mesmo jogo que as listas trazem.</p>
+      <div class="tabela-rolagem"><table class="tabela">
+        <thead><tr><th scope="col">Jogo</th><th scope="col" class="coluna-barra"><span class="sr">Ports em barra</span></th><th scope="col" class="num">Ports</th></tr></thead>
+        <tbody id="maisports-corpo"></tbody>
+      </table></div>
+    </section>
+
+    <section class="secao" id="origem" aria-labelledby="origem-titulo">
+      <h2 class="secao__titulo" id="origem-titulo">De onde vêm os jogos</h2>
+      <p class="secao__lide">Ports por plataforma em que o jogo nasceu, entre os jogos de console e fliperama já reconhecidos.</p>
+      <div class="tabela-rolagem"><table class="tabela">
+        <thead><tr><th scope="col">Plataforma</th><th scope="col" class="coluna-barra"><span class="sr">Ports em barra</span></th><th scope="col" class="num">Ports</th></tr></thead>
+        <tbody id="origem-corpo"></tbody>
+      </table></div>
+    </section>
+  </div>
+
   <section class="secao" id="disponibilidade" aria-labelledby="disp-titulo">
     <h2 class="secao__titulo" id="disp-titulo">Disponibilidade por port</h2>
     <p class="secao__lide">Cada barrinha é uma conferência, da mais antiga à esquerda para a mais nova à direita. A porcentagem é a parcela das conferências em que o site respondeu normalmente.</p>
@@ -232,6 +260,7 @@
       <div><dt>Disponibilidade</dt><dd>Conferências com resposta normal, divididas pelas conferências em que o robô conseguiu ver o site. Quando o site barra o robô, a conferência não conta para nenhum lado. A porcentagem só aparece depois de <span id="minimo"></span> conferências válidas.</dd></div>
       <div><dt>O que não é medido</dt><dd>A LOKGAM não guarda link de port que embute o jogo, então esses ports não são conferidos. O que se sabe deles vem de notícias e está no histórico de quedas.</dd></div>
       <div><dt>Catálogos</dt><dd>De cada entrada de catálogo ficam o título, o domínio da versão jogável e o dono do repositório do código. O endereço completo não é gravado. Uma entrada ainda não é uma ficha: a mesma versão pode aparecer em mais de uma lista, e nada ali foi classificado. Os retratos estão em <a id="dado-bronze" href="#">data/bronze</a>.</dd></div>
+      <div><dt>Ports e jogos</dt><dd>Duas entradas com o mesmo endereço jogável contam como um port. Ports são agrupados por jogo pelo nome, sem o que a lista põe entre parênteses e com as grafias niveladas (GTA e Grand Theft Auto, II e 2). A data de um port é a do dia em que a coleta o viu: para quem já estava no primeiro retrato, ela é só um teto. O resultado está em <a id="dado-silver" href="#">data/silver</a>.</dd></div>
       <div><dt>Dados abertos</dt><dd>As três tabelas estão no repositório: <a id="dado-ports" href="#">ports.json</a>, <a id="dado-events" href="#">events.json</a> e <a id="dado-checks" href="#">checks.jsonl</a>.</dd></div>
     </dl>
   </section>
@@ -468,6 +497,7 @@
   var C = D.catalogs;
   var milhar = function (n) { return n.toLocaleString('pt-BR'); };
   $('#dado-bronze').href = D.repo + '/tree/main/data/bronze';
+  $('#dado-silver').href = D.repo + '/tree/main/data/silver';
   function linhaDaFonte(f, agora) {
     if (f.status !== 'active') return 'Não coletado. ' + f.notes;
     if (!f.last_good_run) return f.last_run ? 'A coleta ainda não deu certo.' : 'Aguardando a primeira coleta.';
@@ -519,6 +549,40 @@
   } else {
     $('#hospedagem').hidden = true;
   }
+
+  /* Da lista à base */
+  var B = D.base;
+  [
+    [milhar(B.ports), 'ports distintos', 'de ' + milhar(B.listings) + ' entradas de catálogo'],
+    [milhar(B.games), 'jogos', 'com pelo menos um port listado'],
+    [milhar(B.console_games), 'jogos de console e fliperama', milhar(B.console_ports) + ' ports entre os reconhecidos'],
+    [B.fichas_linked + ' de ' + B.fichas, 'fichas ligadas a um port', 'por endereço, domínio ou repositório']
+  ].forEach(function (x) {
+    var li = no('li');
+    var rotulo = no('span', 'agora__rotulo', x[1]);
+    li.appendChild(rotulo);
+    li.appendChild(no('span', 'agora__valor', x[0]));
+    li.appendChild(no('small', 'agora__detalhe', x[2]));
+    $('#base-numeros').appendChild(li);
+  });
+  $('#base-nota').textContent = 'A origem só é conhecida para ' + milhar(B.classified_games) + ' dos ' + milhar(B.games) +
+    ' jogos: vem das fichas curadas e de uma tabela de referência mantida à mão. O resto ainda não foi classificado, e boa parte é jogo de PC.';
+  function barras(corpo, linhas) {
+    var maior = Math.max.apply(null, linhas.map(function (x) { return x[1]; }).concat([1]));
+    linhas.forEach(function (x) {
+      var tr = no('tr');
+      tr.appendChild(no('td', '', x[0]));
+      var celula = no('td', 'celula-barra');
+      var barra = no('span', 'barra');
+      barra.style.width = (x[1] / maior * 100) + '%';
+      celula.appendChild(barra);
+      tr.appendChild(celula);
+      tr.appendChild(no('td', 'num', milhar(x[1])));
+      corpo.appendChild(tr);
+    });
+  }
+  barras($('#maisports-corpo'), B.top_games.map(function (g) { return [g.title, g.ports]; }));
+  barras($('#origem-corpo'), B.by_origin.map(function (o) { return [o.platform === 'Arcade' ? 'Fliperama' : o.platform, o.ports]; }));
 
   /* Raio-x da base */
   var raiox = $('#raiox-corpo');

@@ -12,10 +12,10 @@ O projeto é um protótipo em evolução.
 ## Como funciona
 
 ```
-catálogos na web ──► collect_catalogs.py ──► data/bronze/ ──┐
-                     (robô, uma vez por dia)                 │
-                                                             ▼
-data/*.json(l) ──► validate.py ──► metrics.py ──► build.py ──► docs/ (GitHub Pages)
+catálogos na web ──► collect_catalogs.py ──► data/bronze/ ──► silver.py ──► data/silver/ ──┐
+                     (robô, uma vez por dia)                    ▲                          │
+                                                                │                          ▼
+data/*.json(l) ─────────────────────────────────────────────────┴──► validate.py ──► metrics.py ──► build.py ──► docs/
       ▲
       │
 check_links.py (robô, a cada 6 h)
@@ -30,11 +30,14 @@ data/checks.jsonl       conferências de link, uma linha por conferência
 data/catalogs.json      outros catálogos, listas e portais de ports
 data/sources.json       fontes de coleta: qual catálogo, por onde é lido, com qual leitor
 data/bronze/            retratos dos catálogos, mudanças e registro das coletas
+data/silver/            ports e jogos unificados, derivados da bronze e das fichas
+data/reference/         tabela de jogos de console e fliperama, mantida à mão
 schema/                 JSON Schema de cada tabela
 scripts/validate.py     valida formato e regras de curadoria
 scripts/format_base.py  regrava ports.json no formato canônico
 scripts/check_links.py  o robô de conferência
 scripts/collect_catalogs.py  o robô de coleta de catálogos
+scripts/silver.py       monta a camada prata
 scripts/metrics.py      métricas do observatório
 scripts/build.py        gera docs/ a partir da base e de web/
 web/                    modelos das páginas, CSS e JS compartilhados
@@ -130,7 +133,7 @@ Um limite de propósito: a LOKGAM não guarda link de port que embute o jogo, en
 
 ## O pipeline de catálogos
 
-Os catálogos de ports que existem na web são tratados como fonte de dados. O desenho segue o modelo de camadas (bronze, prata, ouro), e a primeira está pronta.
+Os catálogos de ports que existem na web são tratados como fonte de dados. O desenho segue o modelo de camadas (bronze, prata, ouro). As duas primeiras estão prontas.
 
 ### Bronze: o retrato de cada catálogo
 
@@ -158,10 +161,22 @@ Decisões de projeto:
 
 Uma entrada de catálogo ainda não é uma ficha. A mesma versão aparece em mais de uma lista, muita coisa ali é jogo de PC e não port de console, e nada foi classificado quanto a direitos.
 
-### Prata e ouro: o que vem depois
+### Prata: ports e jogos
 
-- **Prata:** juntar a mesma versão vinda de fontes diferentes, ligar as entradas às fichas curadas, separar o que é port de console e montar a linha do tempo de cada port (quando apareceu, quando sumiu, quando mudou de domínio).
-- **Ouro:** as respostas do observatório, como quanto tempo um port sobrevive, quais donos de jogos agem e como a onda cresce mês a mês.
+`silver.py` lê a bronze, as fichas curadas e a tabela de referência, e grava `data/silver/ports.jsonl` e `games.jsonl`. É uma função pura dos arquivos do repositório: a validação refaz a conta e acusa se a prata estiver desatualizada.
+
+- **Um port por versão jogável.** Entradas com o mesmo endereço (pela impressão digital) viram um port só. O id do port é a sua primeira entrada de catálogo, como `fonte:chave`.
+- **Ports agrupados por jogo.** O nome do jogo é o título sem o que a lista põe entre parênteses no fim, como `(2)`, `(2005)` ou o nome do port, e com as grafias niveladas: GTA e Grand Theft Auto, II e 2, & e and.
+- **Ligação com as fichas.** Cada ficha procura o seu port pelo indício mais forte que houver: mesmo endereço e mesmo jogo; mesmo domínio e mesmo jogo; mesmo endereço, se for o único; mesmo repositório. O campo `ficha_match` diz qual valeu.
+- **Origem do jogo.** A plataforma em que o jogo nasceu vem de `data/reference/console_games.json`; sem ela, da primeira plataforma da ficha. O que não está em nenhuma das duas fica sem classificação, em vez de ser chutado.
+- **Linha do tempo.** `first_seen` é a data em que a coleta viu o port. Para quem já estava no primeiro retrato ela é só um teto, e `first_seen_basis` diz isso. Saídas e trocas de domínio vêm de `changes.jsonl`.
+- **Fora das listas públicas.** Títulos adultos ou sensíveis ganham uma marca e não entram em nenhum ranking do site.
+
+Limites conhecidos: o agrupamento por nome erra quando duas listas chamam o mesmo jogo de formas muito diferentes, e a tabela de referência cobre só uma parte dos jogos.
+
+### Ouro: o que vem depois
+
+As respostas do observatório, como quanto tempo um port sobrevive, quais donos de jogos agem e como a onda cresce mês a mês. Dependem de algumas semanas de coleta acumulada.
 
 ## Como rodar
 
@@ -170,6 +185,7 @@ pip install -r requirements-dev.txt
 python3 scripts/validate.py                 # valida a base
 python3 scripts/format_base.py              # põe ports.json no formato canônico
 python3 scripts/collect_catalogs.py --dry-run   # coleta os catálogos sem gravar nada
+python3 scripts/silver.py                   # refaz a camada prata (o build.py já faz isso)
 pytest                                      # roda os testes
 python3 scripts/check_links.py --dry-run    # confere os links sem gravar
 python3 scripts/build.py                    # gera docs/
@@ -196,7 +212,7 @@ Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repo
 
 ## Próximos passos
 
-- Camada prata: unificar as entradas dos catálogos, ligá-las às fichas e montar a linha do tempo de cada port.
+- Ampliar a tabela de referência e criar uma tabela de ligações manuais, para os casos em que o nome não basta.
 - Conferir a disponibilidade das entradas de catálogo por domínio, sem gravar o endereço.
 - Camada ouro, com dbt e DuckDB: sobrevivência dos ports, quedas por dono de jogo e crescimento por mês.
 - Mais fontes: catálogos que publiquem um arquivo de dados ou autorizem a leitura.
