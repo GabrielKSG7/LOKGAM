@@ -1,0 +1,51 @@
+name: Conferir links
+
+# O robô passa a cada 6 horas (00:17, 06:17, 12:17 e 18:17 UTC) e também sob demanda,
+# pelo botão "Run workflow". O minuto 17 foge do pico de agendamentos da hora cheia.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Uma passagem por vez: a seguinte espera a anterior terminar de gravar.
+concurrency:
+  group: conferir-links
+  cancel-in-progress: false
+
+jobs:
+  conferir:
+    name: Conferir, gerar o site e gravar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Conferir os links
+        run: python scripts/check_links.py --summary-file "$RUNNER_TEMP/resumo.txt"
+
+      - name: Gerar o site
+        run: python scripts/build.py
+
+      - name: Gravar no repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/checks.jsonl docs
+          if git diff --cached --quiet; then
+            echo "Nada mudou."
+            exit 0
+          fi
+          git commit --quiet -F "$RUNNER_TEMP/resumo.txt"
+          git pull --quiet --rebase origin "$GITHUB_REF_NAME"
+          git push --quiet origin "HEAD:$GITHUB_REF_NAME"

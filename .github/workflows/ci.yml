@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    name: Validar a base e rodar os testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Instalar dependências
+        run: pip install -r requirements-dev.txt
+
+      - name: Validar a base
+        run: python scripts/validate.py
+
+      - name: Rodar os testes
+        run: pytest -q
+
+      # docs/ é gerado: se a base ou os modelos mudaram, o commit precisa trazer o site refeito.
+      - name: Conferir se o site gerado está em dia
+        run: |
+          python scripts/build.py
+          git diff --exit-code -- docs
