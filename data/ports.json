@@ -901,9 +901,9 @@
       "source": "https://github.com/jpd002/Play-"
     },
     "curation": {
-      "state": "pending",
-      "risk": null,
-      "reason": "Selo confirmado: pede o disco de quem joga. Entra na vitrine depois da primeira conferência do robô.",
+      "state": "approved",
+      "risk": "low",
+      "reason": "Emulador sem jogos e sem a BIOS da Sony, no ar desde 2022. O que pode dar problema é o disco que cada pessoa carrega, não o site.",
       "added": "2026-11-11",
       "sources": [
         {
