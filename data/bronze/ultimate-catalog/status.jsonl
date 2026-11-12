@@ -258,6 +258,7 @@
 {"key": "jelly-drift", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "jumbo-mario", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "just-shapes-beats", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "kagetsu-tohya", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T13:14:41Z"}
 {"key": "karlson", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "karlson-2d", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
 {"key": "kindergarten", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -290,6 +291,7 @@
 {"key": "luigi-s-picture-poker", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "madden-nfl-08", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "magic-tower-50-floors", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "maisy-s-playhouse", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T13:14:41Z"}
 {"key": "marvel-vs-capcom-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "master-of-defence", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "mechcommander-2-mc2-rust", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -438,6 +440,7 @@
 {"key": "slendytubbies-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "slendytubbies-2d", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "slime-rancher", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "sobosuba", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T13:14:41Z"}
 {"key": "socom-ii-u-s-navy-seals-socom-legacy", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "sonic-cd", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "sonic-cd-sonic-cd-wasm", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -539,7 +542,7 @@
 {"key": "virtua-fighter", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "virtua-tennis-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "virtual-on-cyber-troopers", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "vvvvvv", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
+{"key": "vvvvvv", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
 {"key": "wadcmd", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "warcraft-ii-wargus", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "warzone-2100-web-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
