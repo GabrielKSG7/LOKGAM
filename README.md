@@ -37,6 +37,7 @@ scripts/validate.py     valida formato e regras de curadoria
 scripts/format_base.py  regrava ports.json no formato canônico
 scripts/check_links.py  o robô de conferência
 scripts/collect_catalogs.py  o robô de coleta de catálogos
+scripts/check_catalog.py     o robô que confere as versões jogáveis dos catálogos
 scripts/silver.py       monta a camada prata
 scripts/metrics.py      métricas do observatório
 scripts/build.py        gera docs/ a partir da base e de web/
@@ -161,6 +162,10 @@ Decisões de projeto:
 
 Uma entrada de catálogo ainda não é uma ficha. A mesma versão aparece em mais de uma lista, muita coisa ali é jogo de PC e não port de console, e nada foi classificado quanto a direitos.
 
+### Estão no ar? A conferência diária
+
+Depois da coleta, `check_catalog.py` abre cada versão jogável listada e grava a situação dela (no ar, instável, fora do ar ou não conferida), pela chave da entrada. Os endereços vêm do catálogo na hora e só existem na memória. `status.jsonl` guarda a situação atual e desde quando; `status_changes.jsonl` guarda cada troca e só cresce, o que basta para reconstruir a história sem gravar uma linha por port por dia. A primeira conferência de uma entrada é o ponto de partida e não conta como troca. Cada domínio recebe um pedido por vez, com intervalo entre eles.
+
 ### Prata: ports e jogos
 
 `silver.py` lê a bronze, as fichas curadas e a tabela de referência, e grava `data/silver/ports.jsonl` e `games.jsonl`. É uma função pura dos arquivos do repositório: a validação refaz a conta e acusa se a prata estiver desatualizada.
@@ -233,7 +238,6 @@ Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repo
 ## Próximos passos
 
 - Ampliar a tabela de referência e criar uma tabela de ligações manuais, para os casos em que o nome não basta.
-- Conferir a disponibilidade das entradas de catálogo por domínio, sem gravar o endereço.
 - Camada ouro, com dbt e DuckDB: sobrevivência dos ports, quedas por dono de jogo e crescimento por mês.
 - Mais fontes: catálogos que publiquem um arquivo de dados ou autorizem a leitura.
 - Conjunto de dados aberto, atualizado todo dia.
@@ -246,6 +250,10 @@ Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repo
 - **Envio pela comunidade:** formulário que cai na fila "Em análise" e só entra depois de aprovado.
 - **Launcher próprio:** guardar a biblioteca de arquivos do jogador uma vez só, dizer quais ports aceitam cada arquivo, padronizar controle e tela cheia, jogar offline e abrir só sites curados. Começaria como app instalável a partir do site.
 - **Smart TVs:** verificar se a vitrine e os ports rodam nos navegadores de TV (Tizen, webOS, Android TV), que costumam ter suporte limitado a WebAssembly, WebGL 2 e controles. A vitrine precisaria de navegação pelo controle remoto.
+
+## Licença
+
+O código está sob a licença MIT. Os dados seguem a CC BY 4.0, com as ressalvas de [`data/README.md`](data/README.md) para o que é derivado de catálogos de outras pessoas.
 
 ## Avisos
 

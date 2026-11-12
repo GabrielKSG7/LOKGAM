@@ -208,8 +208,12 @@ def new_entry(title: str, section: str | None = None, play: str | None = None,
 
 # --- Leitores de cada fonte ------------------------------------------------------------------
 
-def parse_ultimate_catalog(text: str) -> tuple[list[dict], dict]:
-    """Tabelas 'Game | Play | Source', uma por letra. ▶ marca a versão jogável e 📦 o código."""
+def parse_ultimate_catalog(text: str, addresses: list | None = None) -> tuple[list[dict], dict]:
+    """Tabelas 'Game | Play | Source', uma por letra. ▶ marca a versão jogável e 📦 o código.
+
+    Se receber a lista `addresses`, põe nela o endereço jogável de cada entrada, na mesma ordem.
+    É o único caminho pelo qual um endereço sai daqui, e serve ao robô que confere os links.
+    """
     quality: Counter = Counter()
     entries = []
     for table in markdown_tables(text):
@@ -245,13 +249,15 @@ def parse_ultimate_catalog(text: str) -> tuple[list[dict], dict]:
             if starred != (play is not None and source is not None):
                 quality["star_mismatch"] += 1
             entries.append(new_entry(title, section, play, source))
+            if addresses is not None:
+                addresses.append(play)
     declared = re.search(r"badge/games-(\d+)", text) or re.search(r"\b(\d{2,6})\s+games\b", text[:4000])
     if declared:
         quality["declared_rows"] = int(declared.group(1))
     return entries, dict(quality)
 
 
-def parse_bottleship_compat(text: str) -> tuple[list[dict], dict]:
+def parse_bottleship_compat(text: str, addresses: list | None = None) -> tuple[list[dict], dict]:
     """Tabelas 'Title | Status | GOG' da lista de compatibilidade do BottleShip."""
     quality: Counter = Counter()
     entries = []
@@ -272,6 +278,8 @@ def parse_bottleship_compat(text: str) -> tuple[list[dict], dict]:
             if at_gog is not None and at_gog < len(row):
                 extra["gog"] = "yes" if row[at_gog].text.strip() else "no"
             entries.append(new_entry(clean_title(row[at_title].text), table.heading[:24], extra=extra))
+            if addresses is not None:
+                addresses.append(None)
     return entries, dict(quality)
 
 

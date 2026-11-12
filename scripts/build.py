@@ -88,7 +88,10 @@ def observatory_payload(ports: list[dict], events: list[dict], checks: list[dict
         **build_metrics(ports, events, checks),
         "events": timeline,
         "catalogs": catalog_coverage(load_sources(), load_catalogs(), load_bronze()),
-        "base": base_summary(load_jsonl(silver.SILVER / "ports.jsonl"), load_jsonl(silver.SILVER / "games.jsonl"), ports),
+        "base": base_summary(
+            load_jsonl(silver.SILVER / "ports.jsonl"), load_jsonl(silver.SILVER / "games.jsonl"), ports,
+            checked_at=max((run["run_at"] for run in load_bronze()["status_runs"] if run["status"] == "ok"), default=None),
+        ),
         # O que a página inicial mostra em "Onde jogar": só fichas aprovadas, e sem o endereço.
         "storefront": [
             {"id": port["id"], "title": port["title"], "status": port["rights"]["status"]}

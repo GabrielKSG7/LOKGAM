@@ -2,7 +2,8 @@ name: Coletar catálogos
 
 # Uma vez por dia (04:43 UTC) e também sob demanda, pelo botão "Run workflow".
 # O coletor lê cada fonte ativa de data/sources.json, guarda o retrato em data/bronze
-# e registra a execução mesmo quando nada mudou ou quando a fonte falhou.
+# e registra a execução mesmo quando nada mudou ou quando a fonte falhou. Depois confere
+# se cada versão jogável listada responde.
 on:
   schedule:
     - cron: "43 4 * * *"
@@ -20,7 +21,7 @@ jobs:
   coletar:
     name: Coletar, gerar o site e gravar
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
 
@@ -34,6 +35,10 @@ jobs:
 
       - name: Coletar os catálogos
         run: python scripts/collect_catalogs.py --summary-file "$RUNNER_TEMP/resumo.txt"
+
+      # Os endereços vêm do catálogo na hora e não são gravados: fica só a situação de cada entrada.
+      - name: Conferir as versões jogáveis
+        run: python scripts/check_catalog.py --summary-file "$RUNNER_TEMP/resumo.txt"
 
       - name: Gerar o site
         run: python scripts/build.py

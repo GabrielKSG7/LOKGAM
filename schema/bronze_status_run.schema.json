@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bronze_status_run.schema.json",
+  "title": "BronzeStatusRun",
+  "description": "Uma passagem da conferência diária por uma fonte.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_at",
+    "source",
+    "status",
+    "reason",
+    "targets",
+    "checked",
+    "online",
+    "unstable",
+    "offline",
+    "unverified",
+    "transitions",
+    "seconds"
+  ],
+  "properties": {
+    "run_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "status": {
+      "description": "ok: situações gravadas. failed: o catálogo não pôde ser lido. skipped: a rede do robô caiu.",
+      "enum": [
+        "ok",
+        "failed",
+        "skipped"
+      ]
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "targets": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "checked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "online": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unstable": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "offline": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unverified": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "transitions": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "seconds": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

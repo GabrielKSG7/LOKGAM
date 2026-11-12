@@ -108,6 +108,7 @@ def build_silver(sources: list[dict], bronze: dict, fichas: list[dict], referenc
             continue
         baseline, added, removed, moves = _timeline(source_id, bronze)
         current = {entry["key"]: entry for entry in bronze["snapshots"][source_id]}
+        status = {row["key"]: row for row in bronze.get("status", {}).get(source_id, [])}
         gone = {key: (at, entry) for key, (at, entry) in removed.items() if key not in current}
         for key, entry in list(current.items()) + [(key, entry) for key, (_, entry) in gone.items()]:
             listings.append({
@@ -115,6 +116,7 @@ def build_silver(sources: list[dict], bronze: dict, fichas: list[dict], referenc
                 "removed_at": gone[key][0] if key in gone else None,
                 "first_seen": added.get(key, baseline), "basis": "added" if key in added else "baseline",
                 "moves": moves.get(key, []),
+                "status": status.get(key) if key in current else None,
             })
 
     # 2. Ports: entradas com o mesmo endereço jogável são a mesma versão.
@@ -156,6 +158,7 @@ def build_silver(sources: list[dict], bronze: dict, fichas: list[dict], referenc
         ficha_ids, how = linked.get(group_key, (set(), None))
         earliest = min(members, key=lambda m: (m["first_seen"] or "", m["ref"]))
         listed = any(m["listed"] for m in members)
+        checked = next((m["status"] for m in members if m["status"]), None)
         ports.append({
             "id": first["ref"],
             "game_id": game_id(entry["title"]),
@@ -173,6 +176,8 @@ def build_silver(sources: list[dict], bronze: dict, fichas: list[dict], referenc
             "listed": listed,
             "removed_at": None if listed else max(m["removed_at"] for m in members),
             "moves": sorted((move for m in members for move in m["moves"]), key=lambda move: move["at"]),
+            "state": checked["state"] if checked else None,
+            "state_since": checked["since"] if checked else None,
             "flags": flags_of(entry["title"]),
         })
     ports.sort(key=lambda port: port["id"])

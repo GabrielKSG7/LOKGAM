@@ -191,7 +191,8 @@ def catalog_coverage(sources: list[dict], catalogs: list[dict], bronze: dict, to
     }
 
 
-def base_summary(silver_ports: list[dict], silver_games: list[dict], fichas: list[dict], top: int = 8) -> dict:
+def base_summary(silver_ports: list[dict], silver_games: list[dict], fichas: list[dict], top: int = 8,
+                 checked_at: str | None = None) -> dict:
     """O caminho da lista à base: quantos ports e jogos há, o que já foi classificado e ligado às fichas."""
     listed = [port for port in silver_ports if port["listed"]]
     games = [game for game in silver_games if game["listed_ports"]]
@@ -201,7 +202,11 @@ def base_summary(silver_ports: list[dict], silver_games: list[dict], fichas: lis
         by_origin[game["origin"]] += game["listed_ports"]
     # Jogos marcados como adultos ou sensíveis não entram em lista pública.
     ranked = sorted((game for game in games if not game["flags"]), key=lambda game: (-game["listed_ports"], game["title"]))
+    states = Counter(port["state"] for port in listed if port.get("state"))
     return {
+        "states": {name: states[name] for name in ("online", "unstable", "offline", "unverified")},
+        "checked": sum(states.values()),
+        "checked_at": checked_at if states else None,
         "listings": sum(len(port["listings"]) for port in listed),
         "ports": len(listed),
         "removed_ports": len(silver_ports) - len(listed),

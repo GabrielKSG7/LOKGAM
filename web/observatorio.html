@@ -171,6 +171,12 @@
     </section>
   </div>
 
+  <section class="secao" id="no-ar" aria-labelledby="noar-titulo" hidden>
+    <h2 class="secao__titulo" id="noar-titulo">Os ports listados respondem?</h2>
+    <ul class="agora" id="noar-numeros"></ul>
+    <p class="nota" id="noar-nota"></p>
+  </section>
+
   <main class="secao" id="agora" aria-labelledby="agora-titulo">
     <h2 class="secao__titulo" id="agora-titulo">Links da vitrine agora</h2>
     <ul class="agora" id="agora-numeros"></ul>
@@ -590,6 +596,25 @@
   }
   L.aCadaMinuto(pintarJogar);
   $('#jogar-todos').textContent = (D.storefront.length > MOSTRAR ? 'Ver os ' + D.storefront.length + ' jogos na vitrine' : 'Abrir a vitrine') + ' →';
+
+  /* Os ports listados respondem? */
+  if (D.base.checked) {
+    $('#no-ar').hidden = false;
+    ['online', 'unstable', 'offline', 'unverified'].forEach(function (estado) {
+      var li = no('li');
+      var rotulo = no('span', 'agora__rotulo');
+      rotulo.appendChild(no('i', 'pulso pulso--' + estado));
+      rotulo.appendChild(document.createTextNode(L.ESTADO[estado]));
+      li.appendChild(rotulo);
+      li.appendChild(no('span', 'agora__valor', milhar(D.base.states[estado])));
+      li.appendChild(no('small', 'agora__detalhe', Math.round(D.base.states[estado] / D.base.checked * 100) + '% das conferidas'));
+      $('#noar-numeros').appendChild(li);
+    });
+    L.aCadaMinuto(function () {
+      $('#noar-nota').textContent = 'Conferência diária das ' + milhar(D.base.checked) + ' versões jogáveis que os catálogos listam; a última foi ' +
+        L.quando({ checked_at: D.base.checked_at }, Date.now()) + '. "Não conferido" é o site que barrou o robô. Estar no ar não diz nada sobre direitos: muitos desses ports trazem o jogo dentro e não têm link aqui.';
+    });
+  }
 
   /* Catálogos acompanhados */
   var C = D.catalogs;

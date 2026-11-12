@@ -22,6 +22,8 @@
     "listed",
     "removed_at",
     "moves",
+    "state",
+    "state_since",
     "flags"
   ],
   "properties": {
@@ -147,6 +149,23 @@
           }
         }
       }
+    },
+    "state": {
+      "description": "Situação da versão jogável na última conferência diária. Nulo se nunca foi conferida.",
+      "enum": [
+        null,
+        "online",
+        "unstable",
+        "offline",
+        "unverified"
+      ]
+    },
+    "state_since": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
     },
     "flags": {
       "type": "array",

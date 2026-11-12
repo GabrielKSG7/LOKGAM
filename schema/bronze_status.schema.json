@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bronze_status.schema.json",
+  "title": "BronzeStatus",
+  "description": "A situação atual da versão jogável de uma entrada de catálogo. Sem endereço: a entrada é identificada pela chave.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "key",
+    "state",
+    "reason",
+    "http_status",
+    "since"
+  ],
+  "properties": {
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*(~[0-9]+)?$"
+    },
+    "state": {
+      "enum": [
+        "online",
+        "unstable",
+        "offline",
+        "unverified"
+      ]
+    },
+    "reason": {
+      "enum": [
+        "ok",
+        "bot_blocked",
+        "not_found",
+        "legal_block",
+        "server_error",
+        "timeout",
+        "dns_error",
+        "connection_error",
+        "tls_error",
+        "takedown_notice",
+        "other_http"
+      ]
+    },
+    "http_status": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "since": {
+      "description": "Quando a entrada passou a estar nesta situação, ou quando foi conferida pela primeira vez.",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    }
+  }
+}

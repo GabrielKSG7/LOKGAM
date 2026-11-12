@@ -134,13 +134,15 @@ def load_sources() -> list[dict]:
 def load_bronze(root: Path | None = None) -> dict:
     """A camada bronze: execuções, e o retrato e as mudanças de cada fonte."""
     root = root or ROOT / "data" / "bronze"
-    bronze = {"runs": [], "snapshots": {}, "changes": {}}
+    bronze = {"runs": [], "status_runs": [], "snapshots": {}, "changes": {}, "status": {}, "status_changes": {}}
     if not root.exists():
         return bronze
-    if (root / "runs.jsonl").exists():
-        bronze["runs"] = load_jsonl(root / "runs.jsonl")
+    for name in ("runs", "status_runs"):
+        if (root / f"{name}.jsonl").exists():
+            bronze[name] = load_jsonl(root / f"{name}.jsonl")
     for folder in sorted(path for path in root.iterdir() if path.is_dir()):
-        for name, group in (("snapshot.jsonl", "snapshots"), ("changes.jsonl", "changes")):
+        for name, group in (("snapshot.jsonl", "snapshots"), ("changes.jsonl", "changes"),
+                            ("status.jsonl", "status"), ("status_changes.jsonl", "status_changes")):
             if (folder / name).exists():
                 bronze[group][folder.name] = load_jsonl(folder / name)
     return bronze
@@ -167,7 +169,12 @@ def pipeline_errors(sources: list[dict], catalogs: list[dict], bronze: dict) -> 
         keys = [row.get("key", "") for row in rows]
         if keys != sorted(keys) or len(set(keys)) != len(keys):
             errors.append(f"bronze [{name}]: retrato fora de ordem ou com chave repetida")
-    for run in bronze["runs"]:
+    for name, rows in bronze.get("status", {}).items():
+        known_keys = {row.get("key") for row in bronze["snapshots"].get(name, [])}
+        keys = [row.get("key", "") for row in rows]
+        if keys != sorted(keys) or len(set(keys)) != len(keys) or not set(keys) <= known_keys:
+            errors.append(f"bronze [{name}]: situação fora de ordem, repetida ou de entrada que não está no retrato")
+    for run in bronze["runs"] + bronze.get("status_runs", []):
         if run.get("source") not in ids:
             errors.append(f"bronze: execução de fonte desconhecida: {run.get('source')}")
     return errors
@@ -181,6 +188,11 @@ def pipeline_checks() -> list[str]:
         errors += schema_errors(rows, "bronze_entry.schema.json", "key")
     for rows in bronze["changes"].values():
         errors += schema_errors(rows, "bronze_change.schema.json", "key")
+    errors += schema_errors(bronze["status_runs"], "bronze_status_run.schema.json", "source")
+    for rows in bronze["status"].values():
+        errors += schema_errors(rows, "bronze_status.schema.json", "key")
+    for rows in bronze["status_changes"].values():
+        errors += schema_errors(rows, "bronze_status_change.schema.json", "key")
     return errors + pipeline_errors(sources, load_catalogs(), bronze)
 
 
