@@ -2,7 +2,7 @@
 
 Observatório dos ports de jogos de console para navegador. A LOKGAM acompanha a onda de jogos clássicos que passaram a rodar direto no navegador: lê os catálogos que existem, mede se cada port continua no ar, registra notificações de direitos e quedas, e mostra onde dá para jogar de forma legítima.
 
-O projeto nasceu como uma vitrine no espírito do Click Jogos e do FRIV, e a vitrine continua. Cada jogo com link tem uma ficha que diz o que o port distribui, o que o jogador precisa ter e qual o risco de ele sumir, e um robô confere quatro vezes por dia se o link continua no ar.
+O projeto nasceu como uma vitrine no espírito do Click Jogos e do FRIV, e a vitrine continua. Cada jogo com link tem uma ficha que diz o que o port distribui, o que o jogador precisa ter e qual o risco de ele sumir, e um robô confere algumas vezes por dia se o link continua no ar.
 
 - **Observatório (página inicial):** https://gabrielksg7.github.io/LOKGAM/
 - **Onde jogar (vitrine):** https://gabrielksg7.github.io/LOKGAM/vitrine/
@@ -18,7 +18,7 @@ catálogos na web ──► collect_catalogs.py ──► data/bronze/ ──►
 data/*.json(l) ─────────────────────────────────────────────────┴──► validate.py ──► metrics.py ──► build.py ──► docs/
       ▲
       │
-check_links.py (robô, a cada 6 h)
+check_links.py (robô, algumas vezes por dia)
 ```
 
 A base são arquivos de texto versionados no Git. Os robôs acrescentam linhas, as métricas são recalculadas e o site é gerado de novo, tudo no GitHub Actions. Não há servidor nem banco de dados.
@@ -222,8 +222,8 @@ Os testes do robô sobem um servidor HTTP local e exercitam cada tipo de respost
 
 | Workflow | Quando roda | O que faz |
 |---|---|---|
-| `conferir-links.yml` | a cada 6 horas e sob demanda | confere os links, gera o site e grava tudo em um commit |
-| `coletar-catalogos.yml` | uma vez por dia e sob demanda | coleta os catálogos, gera o site e grava tudo em um commit |
+| `conferir-links.yml` | agendado a cada 6 horas (na prática, algumas vezes por dia) e sob demanda | confere os links, gera o site e grava tudo em um commit |
+| `coletar-catalogos.yml` | uma vez por dia, em horário que varia, e sob demanda | coleta os catálogos, gera o site e grava tudo em um commit |
 | `ci.yml` | a cada push e pull request | valida a base, roda os testes e confere se `docs/` está em dia |
 
 Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repositório ao mesmo tempo. Para rodar um deles na hora: aba **Actions**, workflow **Conferir links** ou **Coletar catálogos**, botão **Run workflow**.

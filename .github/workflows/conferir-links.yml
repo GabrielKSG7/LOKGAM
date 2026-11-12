@@ -1,6 +1,7 @@
 name: Conferir links
 
-# O robô passa a cada 6 horas (00:17, 06:17, 12:17 e 18:17 UTC) e também sob demanda,
+# O robô está agendado a cada 6 horas (00:17, 06:17, 12:17 e 18:17 UTC), mas o GitHub atrasa e
+# às vezes pula execuções agendadas: na prática passa algumas vezes por dia. Roda também sob demanda,
 # pelo botão "Run workflow". O minuto 17 foge do pico de agendamentos da hora cheia.
 on:
   schedule:
