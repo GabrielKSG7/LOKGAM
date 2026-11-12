@@ -117,3 +117,25 @@
 {"port_id": "arx-fatalis-arxwasm", "checked_at": "2026-11-12T15:17:38Z", "state": "unverified", "reason": "bot_blocked", "method": "link_checker", "http_status": 403, "response_ms": 648, "note": "O site barrou o robô (HTTP 403)."}
 {"port_id": "duke-nukem-3d-build-engine-web", "checked_at": "2026-11-12T15:17:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 979}
 {"port_id": "renegade-open-commando", "checked_at": "2026-11-12T15:17:38Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 217}
+{"port_id": "minecraft-classic", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 128}
+{"port_id": "celeste-classic", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 211}
+{"port_id": "celeste-classic-2", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 394}
+{"port_id": "warzone-2100", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 261}
+{"port_id": "quake-qwasm", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 111}
+{"port_id": "tobu-tobu-girl-deluxe", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 385}
+{"port_id": "libbet-magic-floor", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 270}
+{"port_id": "diablo-web", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 155}
+{"port_id": "tomb-raider-openlara", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 1208}
+{"port_id": "halo-ce-web", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 204}
+{"port_id": "pepsiman-recompiled", "checked_at": "2026-11-12T23:39:37Z", "state": "unverified", "reason": "bot_blocked", "method": "link_checker", "http_status": 403, "response_ms": 402, "note": "O site barrou o robô (HTTP 403)."}
+{"port_id": "goldeneye-goldenweb64", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 352}
+{"port_id": "ps2-play-js", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 213}
+{"port_id": "driver-2-redriver2", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 117}
+{"port_id": "super-mario-64-sm64js", "checked_at": "2026-11-12T23:39:37Z", "state": "unstable", "reason": "tls_error", "method": "link_checker", "http_status": null, "response_ms": 118, "note": "Problema no certificado de segurança do site."}
+{"port_id": "gta-vice-city-wasm", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 95}
+{"port_id": "red-alert-2-chrono-divide", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 524}
+{"port_id": "silent-hill-web", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 330}
+{"port_id": "beneath-a-steel-sky-scummweb", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 285}
+{"port_id": "arx-fatalis-arxwasm", "checked_at": "2026-11-12T23:39:37Z", "state": "unverified", "reason": "bot_blocked", "method": "link_checker", "http_status": 403, "response_ms": 340, "note": "O site barrou o robô (HTTP 403)."}
+{"port_id": "duke-nukem-3d-build-engine-web", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 842}
+{"port_id": "renegade-open-commando", "checked_at": "2026-11-12T23:39:37Z", "state": "online", "reason": "ok", "method": "link_checker", "http_status": 200, "response_ms": 174}
