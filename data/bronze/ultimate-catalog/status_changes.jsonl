@@ -29,3 +29,13 @@
 {"source": "ultimate-catalog", "at": "2026-11-13T12:36:43Z", "key": "stardew-valley~2", "from": "online", "to": "offline", "reason": "not_found", "http_status": 404}
 {"source": "ultimate-catalog", "at": "2026-11-13T12:36:43Z", "key": "the-man-from-the-window-2", "from": "online", "to": "offline", "reason": "not_found", "http_status": 404}
 {"source": "ultimate-catalog", "at": "2026-11-13T12:36:43Z", "key": "wasm-rip", "from": "online", "to": "offline", "reason": "not_found", "http_status": 404}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "brawlhalla", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "castle-crashers", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "fallout-new-vegas-fnv-web-recomp", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "i-can-t-believe-it-s-not-sonic-1", "from": "online", "to": "offline", "reason": "not_found", "http_status": 404}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "karlson-2d", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "limbo", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "pikmin", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "slay-the-spire", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "sobosuba", "from": "online", "to": "unstable", "reason": "timeout", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "super-mario-sunshine", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}

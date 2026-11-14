@@ -38,7 +38,7 @@
 {"key": "bloodmoney", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "boil-noodles-at-night", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-13T12:36:43Z"}
 {"key": "bounce-tales", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-13T12:36:43Z"}
-{"key": "brawlhalla", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "brawlhalla", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "brotato", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "brotato-2", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-13T12:36:43Z"}
 {"key": "brutal-doom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -55,7 +55,7 @@
 {"key": "carmageddon", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "carmageddon-ii-carpocalypse-now", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "caseoh-s-basics-in-eating-and-fast-food", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "castle-crashers", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "castle-crashers", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "cave-story", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "cave-story~2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "celeste", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -152,7 +152,7 @@
 {"key": "f1-race-mtk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "fallout", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "fallout-nevada-sonora", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "fallout-new-vegas-fnv-web-recomp", "state": "unverified", "reason": "bot_blocked", "http_status": 200, "since": "2026-11-13T12:36:43Z"}
+{"key": "fallout-new-vegas-fnv-web-recomp", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "faster-than-light-demo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "fatal-racing", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "fear-hunger", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -249,7 +249,7 @@
 {"key": "hotline-miami", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "how-to-fish", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-13T12:36:43Z"}
 {"key": "human-expenditure-program", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
-{"key": "i-can-t-believe-it-s-not-sonic-1", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "i-can-t-believe-it-s-not-sonic-1", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-14T11:44:40Z"}
 {"key": "i-wanna-be-the-guy", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "in-stars-and-time", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "inscryption", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-13T12:36:43Z"}
@@ -261,7 +261,7 @@
 {"key": "just-shapes-beats", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "kagetsu-tohya", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T13:14:41Z"}
 {"key": "karlson", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
-{"key": "karlson-2d", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "karlson-2d", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "kindergarten", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "kindergarten-1-2", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "kindergarten-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -283,7 +283,7 @@
 {"key": "lenin-first-blood", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "lethal-ape", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "lethal-company", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-13T12:36:43Z"}
-{"key": "limbo", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "limbo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "liquidator-3d", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "lobotomy-corporation", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-13T12:36:43Z"}
 {"key": "look-outside", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -363,7 +363,7 @@
 {"key": "phantasy-star-online-episode-i-ii-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "phantasy-star-online-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
-{"key": "pikmin", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "pikmin", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "pizza-tower", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "pizza-tower-scoutdigo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "plague-inc", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -437,7 +437,7 @@
 {"key": "simtower-benphelps", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "skate-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "skate-rust-global-terror", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "slay-the-spire", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "slay-the-spire", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "slender-the-8-pages", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "slender-the-eight-pages", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "slendytubbies-1", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -445,7 +445,7 @@
 {"key": "slendytubbies-2d", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "slime-rancher", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "slingshot", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-13T12:36:43Z"}
-{"key": "sobosuba", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T13:14:41Z"}
+{"key": "sobosuba", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-14T11:44:40Z"}
 {"key": "socom-ii-u-s-navy-seals-socom-legacy", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "sonic-cd", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "sonic-cd-sonic-cd-wasm", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -484,11 +484,12 @@
 {"key": "super-mario-64-multiplayer-olivers-tools", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-64-rgc-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-64-sm3das", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "super-mario-64-sm64-cleanroom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "super-mario-64-sm64coopdx-in-browser", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-64~2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-bros-remastered", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-kart-sm-kart-zx-web-port", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "super-mario-sunshine", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "super-mario-sunshine", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "super-mario-zombies", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-monkey-ball", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-smash-bros-smash-fun", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -509,6 +510,7 @@
 {"key": "the-binding-of-isaac-repentance", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "the-deadseat", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "the-elder-scrolls-iii-morrowind-openmw", "state": "unverified", "reason": "bot_blocked", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "the-legend-of-zelda-ocarina-of-time-oot-cleanroom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "the-legend-of-zelda-twilight-princess-dusklight", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "the-man-from-the-window", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "the-man-from-the-window-2", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-13T12:36:43Z"}
