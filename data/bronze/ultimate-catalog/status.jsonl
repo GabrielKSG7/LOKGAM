@@ -218,7 +218,7 @@
 {"key": "gta-v", "state": "unverified", "reason": "bot_blocked", "http_status": 401, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-v-grandv-v2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-v-gta5-web-webgpu", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "gta-v-playgta5-to-rust", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "gta-v-playgta5-to-rust", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-15T12:14:42Z"}
 {"key": "gta-vice-city-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-vice-city-projetoescola", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "guitar-hero-iii-browser-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -300,7 +300,7 @@
 {"key": "medabots-ax", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "metal-gear-solid-shadow-moses-web", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "midnight-club-3-dub-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "unstable", "reason": "server_error", "http_status": 530, "since": "2026-11-13T12:36:43Z"}
+{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-15T12:14:42Z"}
 {"key": "midnight-shift", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-inside-a-bag-of-milk-inside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-outside-a-bag-of-milk-outside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -418,7 +418,7 @@
 {"key": "rollercoaster-tycoon-2-openrct2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "rolling-sky-web-port", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "rugby-08-mitchivin", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "runescape-classic", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "runescape-classic", "state": "unstable", "reason": "connection_error", "http_status": null, "since": "2026-11-12T01:29:08Z"}
 {"key": "s-p-l-i-t", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "s-t-a-l-k-e-r-call-of-pripyat-zonevm", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "saihate-station-95e585", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}

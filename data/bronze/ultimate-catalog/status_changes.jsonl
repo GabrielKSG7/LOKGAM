@@ -39,3 +39,5 @@
 {"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "slay-the-spire", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "sobosuba", "from": "online", "to": "unstable", "reason": "timeout", "http_status": null}
 {"source": "ultimate-catalog", "at": "2026-11-14T11:44:40Z", "key": "super-mario-sunshine", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-15T12:14:42Z", "key": "gta-v-playgta5-to-rust", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-15T12:14:42Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
