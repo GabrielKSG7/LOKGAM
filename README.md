@@ -1,11 +1,41 @@
-# LOKGAM
+<div align="center">
+
+# 🕹️ LOKGAM
+
+**Observatório dos ports de jogos de console para navegador**
+
+[![CI](https://github.com/GabrielKSG7/LOKGAM/actions/workflows/ci.yml/badge.svg)](https://github.com/GabrielKSG7/LOKGAM/actions/workflows/ci.yml)
+[![Coletar catálogos](https://github.com/GabrielKSG7/LOKGAM/actions/workflows/coletar-catalogos.yml/badge.svg)](https://github.com/GabrielKSG7/LOKGAM/actions/workflows/coletar-catalogos.yml)
+[![Conferir links](https://github.com/GabrielKSG7/LOKGAM/actions/workflows/conferir-links.yml/badge.svg)](https://github.com/GabrielKSG7/LOKGAM/actions/workflows/conferir-links.yml)
+![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
+![JSON Schema](https://img.shields.io/badge/JSON%20Schema-validado-000000?logo=json&logoColor=white)
+![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-blue)
+
+### ▶ [Abrir o observatório](https://gabrielksg7.github.io/LOKGAM/) · [Ver onde jogar](https://gabrielksg7.github.io/LOKGAM/vitrine/)
+
+[![Vitrine da LOKGAM com as capas geradas pela página](assets/readme/vitrine.png)](https://gabrielksg7.github.io/LOKGAM/vitrine/)
+
+</div>
 
 Observatório dos ports de jogos de console para navegador. A LOKGAM acompanha a onda de jogos clássicos que passaram a rodar direto no navegador: lê os catálogos que existem, mede se cada port continua no ar, registra notificações de direitos e quedas, e mostra onde dá para jogar de forma legítima.
 
 O projeto nasceu como uma vitrine no espírito do Click Jogos e do FRIV, e a vitrine continua. Cada jogo com link tem uma ficha que diz o que o port distribui, o que o jogador precisa ter e qual o risco de ele sumir, e um robô confere algumas vezes por dia se o link continua no ar.
 
-- **Observatório (página inicial):** https://gabrielksg7.github.io/LOKGAM/
-- **Onde jogar (vitrine):** https://gabrielksg7.github.io/LOKGAM/vitrine/
+[![Panorama do observatório](assets/readme/observatorio.png)](https://gabrielksg7.github.io/LOKGAM/)
+
+> *TL;DR (EN): a data observatory for console games ported to the browser. Two scheduled GitHub Actions robots
+> collect third-party catalogs into an append-only bronze layer and check every port's link several times a day;
+> a silver layer unifies ports and games; curated JSON tables are validated against JSON Schema and editorial
+> rules; metrics and a static site are rebuilt on every run. No server, no database — Git is the storage.*
+
+### Destaques técnicos
+
+- **Git como banco de dados:** tabelas em JSON/JSONL versionadas, com histórico completo de cada mudança, e o site gerado de novo a cada execução. Nenhum servidor, nenhum custo.
+- **Bronze/prata sobre arquivos:** os catálogos de terceiros entram como retratos e mudanças *append-only*; a camada prata unifica ports e jogos.
+- **Dois robôs agendados** no GitHub Actions: a coleta de catálogos (diária) e a conferência de links (algumas vezes por dia), que gravam e publicam sozinhos.
+- **Regras de curadoria executáveis:** `validate.py` recusa a base inteira se uma ficha violar o JSON Schema ou uma regra editorial (por exemplo, port que embute jogo comercial nunca vai para a vitrine com link).
+- **Disponibilidade medida com honestidade:** site que barra o robô é "não conferido", não "fora do ar", e não entra na conta.
+- **134 testes** e um CI que falha se o site publicado não bater com o que a base gera.
 
 O projeto é um protótipo em evolução.
 
