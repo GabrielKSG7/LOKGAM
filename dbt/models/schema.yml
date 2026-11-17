@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: int_entries
+    description: Entradas que já tiveram versão jogável, com a primeira conferência e a situação nela.
+  - name: gold_outages
+    description: Cada período fora do ar de uma versão listada.
+    columns:
+      - name: started_basis
+        tests:
+          - accepted_values:
+              arguments:
+                values: [observed, before_first_check]
+      - name: end_reason
+        tests:
+          - accepted_values:
+              arguments:
+                values: [recovered, removed]
+      - name: hours_down
+        description: Horas fora do ar; nulo enquanto a queda dura. A resolução é a de uma conferência por dia.
+  - name: gold_collective_outages
+    description: Quedas coletivas, por domínio e conferência.
+  - name: gold_daily_status
+    description: Situação das versões listadas em cada conferência, refeita a partir das trocas.
+  - name: gold_catalog_daily
+    description: Entradas e mudanças por coleta.
+  - name: gold_findings
+    description: Números de cabeçalho por fonte.
+    columns:
+      - name: source
+        tests: [unique, not_null]

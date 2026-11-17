@@ -1,0 +1,8 @@
+lokgam:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      # Banco descartável: tudo é refeito a partir dos arquivos de data/ a cada execução.
+      path: "{{ env_var('LOKGAM_DUCKDB', 'dbt/target/lokgam.duckdb') }}"
+      threads: 4

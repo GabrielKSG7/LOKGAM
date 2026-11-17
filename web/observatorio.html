@@ -78,6 +78,16 @@
 .tabela th.num{text-align:right;white-space:normal}
 .tabela small{display:block;font-weight:400;color:var(--ink-2)}
 .tabela--estreita{max-width:34rem}
+.achados{margin:0 0 36px;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.achados li{display:grid;align-content:start;gap:6px;padding:18px 20px 20px 0}
+.achados li + li{padding-left:20px;border-left:1px solid var(--wall-2)}
+.achados__numero{font-family:var(--font-display);font-weight:800;font-stretch:120%;font-size:clamp(2rem,5vw,2.8rem);line-height:1}
+.achados__texto{margin:0;font-size:.95rem;line-height:1.45}
+.figura__titulo{margin:0;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+#figura-dias{margin-bottom:32px}
+#coletivas-corpo td.dominio{white-space:nowrap;overflow-wrap:normal}
+.tabela__legenda{caption-side:top;text-align:left;padding-bottom:10px;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+@media (max-width:560px){.achados li,.achados li + li{padding:16px 0;border-left:0}.achados li + li{border-top:1px solid var(--wall-2)}}
 .agora__valor a{text-decoration:none}
 .agora__valor a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
 .feed{margin:0;padding:0;list-style:none;display:grid;gap:16px}
@@ -154,6 +164,39 @@
   <section class="secao" id="panorama" aria-labelledby="panorama-titulo">
     <h2 class="secao__titulo" id="panorama-titulo">Panorama</h2>
     <ul class="agora" id="panorama-numeros"></ul>
+  </section>
+
+  <section class="secao" id="achados" aria-labelledby="achados-titulo" hidden>
+    <h2 class="secao__titulo" id="achados-titulo">Achados</h2>
+    <p class="secao__lide" id="achados-lide"></p>
+    <ol class="achados" id="achados-lista"></ol>
+
+    <figure class="figura" id="figura-dias">
+      <div class="figura__topo">
+        <h3 class="figura__titulo">Versões fora do ar em cada conferência</h3>
+        <ul class="legenda">
+          <li><i class="amostra amostra--1"></i>Queda coletiva <small id="legenda-coletiva"></small></li>
+          <li><i class="amostra amostra--2"></i>Queda isolada <small>a versão caiu sozinha</small></li>
+        </ul>
+      </div>
+      <div class="plot" id="plot-dias"></div>
+      <button class="alternar" id="alternar-dias" type="button" aria-expanded="false" aria-controls="tabela-dias">Ver os números em tabela</button>
+      <div class="tabela-rolagem" id="tabela-dias" hidden>
+        <table class="tabela tabela--estreita">
+          <thead><tr><th scope="col">Conferência</th><th scope="col" class="num">Conferidas</th><th scope="col" class="num">No ar</th><th scope="col" class="num">Coletivas</th><th scope="col" class="num">Isoladas</th></tr></thead>
+          <tbody id="tabela-dias-corpo"></tbody>
+        </table>
+      </div>
+    </figure>
+
+    <div class="tabela-rolagem">
+      <table class="tabela">
+        <caption class="tabela__legenda">Quedas coletivas</caption>
+        <thead><tr><th scope="col">Domínio</th><th scope="col" class="num">Versões</th><th scope="col">Começou</th><th scope="col">Situação</th></tr></thead>
+        <tbody id="coletivas-corpo"></tbody>
+      </table>
+    </div>
+    <p class="nota" id="achados-nota"></p>
   </section>
 
   <div class="duas">
@@ -301,6 +344,7 @@
       <div><dt>Disponibilidade</dt><dd>Conferências com resposta normal, divididas pelas conferências em que o robô conseguiu ver o site. Quando o site barra o robô, a conferência não conta para nenhum lado. A porcentagem só aparece depois de <span id="minimo"></span> conferências válidas.</dd></div>
       <div><dt>O que não é medido</dt><dd>A LOKGAM não guarda link de port que embute o jogo, então esses ports não são conferidos. O que se sabe deles vem de notícias e está no histórico de quedas.</dd></div>
       <div><dt>Catálogos</dt><dd>De cada entrada de catálogo ficam o título, o domínio da versão jogável e o dono do repositório do código. O endereço completo não é gravado. Uma entrada ainda não é uma ficha: a mesma versão pode aparecer em mais de uma lista, e nada ali foi classificado. Os retratos estão em <a id="dado-bronze" href="#">data/bronze</a>.</dd></div>
+      <div><dt>Achados</dt><dd>Modelos dbt sobre DuckDB leem a camada bronze, refazem a história de cada versão listada a partir das trocas de situação e montam as tabelas finais. Um teste confere, a cada execução, se a história refeita bate com o que o robô contou em cada conferência. Uma queda é coletiva quando três ou mais versões do mesmo domínio caem na mesma conferência. Resultado em <a id="dado-gold" href="#">data/gold</a>; modelos em <a id="dado-dbt" href="#">dbt/</a>.</dd></div>
       <div><dt>Ports e jogos</dt><dd>Duas entradas com o mesmo endereço jogável contam como um port. Ports são agrupados por jogo pelo nome, sem o que a lista põe entre parênteses e com as grafias niveladas (GTA e Grand Theft Auto, II e 2). A data de um port é a do dia em que a coleta o viu: para quem já estava no primeiro retrato, ela é só um teto. O resultado está em <a id="dado-silver" href="#">data/silver</a>.</dd></div>
       <div><dt>Dados abertos</dt><dd>As três tabelas estão no repositório: <a id="dado-ports" href="#">ports.json</a>, <a id="dado-events" href="#">events.json</a> e <a id="dado-checks" href="#">checks.jsonl</a>.</dd></div>
     </dl>
@@ -597,6 +641,144 @@
   L.aCadaMinuto(pintarJogar);
   $('#jogar-todos').textContent = (D.storefront.length > MOSTRAR ? 'Ver os ' + D.storefront.length + ' jogos na vitrine' : 'Abrir a vitrine') + ' →';
 
+  /* Achados: a camada ouro */
+  var G = D.gold;
+  if (G) {
+    var F = G.findings;
+    var pct = function (a, b) { return b ? Math.round(a / b * 100) + '%' : '—'; };
+    var decimal = function (n) { return n.toLocaleString('pt-BR', { maximumFractionDigits: 1 }); };
+    var dias = function (horas) { var d = horas / 24; return d >= 1.5 ? decimal(Math.round(d * 2) / 2) + ' dias' : Math.round(horas) + ' horas'; };
+    var MIN_COLETIVA = 3;
+    $('#achados').hidden = false;
+    $('#legenda-coletiva').textContent = MIN_COLETIVA + ' ou mais versões do mesmo domínio na mesma conferência';
+    $('#achados-lide').textContent = 'O que ' + decimal(F.days_observed) + ' dias de conferência diária das versões listadas no catálogo já mostram. ' +
+      'Os números são refeitos todo dia, a partir do registro de cada troca de situação.';
+    var observadas = G.collective.filter(function (c) { return c.started_basis === 'observed'; });
+    var antes = G.collective.filter(function (c) { return c.started_basis !== 'observed'; });
+    var maiorAntes = antes.slice().sort(function (a, b) { return b.ports - a.ports; })[0];
+    var itens = [];
+    if (F.observed_outages) {
+      itens.push([pct(F.observed_collective, F.observed_outages),
+        'das ' + L.plural(F.observed_outages, 'queda vista', 'quedas vistas') + ' pela conferência vieram de um domínio derrubando várias versões de uma vez' +
+        (observadas.length === 1 ? ': ' + observadas[0].play_host + ', com ' + observadas[0].ports + ' versões.' : ', em ' + L.plural(observadas.length, 'evento', 'eventos') + '.')]);
+    }
+    if (F.median_hours_down != null) {
+      itens.push([dias(F.median_hours_down), 'foi o tempo mediano fora do ar das ' + L.plural(F.observed_recovered, 'versão que caiu e voltou', 'versões que caíram e voltaram') + '.']);
+    }
+    if (F.down_since_first_check) {
+      itens.push([milhar(F.down_since_first_check), (F.down_since_first_check > 1 ? 'versões já estavam fora do ar na primeira conferência e não voltaram'
+        : 'versão já estava fora do ar na primeira conferência e não voltou') +
+        (maiorAntes ? '. ' + maiorAntes.ports + ' delas são de um único espelho, ' + maiorAntes.play_host + '.' : '.')]);
+    }
+    itens.push([decimal(F.added_per_day), 'entradas novas por dia no catálogo, em média' + (F.removed_since_baseline ? '. Sa' + (F.removed_since_baseline > 1 ? 'íram ' : 'iu ') + F.removed_since_baseline + ' no período.' : '.')]);
+    itens.forEach(function (x) {
+      var li = no('li');
+      li.appendChild(no('span', 'achados__numero', x[0]));
+      li.appendChild(no('p', 'achados__texto', x[1]));
+      $('#achados-lista').appendChild(li);
+    });
+
+    G.collective.forEach(function (c) {
+      var tr = no('tr');
+      tr.appendChild(no('td', 'dominio', c.play_host));
+      tr.appendChild(no('td', 'num', c.ports));
+      tr.appendChild(no('td', '', c.started_basis === 'observed' ? L.data(c.started_at) : 'antes da primeira conferência'));
+      var situacao = c.still_down === 0 ? 'todas voltaram' + (c.last_recovered_at ? ' até ' + L.data(c.last_recovered_at) : '')
+        : c.recovered ? c.recovered + ' voltaram, ' + c.still_down + ' seguem fora' : 'seguem fora do ar';
+      tr.appendChild(no('td', '', situacao));
+      $('#coletivas-corpo').appendChild(tr);
+    });
+    $('#achados-nota').textContent = 'Como ler: a conferência é diária, então o começo e o fim de cada queda têm precisão de um dia. ' +
+      '"Fora do ar" é a página que respondeu com erro ou não respondeu; "no ar" quer dizer que a página respondeu, não que o jogo funciona. ' +
+      (G.isolated.length ? 'Quedas isoladas vistas até agora: ' + G.isolated.map(function (o) { return o.title + ' (' + o.play_host + ')'; }).join(', ') + '. ' : '') +
+      'As tabelas completas estão em data/gold, geradas por modelos dbt sobre DuckDB.';
+
+    /* Colunas empilhadas: versões fora do ar por conferência, uma escala só */
+    var plotDias = $('#plot-dias'), dicaDias = no('div', 'dica');
+    dicaDias.hidden = true;
+    /* Duas conferências no mesmo dia ganham a hora (UTC) no rótulo */
+    var repetidos = {};
+    G.daily.forEach(function (d) { var k = d.run_at.slice(0, 10); repetidos[k] = (repetidos[k] || 0) + 1; });
+    var rotuloDia = function (d, longo) {
+      var p = d.run_at.slice(0, 10).split('-');
+      return p[2] + '/' + p[1] + (longo ? '/' + p[0] : '') + (repetidos[d.run_at.slice(0, 10)] > 1 ? ' ' + d.run_at.slice(11, 13) + 'h' : '');
+    };
+    function dicaDia(d, x, y) {
+      dicaDias.textContent = '';
+      dicaDias.appendChild(no('div', 'dica__valor', L.plural(d.offline, 'versão fora do ar', 'versões fora do ar')));
+      dicaDias.appendChild(no('div', 'dica__rotulo', 'Conferência de ' + rotuloDia(d, true)));
+      [[d.offline_collective, 'chave--1', 'em queda coletiva'], [d.offline_isolated, 'chave--2', 'em queda isolada']].forEach(function (linha) {
+        var el = no('div', 'dica__linha');
+        el.appendChild(no('i', 'chave ' + linha[1]));
+        el.appendChild(no('b', '', linha[0]));
+        el.appendChild(document.createTextNode(linha[2]));
+        dicaDias.appendChild(el);
+      });
+      dicaDias.appendChild(no('div', 'dica__linha', 'de ' + milhar(d.checked) + ' conferidas'));
+      dicaDias.hidden = false;
+      var largura = dicaDias.offsetWidth, altura = dicaDias.offsetHeight, folga = 22;
+      var direita = x + folga, esquerda = x - folga - largura;
+      dicaDias.style.left = Math.max(0, direita + largura <= plotDias.clientWidth ? direita : esquerda) + 'px';
+      dicaDias.style.top = Math.max(0, Math.min(y - 6, plotDias.clientHeight - altura)) + 'px';
+    }
+    function desenharDias() {
+      var lista = G.daily;
+      plotDias.textContent = '';
+      plotDias.appendChild(dicaDias);
+      var W = Math.max(280, plotDias.clientWidth), esq = 34, dir = 6, topo = 24, alturaPlot = 170, base = 22;
+      var H = topo + alturaPlot + base;
+      var banda = (W - esq - dir) / lista.length;
+      var larguraBarra = Math.min(28, Math.max(8, banda * 0.5));
+      var maior = Math.max.apply(null, lista.map(function (d) { return d.offline; }).concat([1]));
+      var passo = maior <= 10 ? 2 : maior <= 50 ? 10 : maior <= 100 ? 20 : Math.ceil(maior / 5 / 10) * 10;
+      var teto = Math.ceil(maior / passo) * passo;
+      var y = function (v) { return topo + alturaPlot - v / teto * alturaPlot; };
+      var desenho = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': 'Versões fora do ar em cada conferência, separadas em queda coletiva e isolada' });
+      for (var t = 0; t <= teto; t += passo) {
+        desenho.appendChild(svg('line', { x1: esq, x2: W - dir, y1: y(t), y2: y(t), 'class': t ? 'grade' : 'eixo' }));
+        desenho.appendChild(svg('text', { x: esq - 8, y: y(t) + 3.5, 'text-anchor': 'end' }, t));
+      }
+      var pico = 0;
+      lista.forEach(function (d, i) { if (d.offline > lista[pico].offline) pico = i; });
+      var pular = banda < 30 ? Math.ceil(30 / banda) : 1;
+      lista.forEach(function (d, i) {
+        var cx = esq + banda * (i + 0.5), x = cx - larguraBarra / 2;
+        var g = svg('g', { 'class': 'coluna', tabindex: 0, role: 'img',
+          'aria-label': rotuloDia(d, true) + ': ' + d.offline_collective + ' em queda coletiva e ' + d.offline_isolated + ' em queda isolada' });
+        g.appendChild(svg('rect', { 'class': 'faixa-alvo', x: esq + banda * i, y: topo - 14, width: banda, height: alturaPlot + 14 }));
+        var h1 = d.offline_collective / teto * alturaPlot, h2 = d.offline_isolated / teto * alturaPlot, vao = h1 && h2 ? 2 : 0;
+        if (h1) {
+          if (h2) g.appendChild(svg('rect', { 'class': 'seg-1', x: x, y: y(d.offline_collective) + vao / 2, width: larguraBarra, height: Math.max(1, h1 - vao / 2) }));
+          else g.appendChild(svg('path', { 'class': 'seg-1', d: topoArredondado(x, y(d.offline_collective), larguraBarra, h1) }));
+        }
+        if (h2) g.appendChild(svg('path', { 'class': 'seg-2', d: topoArredondado(x, y(d.offline), larguraBarra, Math.max(1, h2 - vao / 2)) }));
+        if (i === pico) g.appendChild(svg('text', { 'class': 'rotulo-valor', x: cx, y: y(d.offline) - 7, 'text-anchor': 'middle' }, d.offline));
+        if (i % pular === 0) g.appendChild(svg('text', { x: cx, y: topo + alturaPlot + 15, 'text-anchor': 'middle' }, rotuloDia(d)));
+        var mostrar = function () { var k = plotDias.clientWidth / W; dicaDia(d, cx * k, y(d.offline) * k); };
+        g.addEventListener('pointerenter', mostrar);
+        g.addEventListener('focus', mostrar);
+        g.addEventListener('pointerleave', function () { dicaDias.hidden = true; });
+        g.addEventListener('blur', function () { dicaDias.hidden = true; });
+        desenho.appendChild(g);
+      });
+      plotDias.appendChild(desenho);
+    }
+    desenharDias();
+    L.aoRedimensionar(desenharDias);
+    G.daily.forEach(function (d) {
+      var tr = no('tr');
+      tr.appendChild(no('td', '', rotuloDia(d, true)));
+      [d.checked, d.online, d.offline_collective, d.offline_isolated].forEach(function (n) { tr.appendChild(no('td', 'num', milhar(n))); });
+      $('#tabela-dias-corpo').appendChild(tr);
+    });
+    var alternarDias = $('#alternar-dias'), tabelaDias = $('#tabela-dias');
+    alternarDias.addEventListener('click', function () {
+      tabelaDias.hidden = !tabelaDias.hidden;
+      alternarDias.setAttribute('aria-expanded', String(!tabelaDias.hidden));
+      alternarDias.textContent = tabelaDias.hidden ? 'Ver os números em tabela' : 'Esconder a tabela';
+    });
+  }
+
   /* Os ports listados respondem? */
   if (D.base.checked) {
     $('#no-ar').hidden = false;
@@ -620,6 +802,8 @@
   var C = D.catalogs;
   $('#dado-bronze').href = D.repo + '/tree/main/data/bronze';
   $('#dado-silver').href = D.repo + '/tree/main/data/silver';
+  $('#dado-gold').href = D.repo + '/tree/main/data/gold';
+  $('#dado-dbt').href = D.repo + '/tree/main/dbt';
   function linhaDaFonte(f, agora) {
     if (f.status !== 'active') return 'Não coletado. ' + f.notes;
     if (!f.last_good_run) return f.last_run ? 'A coleta ainda não deu certo.' : 'Aguardando a primeira coleta.';

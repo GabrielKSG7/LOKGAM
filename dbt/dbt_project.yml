@@ -1,0 +1,30 @@
+name: lokgam
+version: "1.0.0"
+config-version: 2
+profile: lokgam
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target"]
+
+vars:
+  # Pasta de dados, relativa ao diretório de onde o dbt é chamado (a raiz do repositório).
+  # Os testes apontam para uma pasta temporária com dados de exemplo.
+  data_dir: "data"
+  # Ports de um mesmo domínio que precisam cair na mesma conferência para a queda contar como coletiva.
+  collective_min_ports: 3
+
+# Sem envio de estatísticas de uso: o robô roda em CI e não deve falar com serviços de fora.
+flags:
+  send_anonymous_usage_stats: false
+
+models:
+  lokgam:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table

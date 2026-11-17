@@ -42,10 +42,11 @@ O projeto é um protótipo em evolução.
 ## Como funciona
 
 ```
-catálogos na web ──► collect_catalogs.py ──► data/bronze/ ──► silver.py ──► data/silver/ ──┐
-                     (robô, uma vez por dia)                    ▲                          │
-                                                                │                          ▼
-data/*.json(l) ─────────────────────────────────────────────────┴──► validate.py ──► metrics.py ──► build.py ──► docs/
+catálogos na web ──► collect_catalogs.py ──► data/bronze/ ──┬──► silver.py ──► data/silver/ ──┐
+                     check_catalog.py                          │                                 │
+                     (robôs, uma vez por dia)                  └──► dbt (gold.py) ──► data/gold/ ─┤
+                                                                                                 ▼
+data/*.json(l) ──────────────────────────────────────────────────► validate.py ──► metrics.py ──► build.py ──► docs/
       ▲
       │
 check_links.py (robô, algumas vezes por dia)
@@ -61,6 +62,8 @@ data/catalogs.json      outros catálogos, listas e portais de ports
 data/sources.json       fontes de coleta: qual catálogo, por onde é lido, com qual leitor
 data/bronze/            retratos dos catálogos, mudanças e registro das coletas
 data/silver/            ports e jogos unificados, derivados da bronze e das fichas
+data/gold/              tabelas finais da camada ouro, exportadas do dbt
+dbt/                    projeto dbt (DuckDB): staging, intermediate e marts, com testes de dados
 data/reference/         tabela de jogos de console e fliperama, mantida à mão
 schema/                 JSON Schema de cada tabela
 scripts/validate.py     valida formato e regras de curadoria
@@ -69,6 +72,7 @@ scripts/check_links.py  o robô de conferência
 scripts/collect_catalogs.py  o robô de coleta de catálogos
 scripts/check_catalog.py     o robô que confere as versões jogáveis dos catálogos
 scripts/silver.py       monta a camada prata
+scripts/gold.py         roda o dbt e exporta a camada ouro
 scripts/metrics.py      métricas do observatório
 scripts/build.py        gera docs/ a partir da base e de web/
 web/                    modelos das páginas, CSS e JS compartilhados
@@ -164,7 +168,7 @@ Um limite de propósito: a LOKGAM não guarda link de port que embute o jogo, en
 
 ## O pipeline de catálogos
 
-Os catálogos de ports que existem na web são tratados como fonte de dados. O desenho segue o modelo de camadas (bronze, prata, ouro). As duas primeiras estão prontas.
+Os catálogos de ports que existem na web são tratados como fonte de dados. O desenho segue o modelo de camadas (bronze, prata, ouro), e as três estão prontas.
 
 ### Bronze: o retrato de cada catálogo
 
@@ -209,9 +213,31 @@ Depois da coleta, `check_catalog.py` abre cada versão jogável listada e grava 
 
 Limites conhecidos: o agrupamento por nome erra quando duas listas chamam o mesmo jogo de formas muito diferentes, e a tabela de referência cobre só uma parte dos jogos.
 
-### Ouro: o que vem depois
+### Ouro: os achados (dbt + DuckDB)
 
-As respostas do observatório, como quanto tempo um port sobrevive, quais donos de jogos agem e como a onda cresce mês a mês. Dependem de algumas semanas de coleta acumulada.
+`gold.py` roda `dbt build` sobre a pasta `dbt/` e exporta as tabelas finais para `data/gold/`. O DuckDB lê os arquivos da bronze direto do disco; o banco é descartável e não vai para o Git.
+
+| Camada dbt | Modelos | O que faz |
+|---|---|---|
+| staging | `stg_*` | lê cada arquivo JSON Lines da bronze com colunas e tipos declarados |
+| intermediate | `int_entries`, `int_state_intervals` | descobre quando cada versão foi conferida pela primeira vez e refaz a história dela em intervalos de situação |
+| marts | `gold_outages` | cada período fora do ar, com começo, fim, motivo do fim e se foi coletivo |
+| | `gold_collective_outages` | quedas coletivas: um domínio derrubando várias versões na mesma conferência |
+| | `gold_daily_status` | situação de todas as versões em cada conferência, refeita a partir das trocas |
+| | `gold_catalog_daily` | entradas e mudanças do catálogo por coleta |
+| | `gold_findings` | números de cabeçalho, mostrados na seção "Achados" da página inicial |
+
+Decisões de projeto:
+
+- **Guardar trocas, não fotos diárias.** A bronze grava só quando uma versão muda de situação. A camada ouro refaz o estado de cada dia a partir disso.
+- **A reconstrução é testada contra a fonte.** O teste `daily_status_matches_robot_counts` confere, a cada execução, se a situação refeita bate com o que o robô contou em cada conferência. Se a lógica de intervalos ou a gravação das trocas tiver defeito, o build falha.
+- **Começo desconhecido é dito.** Versão que já estava fora do ar na primeira conferência tem `started_basis = before_first_check`, e fica fora das medidas de duração.
+- **Queda coletiva** é quando três ou mais versões do mesmo domínio caem na mesma conferência (`collective_min_ports` em `dbt_project.yml`). Separa o espelho que caiu do port que caiu.
+- **Fim da história.** Quando uma versão sai do catálogo, a conferência grava uma troca para `unlisted`, e a queda em andamento termina com o motivo `removed`.
+
+Os testes em `tests/test_gold.py` rodam o dbt sobre uma história de exemplo escrita à mão e comparam o resultado com a resposta esperada.
+
+Limites: a precisão é de um dia, porque a conferência é diária; e o período observado ainda é curto. As medidas de sobrevivência (quanto tempo um port dura desde que aparece) precisam de mais semanas de coleta.
 
 ## As páginas
 
@@ -241,6 +267,7 @@ python3 scripts/validate.py                 # valida a base
 python3 scripts/format_base.py              # põe ports.json no formato canônico
 python3 scripts/collect_catalogs.py --dry-run   # coleta os catálogos sem gravar nada
 python3 scripts/silver.py                   # refaz a camada prata (o build.py já faz isso)
+python3 scripts/gold.py                     # roda o dbt (modelos e testes) e exporta data/gold
 pytest                                      # roda os testes
 python3 scripts/check_links.py --dry-run    # confere os links sem gravar
 python3 scripts/build.py                    # gera docs/
@@ -253,7 +280,7 @@ Os testes do robô sobem um servidor HTTP local e exercitam cada tipo de respost
 | Workflow | Quando roda | O que faz |
 |---|---|---|
 | `conferir-links.yml` | agendado a cada 6 horas (na prática, algumas vezes por dia) e sob demanda | confere os links, gera o site e grava tudo em um commit |
-| `coletar-catalogos.yml` | uma vez por dia, em horário que varia, e sob demanda | coleta os catálogos, gera o site e grava tudo em um commit |
+| `coletar-catalogos.yml` | uma vez por dia, em horário que varia, e sob demanda | coleta os catálogos, confere as versões jogáveis, roda o dbt, gera o site e grava tudo em um commit |
 | `ci.yml` | a cada push e pull request | valida a base, roda os testes e confere se `docs/` está em dia |
 
 Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repositório ao mesmo tempo. Para rodar um deles na hora: aba **Actions**, workflow **Conferir links** ou **Coletar catálogos**, botão **Run workflow**.
@@ -268,7 +295,7 @@ Os dois robôs dividem a mesma fila de gravação, para nunca escreverem no repo
 ## Próximos passos
 
 - Ampliar a tabela de referência e criar uma tabela de ligações manuais, para os casos em que o nome não basta.
-- Camada ouro, com dbt e DuckDB: sobrevivência dos ports, quedas por dono de jogo e crescimento por mês.
+- Camada ouro, segunda etapa: sobrevivência dos ports desde que aparecem, quando houver semanas de coleta.
 - Mais fontes: catálogos que publiquem um arquivo de dados ou autorizem a leitura.
 - Conjunto de dados aberto, atualizado todo dia.
 - Esvaziar a fila de análise: abrir cada site e confirmar se pede a cópia do jogador, se é livre ou demo, ou se já traz o jogo.

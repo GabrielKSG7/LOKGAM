@@ -77,8 +77,15 @@ def check_targets(targets: dict[str, str], check: Callable = _check, session_fac
 
 
 def apply(previous: dict[str, dict], results: dict[str, dict], keys: set[str], stamp: str) -> tuple[dict[str, dict], list[dict]]:
-    """Situação nova de cada entrada e as trocas em relação à anterior."""
+    """Situação nova de cada entrada e as trocas em relação à anterior.
+
+    A entrada que deixou de ter versão jogável listada (saiu do catálogo ou perdeu o endereço)
+    sai da situação atual com uma troca para 'unlisted', para a história dela ter um fim.
+    """
     status, transitions = {}, []
+    for key in sorted(set(previous) - keys):
+        transitions.append({"at": stamp, "key": key, "from": previous[key]["state"], "to": "unlisted",
+                            "reason": None, "http_status": None})
     for key in sorted(keys):
         before, now = previous.get(key), results.get(key)
         if now is None:

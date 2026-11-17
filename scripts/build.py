@@ -35,6 +35,31 @@ MOVED = """<!DOCTYPE html>
 """
 
 
+GOLD = ROOT / "data" / "gold"
+
+
+def gold_payload() -> dict | None:
+    """Os achados da camada ouro para a fonte de ports principal. Nada se o dbt ainda não rodou."""
+    if not (GOLD / "findings.json").exists():
+        return None
+    tables = {name: json.loads((GOLD / f"{name}.json").read_text(encoding="utf-8"))
+              for name in ("findings", "daily_status", "collective_outages", "outages")}
+    sources = [s["id"] for s in load_sources() if s["status"] == "active" and s["kind"] == "ports"]
+    main = next((s for s in sources if any(row["source"] == s for row in tables["findings"])), None)
+    if main is None:
+        return None
+    pick = lambda name: [row for row in tables[name] if row["source"] == main]
+    isolated = [row for row in pick("outages") if not row["collective"] and row["started_basis"] == "observed"]
+    return {
+        "source": main,
+        "findings": pick("findings")[0],
+        "daily": sorted(pick("daily_status"), key=lambda row: row["run_at"]),
+        "collective": sorted(pick("collective_outages"), key=lambda row: (row["started_at"], row["play_host"])),
+        "isolated": sorted(({k: row[k] for k in ("title", "play_host", "started_at", "ended_at", "end_reason")} for row in isolated),
+                           key=lambda row: (row["started_at"], row["title"])),
+    }
+
+
 def embed(data: dict) -> str:
     """JSON pronto para ir dentro de uma tag <script>."""
     return json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -92,6 +117,7 @@ def observatory_payload(ports: list[dict], events: list[dict], checks: list[dict
             load_jsonl(silver.SILVER / "ports.jsonl"), load_jsonl(silver.SILVER / "games.jsonl"), ports,
             checked_at=max((run["run_at"] for run in load_bronze()["status_runs"] if run["status"] == "ok"), default=None),
         ),
+        "gold": gold_payload(),
         # O que a página inicial mostra em "Onde jogar": só fichas aprovadas, e sem o endereço.
         "storefront": [
             {"id": port["id"], "title": port["title"], "status": port["rights"]["status"]}

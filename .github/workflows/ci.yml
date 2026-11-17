@@ -31,6 +31,12 @@ jobs:
       - name: Rodar os testes
         run: pytest -q
 
+      # A camada ouro é refeita pelo dbt, com os testes de dados dele, e precisa bater com data/gold.
+      - name: Rodar a camada ouro (dbt)
+        run: |
+          python scripts/gold.py
+          git diff --exit-code -- data/gold
+
       # docs/ é gerado: se a base ou os modelos mudaram, o commit precisa trazer o site refeito.
       - name: Conferir se o site gerado está em dia
         run: |

@@ -52,8 +52,11 @@ def test_a_change_of_state_is_recorded_once_and_since_follows_it():
 
 def test_only_entries_of_the_snapshot_are_checked_and_stale_ones_leave():
     (_, first, _), _ = run()
-    (result, status, _), seen = run(previous=first, stamp=T1, keys={"alice", "amazing-alex"})
+    (result, status, transitions), seen = run(previous=first, stamp=T1, keys={"alice", "amazing-alex"})
     assert sorted(status) == ["alice", "amazing-alex"] and len(seen) == 2 and result["targets"] == 2
+    gone = [t for t in transitions if t["to"] == "unlisted"]
+    assert len(gone) == 4 and result["transitions"] == 4 and {t["from"] for t in gone} == {"online"}
+    assert all(t["at"] == T1 and t["reason"] is None for t in gone)
 
 
 def test_a_dead_network_or_an_unreadable_catalog_changes_nothing():

@@ -1,2 +1,4 @@
 jsonschema>=4.18
 requests>=2.31
+dbt-duckdb>=1.9,<2
+duckdb>=1.1

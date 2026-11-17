@@ -36,11 +36,13 @@
       ]
     },
     "to": {
+      "description": "Situação nova. 'unlisted': a entrada deixou de ter versão jogável listada e sai da conferência.",
       "enum": [
         "online",
         "unstable",
         "offline",
-        "unverified"
+        "unverified",
+        "unlisted"
       ]
     },
     "reason": {
@@ -55,7 +57,8 @@
         "connection_error",
         "tls_error",
         "takedown_notice",
-        "other_http"
+        "other_http",
+        null
       ]
     },
     "http_status": {

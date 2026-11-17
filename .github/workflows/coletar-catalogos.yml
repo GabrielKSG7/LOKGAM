@@ -40,6 +40,9 @@ jobs:
       - name: Conferir as versões jogáveis
         run: python scripts/check_catalog.py --summary-file "$RUNNER_TEMP/resumo.txt"
 
+      - name: Rodar a camada ouro (dbt)
+        run: python scripts/gold.py
+
       - name: Gerar o site
         run: python scripts/build.py
 
@@ -47,7 +50,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/bronze data/silver docs
+          git add data/bronze data/silver data/gold docs
           if git diff --cached --quiet; then
             echo "Nada mudou."
             exit 0
