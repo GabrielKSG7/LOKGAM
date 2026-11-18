@@ -237,7 +237,7 @@
 {"key": "hard-truck-hard-truck-2-1-2-279b24", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "harry-potter-and-the-chamber-of-secrets", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "heaven-for-death", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-17T13:50:27Z"}
-{"key": "hedgewars-webwars", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-16T13:07:51Z"}
+{"key": "hedgewars-webwars", "state": "unstable", "reason": "tls_error", "http_status": null, "since": "2026-11-16T13:07:51Z"}
 {"key": "helltaker", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "helltaker-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
 {"key": "heretic-hexen", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -542,6 +542,7 @@
 {"key": "tyrian-opentyrian", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ufc-2009-undisputed-throwdown", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ufc-throwdown", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "ultima-v-warriors-of-destiny-ultima5", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-18T13:25:45Z"}
 {"key": "ultrakill", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ultrakill-prelude", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "ultrakill~2", "state": "unverified", "reason": "bot_blocked", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
