@@ -72,3 +72,8 @@
 {"source": "ultimate-catalog", "at": "2026-11-16T13:07:51Z", "key": "the-man-from-the-window-2", "from": "offline", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-16T13:07:51Z", "key": "wasm-rip", "from": "offline", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-17T13:50:27Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-19T13:53:18Z", "key": "doom-3-d3wasm", "from": "online", "to": "unstable", "reason": "connection_error", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-19T13:53:18Z", "key": "gta-v-playgta5-to-rust", "from": "online", "to": "unstable", "reason": "connection_error", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-19T13:53:18Z", "key": "phantasy-star-online-pso-reborn", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 503}
+{"source": "ultimate-catalog", "at": "2026-11-19T13:53:18Z", "key": "sobosuba", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-19T13:53:18Z", "key": "super-mario-64~2", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 503}

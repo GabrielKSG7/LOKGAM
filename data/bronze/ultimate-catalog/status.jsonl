@@ -119,7 +119,7 @@
 {"key": "doki-doki-literature-club-plus", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "doom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "doom-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "doom-3-d3wasm", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "doom-3-d3wasm", "state": "unstable", "reason": "connection_error", "http_status": null, "since": "2026-11-19T13:53:18Z"}
 {"key": "doom-3-demo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "doom-i-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "doom-joeheyming-classic-and-mods", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -220,7 +220,7 @@
 {"key": "gta-v", "state": "unverified", "reason": "bot_blocked", "http_status": 401, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-v-grandv-v2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-v-gta5-web-webgpu", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "gta-v-playgta5-to-rust", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-15T12:14:42Z"}
+{"key": "gta-v-playgta5-to-rust", "state": "unstable", "reason": "connection_error", "http_status": null, "since": "2026-11-19T13:53:18Z"}
 {"key": "gta-vice-city-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-vice-city-projetoescola", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "guitar-hero-iii-browser-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -365,7 +365,7 @@
 {"key": "pepsiman", "state": "unverified", "reason": "bot_blocked", "http_status": 403, "since": "2026-11-12T01:29:08Z"}
 {"key": "perfect-dark", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "phantasy-star-online-episode-i-ii-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "phantasy-star-online-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "phantasy-star-online-pso-reborn", "state": "unstable", "reason": "server_error", "http_status": 503, "since": "2026-11-19T13:53:18Z"}
 {"key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
 {"key": "pikmin", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "pizza-tower", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
@@ -449,7 +449,7 @@
 {"key": "slendytubbies-2d", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "slime-rancher", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "slingshot", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-13T12:36:43Z"}
-{"key": "sobosuba", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-14T11:44:40Z"}
+{"key": "sobosuba", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-19T13:53:18Z"}
 {"key": "socom-ii-u-s-navy-seals-socom-legacy", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "sonic-cd", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "sonic-cd-sonic-cd-wasm", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -492,7 +492,7 @@
 {"key": "super-mario-64-sm3das", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-64-sm64-cleanroom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "super-mario-64-sm64coopdx-in-browser", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "super-mario-64~2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "super-mario-64~2", "state": "unstable", "reason": "server_error", "http_status": 503, "since": "2026-11-19T13:53:18Z"}
 {"key": "super-mario-bros-remastered", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-kart-sm-kart-zx-web-port", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "super-mario-sunshine", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
