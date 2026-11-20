@@ -63,7 +63,6 @@ data/sources.json       fontes de coleta: qual catálogo, por onde é lido, com 
 data/bronze/            retratos dos catálogos, mudanças e registro das coletas
 data/silver/            ports e jogos unificados, derivados da bronze e das fichas
 data/gold/              tabelas finais da camada ouro, exportadas do dbt
-web/                    modelos das páginas (observatorio, evolucao, vitrine) e o CSS e o JS que elas dividem
 dbt/                    projeto dbt (DuckDB): staging, intermediate e marts, com testes de dados
 data/reference/         tabela de jogos de console e fliperama, mantida à mão
 schema/                 JSON Schema de cada tabela
