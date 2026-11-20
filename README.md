@@ -63,6 +63,7 @@ data/sources.json       fontes de coleta: qual catálogo, por onde é lido, com 
 data/bronze/            retratos dos catálogos, mudanças e registro das coletas
 data/silver/            ports e jogos unificados, derivados da bronze e das fichas
 data/gold/              tabelas finais da camada ouro, exportadas do dbt
+web/                    modelos das páginas (observatorio, evolucao, vitrine) e o CSS e o JS que elas dividem
 dbt/                    projeto dbt (DuckDB): staging, intermediate e marts, com testes de dados
 data/reference/         tabela de jogos de console e fliperama, mantida à mão
 schema/                 JSON Schema de cada tabela
@@ -226,6 +227,9 @@ Limites conhecidos: o agrupamento por nome erra quando duas listas chamam o mesm
 | | `gold_daily_status` | situação de todas as versões em cada conferência, refeita a partir das trocas |
 | | `gold_catalog_daily` | entradas e mudanças do catálogo por coleta |
 | | `gold_findings` | números de cabeçalho, mostrados na seção "Achados" da página inicial |
+| | `gold_evolution_daily` | a base dia a dia: ports listados, entradas e saídas, versões fora do ar |
+| | `gold_platform_summary` | ports listados agora por plataforma de origem do jogo, com a situação |
+| | `gold_new_ports`, `gold_broken_ports` | o que chegou depois do retrato inicial e o que está fora do ar agora |
 
 Decisões de projeto:
 
@@ -233,6 +237,7 @@ Decisões de projeto:
 - **A reconstrução é testada contra a fonte.** O teste `daily_status_matches_robot_counts` confere, a cada execução, se a situação refeita bate com o que o robô contou em cada conferência. Se a lógica de intervalos ou a gravação das trocas tiver defeito, o build falha.
 - **Começo desconhecido é dito.** Versão que já estava fora do ar na primeira conferência tem `started_basis = before_first_check`, e fica fora das medidas de duração.
 - **Queda coletiva** é quando três ou mais versões do mesmo domínio caem na mesma conferência (`collective_min_ports` em `dbt_project.yml`). Separa o espelho que caiu do port que caiu.
+- **Uma foto por dia sem guardar fotos.** A coleta é diária e só grava o que mudou; `gold_evolution_daily` refaz a lista de cada dia a partir da prata (quando cada port apareceu e saiu). Os testes `evolution_matches_silver` e `broken_ports_match_robot` conferem as contas contra a prata e contra a última conferência.
 - **Fim da história.** Quando uma versão sai do catálogo, a conferência grava uma troca para `unlisted`, e a queda em andamento termina com o motivo `removed`.
 
 Os testes em `tests/test_gold.py` rodam o dbt sobre uma história de exemplo escrita à mão e comparam o resultado com a resposta esperada.
@@ -244,6 +249,7 @@ Limites: a precisão é de um dia, porque a conferência é diária; e o períod
 | Endereço | O que é |
 |---|---|
 | `/` | o observatório: panorama, últimos acontecimentos, onde jogar, catálogos, disponibilidade e histórico de quedas |
+| `/evolucao/` | a evolução: novos ports por coleta, ports por console, o que chegou e o que está quebrado agora |
 | `/vitrine/` | a vitrine: capas dos jogos com link, fichas sem link, fila de análise e outros catálogos |
 | `/observatorio/` | endereço antigo do observatório; redireciona para a página inicial |
 

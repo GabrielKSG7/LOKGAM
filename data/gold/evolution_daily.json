@@ -1,0 +1,12 @@
+[
+{"added": 0, "added_console": 0, "checked": null, "console_ports": 174, "day": "2026-11-11", "offline": null, "ports": 1011, "removed": 0, "run_at": "2026-11-11T21:20:07Z"},
+{"added": 5, "added_console": 0, "checked": 571, "console_ports": 174, "day": "2026-11-12", "offline": 59, "ports": 1016, "removed": 0, "run_at": "2026-11-12T13:14:41Z"},
+{"added": 10, "added_console": 1, "checked": 577, "console_ports": 175, "day": "2026-11-13", "offline": 88, "ports": 1026, "removed": 0, "run_at": "2026-11-13T12:36:42Z"},
+{"added": 10, "added_console": 3, "checked": 579, "console_ports": 178, "day": "2026-11-14", "offline": 89, "ports": 1036, "removed": 0, "run_at": "2026-11-14T11:44:39Z"},
+{"added": 0, "added_console": 0, "checked": 579, "console_ports": 178, "day": "2026-11-15", "offline": 89, "ports": 1036, "removed": 0, "run_at": "2026-11-15T12:14:42Z"},
+{"added": 5, "added_console": 0, "checked": 582, "console_ports": 178, "day": "2026-11-16", "offline": 60, "ports": 1041, "removed": 0, "run_at": "2026-11-16T13:07:50Z"},
+{"added": 5, "added_console": 0, "checked": 585, "console_ports": 178, "day": "2026-11-17", "offline": 60, "ports": 1045, "removed": 1, "run_at": "2026-11-17T14:08:25Z"},
+{"added": 3, "added_console": 0, "checked": 586, "console_ports": 178, "day": "2026-11-18", "offline": 60, "ports": 1048, "removed": 0, "run_at": "2026-11-18T13:25:44Z"},
+{"added": 0, "added_console": 0, "checked": 586, "console_ports": 178, "day": "2026-11-19", "offline": 60, "ports": 1048, "removed": 0, "run_at": "2026-11-19T13:53:18Z"},
+{"added": 0, "added_console": 0, "checked": 586, "console_ports": 178, "day": "2026-11-20", "offline": 60, "ports": 1048, "removed": 0, "run_at": "2026-11-20T13:35:31Z"}
+]

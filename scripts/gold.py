@@ -22,7 +22,10 @@ from validate import ROOT
 
 PROJECT = ROOT / "dbt"
 GOLD = ROOT / "data" / "gold"
-TABLES = ("gold_findings", "gold_daily_status", "gold_collective_outages", "gold_outages", "gold_catalog_daily")
+TABLES = (
+    "gold_findings", "gold_daily_status", "gold_collective_outages", "gold_outages", "gold_catalog_daily",
+    "gold_evolution_daily", "gold_platform_summary", "gold_new_ports", "gold_broken_ports",
+)
 
 
 def run_dbt(data_dir: Path | str = "data", database: Path | None = None, target: Path | None = None) -> None:

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evolução · LOKGAM</title>
+<meta name="description" content="Como a base de ports de jogos no navegador muda, coleta a coleta: quantos entram, de quais consoles, e quais estão quebrados agora.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Parede de locadora: balcão compacto no topo, um mosaico só de capas geradas, e a ficha abre como cartão de locação.
+     O observatório usa o mesmo balcão e troca a parede por medidas: situação agora, faixas de conferência e um gráfico por mês. */
+  --wall:#ECE9F5;
+  --wall-2:#D6D0EA;
+  --ink:#1A1630;
+  --ink-2:#5A5378;
+  --paper:#FFFDF6;
+  --paper-2:#F4EFDE;
+  --paper-ink:#1A1630;
+  --paper-ink-2:#5F5873;
+  --paper-line:#D8D1BD;
+  --accent:#FFD21F;
+  --accent-ink:#1A1630;
+  --plastico:#A7A2BD;
+  --plastico-ink:#221D3D;
+  /* Estado de um link: nunca usado para outra coisa */
+  --ok:#157A4B;
+  --warn:#9A5800;
+  --bad:#BF2F1E;
+  --idle:#6A6485;
+  /* Séries de gráfico, validadas contra a parede clara e a escura */
+  --serie-1:#3C49D6;
+  --serie-2:#D6478E;
+  --font-display:"Anybody","Arial Narrow","Helvetica Neue",Impact,sans-serif;
+  --font-body:"Schibsted Grotesk","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-mono:"Martian Mono",ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --wall:#15122B;
+    --wall-2:#2B2654;
+    --ink:#F1EEFF;
+    --ink-2:#ABA5CC;
+    --paper:#231F42;
+    --paper-2:#2D2853;
+    --paper-ink:#F1EEFF;
+    --paper-ink-2:#B3ADD2;
+    --paper-line:#433D73;
+    --accent:#FFD21F;
+    --accent-ink:#1A1630;
+    --plastico:#6B6690;
+    --plastico-ink:#100D22;
+    --ok:#57DDA0;
+    --warn:#FFBB55;
+    --bad:#FF8572;
+    --idle:#9D97BD;
+    --serie-1:#6E7BF2;
+    --serie-2:#D55181;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --wall:#15122B;
+  --wall-2:#2B2654;
+  --ink:#F1EEFF;
+  --ink-2:#ABA5CC;
+  --paper:#231F42;
+  --paper-2:#2D2853;
+  --paper-ink:#F1EEFF;
+  --paper-ink-2:#B3ADD2;
+  --paper-line:#433D73;
+  --accent:#FFD21F;
+  --accent-ink:#1A1630;
+  --plastico:#6B6690;
+  --plastico-ink:#100D22;
+  --ok:#57DDA0;
+  --warn:#FFBB55;
+  --bad:#FF8572;
+  --idle:#9D97BD;
+  --serie-1:#6E7BF2;
+  --serie-2:#D55181;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--wall);color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.5}
+[hidden]{display:none !important}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;box-shadow:0 0 0 6px var(--ink)}
+
+.pagina{max-width:1180px;margin:0 auto;padding:clamp(14px,2.4vw,24px) clamp(16px,4vw,40px) 56px;display:flex;flex-direction:column;gap:clamp(30px,5vw,60px)}
+
+/* Trilho de navegação */
+.trilho{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.04em}
+.trilho a{padding:.5em 0;text-decoration:none;border-bottom:3px solid transparent}
+.trilho a:hover{border-bottom-color:var(--ink-2)}
+.trilho a[aria-current="page"]{font-weight:600;border-bottom-color:var(--ink)}
+.trilho__fora{margin-left:auto;color:var(--ink-2)}
+
+/* Balcão */
+.balcao{display:grid;gap:16px;container-type:inline-size}
+.marca{display:grid;gap:4px}
+.marca__sobre{margin:0;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.marca__nome{margin:0;font-family:var(--font-display);font-stretch:150%;font-weight:900;font-size:clamp(2rem,10.4cqi,9rem);line-height:.8;letter-spacing:-.015em;text-transform:uppercase;white-space:nowrap;overflow:hidden;padding-block:.05em}
+.marca__sub{margin:0;font-family:var(--font-display);font-stretch:150%;font-weight:500;font-size:clamp(.82rem,2.4cqi,1.6rem);line-height:1.1;letter-spacing:.3em;text-transform:uppercase}
+.tese{margin:6px 0 0;max-width:60ch;font-size:clamp(1.02rem,1.7cqi,1.22rem);text-wrap:pretty}
+.placar{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;padding:0;list-style:none;font-family:var(--font-mono);font-size:.74rem;color:var(--ink-2)}
+.placar b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.placar a{text-underline-offset:3px}
+
+/* Selos: os adesivos de classificação */
+.selo{display:inline-flex;align-items:center;gap:.5em;font-family:var(--font-mono);font-weight:600;font-size:.66rem;line-height:1;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;padding:.55em .8em;border-radius:999px;border:2px solid transparent;background:var(--selo-bg);color:var(--selo-fg)}
+.selo--official{--selo-bg:#8DB8FF;--selo-fg:#0A1B4D}
+.selo--free{--selo-bg:#5FE3A4;--selo-fg:#06301C}
+.selo--demo{--selo-bg:#FFB74A;--selo-fg:#3D2000}
+.selo--byo_files{--selo-bg:#FF93CC;--selo-fg:#4D0A2E}
+
+/* Luz de status da capa */
+.led{flex:none;display:inline-block;width:.85em;height:.85em;border-radius:50%;box-shadow:0 0 0 1.5px rgba(8,5,25,.75)}
+.led--online{background:#3BE590}
+.led--unstable{background:#FFB020}
+.led--offline{background:#FF4D3D}
+.led--unverified{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+
+/* Faixa de conferências: cada barrinha é uma conferência, e a altura repete o que a cor diz */
+.faixa{display:flex;align-items:flex-end;justify-content:flex-end;gap:2px;height:18px;min-width:0;overflow:hidden}
+.pulso{flex:none;display:inline-block;width:6px;height:18px;border-radius:2px;background:currentColor}
+.pulso--online{color:var(--ok)}
+.pulso--unstable{color:var(--warn);height:11px}
+.pulso--offline{color:var(--bad);height:5px}
+.pulso--unverified{color:var(--idle);background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+.pulso--vazio{height:2px;color:var(--wall-2)}
+.legenda-pulso{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none;font-family:var(--font-mono);font-size:.7rem;color:var(--ink-2)}
+.legenda-pulso li{display:inline-flex;align-items:flex-end;gap:7px;line-height:1.2}
+
+/* Seções */
+.secao{display:grid;gap:18px}
+.secao__titulo{margin:0;font-family:var(--font-display);font-stretch:130%;font-weight:800;font-size:clamp(1.35rem,3vw,2.1rem);line-height:1;text-transform:uppercase;text-wrap:balance}
+.secao__lide{margin:0;max-width:64ch;color:var(--ink-2)}
+.notas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 28px;margin:0;padding:18px 0 0;border-top:2px solid var(--wall-2)}
+.notas div{display:grid;gap:4px;align-content:start}
+.notas dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.notas dd{margin:0;font-size:.92rem;color:var(--ink-2)}
+.rodape{display:grid;gap:6px;padding-top:22px;border-top:2px solid var(--ink);font-size:.86rem;color:var(--ink-2);max-width:78ch}
+.rodape p{margin:0}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+}
+
+/* Peças de dados que mais de uma página usa: números grandes, gráfico de colunas e tabelas */
+.nota{margin:0;max-width:70ch;font-size:.88rem;color:var(--ink-2)}
+.agora{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.agora li{display:grid;gap:6px;padding:16px 18px 18px 0}
+.agora li + li{padding-left:18px;border-left:1px solid var(--wall-2)}
+.agora__rotulo{display:flex;align-items:flex-end;gap:8px;font-size:.9rem;color:var(--ink-2);line-height:1.2}
+.agora__valor{font-size:clamp(2rem,5vw,3.1rem);font-weight:700;line-height:1;letter-spacing:-.02em}
+.figura{margin:0;display:grid;gap:14px}
+.figura__topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.legenda{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0;padding:0;list-style:none;font-size:.86rem}
+.legenda li{display:inline-flex;align-items:center;gap:8px}
+.legenda small{color:var(--ink-2);font-size:.8rem}
+.amostra{flex:none;width:12px;height:12px;border-radius:3px}
+.amostra--1{background:var(--serie-1)}
+.amostra--2{background:var(--serie-2)}
+.plot{position:relative}
+.plot svg{display:block;width:100%;height:auto;overflow:visible}
+.plot .grade{stroke:var(--wall-2);stroke-width:1}
+.plot .eixo{stroke:var(--ink-2);stroke-width:1}
+.plot text{font-family:var(--font-mono);font-size:10px;fill:var(--ink-2)}
+.plot .rotulo-valor{font-family:var(--font-body);font-size:12px;font-weight:700;fill:var(--ink)}
+.plot .seg-1{fill:var(--serie-1)}
+.plot .seg-2{fill:var(--serie-2)}
+.plot .faixa-alvo{fill:var(--ink);opacity:0}
+.plot .coluna{cursor:default;outline:none}
+.plot .coluna:hover .faixa-alvo,.plot .coluna:focus-visible .faixa-alvo{opacity:.07}
+.plot .coluna:hover .seg-1,.plot .coluna:hover .seg-2,.plot .coluna:focus-visible .seg-1,.plot .coluna:focus-visible .seg-2{filter:brightness(1.14)}
+.plot .coluna:focus-visible .faixa-alvo{stroke:var(--ink);stroke-width:2;opacity:.1}
+.dica{position:absolute;z-index:3;pointer-events:none;min-width:11rem;padding:10px 12px;border-radius:6px;background:var(--ink);color:var(--wall);font-size:.82rem;line-height:1.35;box-shadow:0 8px 20px rgba(8,5,25,.3)}
+.dica__valor{font-size:1rem;font-weight:700}
+.dica__rotulo{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;opacity:.75;padding-bottom:6px}
+.dica__linha{display:flex;align-items:center;gap:8px}
+.dica__linha b{font-variant-numeric:tabular-nums}
+.chave{flex:none;width:12px;height:3px;border-radius:2px}
+.chave--1{background:var(--serie-1)}
+.chave--2{background:var(--serie-2)}
+.alternar{justify-self:start;font:inherit;font-family:var(--font-mono);font-size:.72rem;color:var(--ink);background:none;border:0;padding:.4em 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.tabela-rolagem{overflow-x:auto}
+.tabela{width:100%;border-collapse:collapse;font-size:.92rem}
+.tabela th{text-align:left;font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:0 14px 8px 0;border-bottom:2px solid var(--ink);vertical-align:bottom}
+.tabela td{vertical-align:top;padding:11px 14px 11px 0;border-bottom:1px solid var(--wall-2)}
+.tabela .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tabela th.num{text-align:right;white-space:normal}
+.tabela small{display:block;font-weight:400;color:var(--ink-2)}
+.tabela--estreita{max-width:34rem}
+.figura__titulo{margin:0;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.tabela__legenda{caption-side:top;text-align:left;padding-bottom:10px;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.agora__valor a{text-decoration:none}
+.agora__valor a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
+.agora__detalhe{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.02em;color:var(--ink-2)}
+.tabela td.dominio{font-family:var(--font-mono);font-size:.82rem;overflow-wrap:anywhere}
+.barra{display:block;height:8px;min-width:2px;border-radius:4px;background:var(--serie-1)}
+.celula-barra{width:26%;vertical-align:middle !important}
+.duas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(30px,5vw,60px) 48px;align-items:start}
+.duas > *{min-width:0}
+@media (max-width:760px){
+  .celula-barra,.coluna-barra{display:none}
+  .agora{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .agora li:nth-child(3){padding-left:0;border-left:0}
+  .agora li:nth-child(n+3){border-top:1px solid var(--wall-2)}
+}
+
+.lista-novos{margin:0;padding:0;list-style:none;border-top:2px solid var(--ink)}
+.lista-novos li{display:grid;grid-template-columns:5.2rem minmax(0,1fr) auto;gap:2px 14px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--wall-2)}
+.lista-novos time{font-family:var(--font-mono);font-size:.7rem;color:var(--ink-2)}
+.lista-novos b{font-weight:600;overflow-wrap:anywhere}
+.lista-novos small{grid-column:2;font-family:var(--font-mono);font-size:.66rem;color:var(--ink-2);overflow-wrap:anywhere}
+.lista-novos .situacao{grid-row:1/span 2;grid-column:3;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.66rem;color:var(--ink-2);white-space:nowrap}
+.tabela td.plataforma{font-weight:600;white-space:nowrap}
+.tabela td.plataforma small{display:inline;margin-left:6px;font-weight:400}
+.figura{margin-bottom:8px}
+@media (max-width:560px){.lista-novos li{grid-template-columns:minmax(0,1fr) auto}.lista-novos time{grid-column:1}.lista-novos small{grid-column:1}.lista-novos .situacao{grid-row:1/span 3;grid-column:2}}
+</style>
+</head>
+<body>
+<div class="pagina">
+  <nav class="trilho" aria-label="Páginas do site">
+    <a href="../">Observatório</a>
+    <a href="./" aria-current="page">Evolução</a>
+    <a href="../vitrine/">Onde jogar</a>
+    <a class="trilho__fora" id="link-repo" href="https://github.com/GabrielKSG7/LOKGAM" rel="noopener noreferrer">Código e dados no GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+
+  <header class="balcao">
+    <div class="marca">
+      <p class="marca__sobre">Observatório · <span id="atualizado"></span></p>
+      <h1 class="marca__nome" id="marca-nome"><span>Evolução</span></h1>
+      <p class="marca__sub">a base coleta a coleta</p>
+    </div>
+    <p class="tese">Como a lista de ports muda com o tempo: quantos entram a cada coleta, de quais consoles vêm os jogos e quais versões estão quebradas agora. Tudo sai do registro diário de mudanças, sem guardar uma cópia por dia.</p>
+  </header>
+
+  <section class="secao" id="resumo" aria-labelledby="resumo-titulo">
+    <h2 class="secao__titulo" id="resumo-titulo">Resumo</h2>
+    <ul class="agora" id="resumo-numeros"></ul>
+  </section>
+
+  <section class="secao" id="novos-por-dia" aria-labelledby="novos-dia-titulo">
+    <h2 class="secao__titulo" id="novos-dia-titulo">Novos ports por coleta</h2>
+    <p class="secao__lide" id="novos-dia-lide"></p>
+    <figure class="figura">
+      <div class="figura__topo">
+        <ul class="legenda">
+          <li><i class="amostra amostra--1"></i>Jogo de console ou fliperama</li>
+          <li><i class="amostra amostra--2"></i>Outros <small>PC ou ainda não classificado</small></li>
+        </ul>
+      </div>
+      <div class="plot" id="plot-novos"></div>
+      <button class="alternar" id="alternar-novos" type="button" aria-expanded="false" aria-controls="tabela-novos">Ver os números em tabela</button>
+      <div class="tabela-rolagem" id="tabela-novos" hidden>
+        <table class="tabela tabela--estreita">
+          <thead><tr><th scope="col">Dia</th><th scope="col" class="num">Entraram</th><th scope="col" class="num">De console</th><th scope="col" class="num">Saíram</th><th scope="col" class="num">Listados</th><th scope="col" class="num">Fora do ar</th></tr></thead>
+          <tbody id="tabela-novos-corpo"></tbody>
+        </table>
+      </div>
+    </figure>
+  </section>
+
+  <section class="secao" id="por-console" aria-labelledby="console-titulo">
+    <h2 class="secao__titulo" id="console-titulo">Ports por console</h2>
+    <p class="secao__lide" id="console-lide"></p>
+    <div class="tabela-rolagem">
+      <table class="tabela">
+        <thead><tr><th scope="col">Plataforma de origem</th><th scope="col" class="coluna-barra"><span class="sr">Ports em barra</span></th><th scope="col" class="num">Ports</th><th scope="col" class="num">Jogáveis</th><th scope="col" class="num">No ar</th><th scope="col" class="num">Fora do ar</th><th scope="col" class="num">Novos</th></tr></thead>
+        <tbody id="console-corpo"></tbody>
+      </table>
+    </div>
+    <p class="nota" id="console-nota"></p>
+  </section>
+
+  <div class="duas">
+    <section class="secao" id="novos" aria-labelledby="novos-titulo">
+      <h2 class="secao__titulo" id="novos-titulo">Chegaram</h2>
+      <p class="secao__lide">Os ports que a coleta viu entrar no catálogo, do mais novo para o mais antigo, com a situação na última conferência.</p>
+      <ol class="lista-novos" id="novos-lista"></ol>
+    </section>
+
+    <section class="secao" id="quebrados" aria-labelledby="quebrados-titulo">
+      <h2 class="secao__titulo" id="quebrados-titulo">Quebrados agora</h2>
+      <p class="secao__lide" id="quebrados-lide"></p>
+      <div class="tabela-rolagem">
+        <table class="tabela">
+          <thead><tr><th scope="col">Domínio</th><th scope="col" class="num">Versões</th><th scope="col">Fora do ar desde</th></tr></thead>
+          <tbody id="quebrados-corpo"></tbody>
+        </table>
+      </div>
+      <p class="nota">As quedas de cada dia, separadas em coletivas e isoladas, estão nos <a href="../#achados">Achados</a>.</p>
+    </section>
+  </div>
+
+  <section class="secao" id="metodo" aria-labelledby="metodo-titulo">
+    <h2 class="secao__titulo" id="metodo-titulo">Como isto é medido</h2>
+    <dl class="notas">
+      <div><dt>De onde vem</dt><dd>Um robô coleta o catálogo uma vez por dia e grava só o que mudou: entradas que chegaram, saíram ou trocaram de endereço. Outro confere se cada versão jogável responde e grava só as trocas de situação. A lista de cada dia é refeita a partir desses registros.</dd></div>
+      <div><dt>Um port</dt><dd>Entradas que apontam para o mesmo endereço jogável contam como um port. O jogo de cada port vem do nome, sem o que a lista põe entre parênteses.</dd></div>
+      <div><dt>Console de origem</dt><dd>Vem das fichas curadas e de uma tabela de referência mantida à mão. O que não está em nenhuma das duas aparece como "Não classificado": é a maior parte, e muita coisa ali é jogo de PC.</dd></div>
+      <div><dt>"Chegaram"</dt><dd>Só conta como novo o port que apareceu depois da primeira coleta, de 11/11/2026. Os que já estavam lá têm data desconhecida.</dd></div>
+      <div><dt>Quebrado</dt><dd>Versão que respondeu com erro ou não respondeu na última conferência. Não diz se o jogo funciona quando a página abre.</dd></div>
+      <div><dt>Os números</dt><dd>Tabelas em <a id="dado-gold" href="#">data/gold</a>, geradas por modelos dbt sobre DuckDB, com testes que conferem as contas contra o que os robôs registraram.</dd></div>
+    </dl>
+  </section>
+
+  <footer class="rodape">
+    <p>Jogos, nomes e marcas pertencem aos seus donos. Esta página mostra domínios como texto, sem link para os ports.</p>
+  </footer>
+</div>
+
+<script type="application/json" id="dados">{"repo":"https://github.com/GabrielKSG7/LOKGAM","days":[{"added":0,"added_console":0,"checked":null,"console_ports":174,"day":"2026-11-11","offline":null,"ports":1011,"removed":0,"run_at":"2026-11-11T21:20:07Z"},{"added":5,"added_console":0,"checked":571,"console_ports":174,"day":"2026-11-12","offline":59,"ports":1016,"removed":0,"run_at":"2026-11-12T13:14:41Z"},{"added":10,"added_console":1,"checked":577,"console_ports":175,"day":"2026-11-13","offline":88,"ports":1026,"removed":0,"run_at":"2026-11-13T12:36:42Z"},{"added":10,"added_console":3,"checked":579,"console_ports":178,"day":"2026-11-14","offline":89,"ports":1036,"removed":0,"run_at":"2026-11-14T11:44:39Z"},{"added":0,"added_console":0,"checked":579,"console_ports":178,"day":"2026-11-15","offline":89,"ports":1036,"removed":0,"run_at":"2026-11-15T12:14:42Z"},{"added":5,"added_console":0,"checked":582,"console_ports":178,"day":"2026-11-16","offline":60,"ports":1041,"removed":0,"run_at":"2026-11-16T13:07:50Z"},{"added":5,"added_console":0,"checked":585,"console_ports":178,"day":"2026-11-17","offline":60,"ports":1045,"removed":1,"run_at":"2026-11-17T14:08:25Z"},{"added":3,"added_console":0,"checked":586,"console_ports":178,"day":"2026-11-18","offline":60,"ports":1048,"removed":0,"run_at":"2026-11-18T13:25:44Z"},{"added":0,"added_console":0,"checked":586,"console_ports":178,"day":"2026-11-19","offline":60,"ports":1048,"removed":0,"run_at":"2026-11-19T13:53:18Z"},{"added":0,"added_console":0,"checked":586,"console_ports":178,"day":"2026-11-20","offline":60,"ports":1048,"removed":0,"run_at":"2026-11-20T13:35:31Z"}],"platforms":[{"added_since_baseline":0,"games":17,"is_console":true,"offline":0,"online":11,"platform":"Arcade","playable":12,"ports":17,"unstable":0,"unverified":1},{"added_since_baseline":0,"games":2,"is_console":true,"offline":0,"online":1,"platform":"DS","playable":1,"ports":2,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":2,"is_console":true,"offline":0,"online":2,"platform":"Dreamcast","playable":2,"ports":2,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":1,"is_console":true,"offline":0,"online":0,"platform":"Game Boy","playable":0,"ports":1,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":5,"is_console":true,"offline":0,"online":4,"platform":"Game Boy Advance","playable":4,"ports":6,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":1,"is_console":true,"offline":0,"online":0,"platform":"Game Boy Color","playable":0,"ports":1,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":8,"is_console":true,"offline":0,"online":7,"platform":"GameCube","playable":7,"ports":9,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":1,"is_console":true,"offline":0,"online":2,"platform":"Mega CD","playable":2,"ports":2,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":3,"is_console":true,"offline":0,"online":1,"platform":"Mega Drive","playable":1,"ports":3,"unstable":0,"unverified":0},{"added_since_baseline":1,"games":12,"is_console":true,"offline":0,"online":11,"platform":"N64","playable":11,"ports":22,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":3,"is_console":true,"offline":0,"online":2,"platform":"NES","playable":2,"ports":3,"unstable":0,"unverified":0},{"added_since_baseline":34,"games":747,"is_console":false,"offline":57,"online":371,"platform":"Não classificado","playable":444,"ports":855,"unstable":10,"unverified":6},{"added_since_baseline":0,"games":13,"is_console":false,"offline":0,"online":13,"platform":"PC","playable":14,"ports":15,"unstable":0,"unverified":1},{"added_since_baseline":0,"games":10,"is_console":true,"offline":0,"online":6,"platform":"PS1","playable":7,"ports":11,"unstable":0,"unverified":1},{"added_since_baseline":1,"games":39,"is_console":true,"offline":1,"online":49,"platform":"PS2","playable":50,"ports":61,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":1,"is_console":true,"offline":0,"online":0,"platform":"PS3","playable":0,"ports":1,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":10,"is_console":true,"offline":0,"online":9,"platform":"PSP","playable":10,"ports":10,"unstable":1,"unverified":0},{"added_since_baseline":0,"games":2,"is_console":true,"offline":0,"online":1,"platform":"SNES","playable":1,"ports":3,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":1,"is_console":true,"offline":0,"online":1,"platform":"Saturn","playable":1,"ports":1,"unstable":0,"unverified":0},{"added_since_baseline":0,"games":2,"is_console":true,"offline":0,"online":1,"platform":"Switch","playable":2,"ports":3,"unstable":0,"unverified":1},{"added_since_baseline":0,"games":4,"is_console":true,"offline":0,"online":0,"platform":"Wii","playable":0,"ports":4,"unstable":0,"unverified":0},{"added_since_baseline":1,"games":1,"is_console":true,"offline":0,"online":3,"platform":"Xbox","playable":3,"ports":4,"unstable":0,"unverified":0},{"added_since_baseline":1,"games":7,"is_console":true,"offline":0,"online":7,"platform":"Xbox 360","playable":9,"ports":12,"unstable":1,"unverified":1}],"new_ports":[{"first_seen":"2026-11-16T13:07:50Z","game_title":"0 A.D.","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:0-a-d-webassembly-experimental","removed_at":null,"state":null,"title":"0 A.D. (WebAssembly; experimental)"},{"first_seen":"2026-11-16T13:07:50Z","game_title":"Blast Corps","is_console":false,"listed":true,"platform":"Não classificado","play_host":"doridian.github.io","port_id":"ultimate-catalog:blast-corps-dozerencore","removed_at":null,"state":"online","title":"Blast Corps (DozerEncore)"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Blur","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:blur-blur-web","removed_at":null,"state":null,"title":"Blur (blur-web)"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Bounce Tales","is_console":false,"listed":true,"platform":"Não classificado","play_host":"prasannaone.github.io","port_id":"ultimate-catalog:bounce-tales","removed_at":null,"state":"online","title":"Bounce Tales"},{"first_seen":"2026-11-17T13:50:26Z","game_title":"Crash of the Titans","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:crash-of-the-titans-crash-ott-web-webgpu","removed_at":null,"state":null,"title":"Crash of the Titans (Crash-OTT-web; WebGPU)"},{"first_seen":"2026-11-18T13:25:44Z","game_title":"Cross Hermit: Welcome to the Farthest","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:cross-hermit-welcome-to-the-farthest-opencrosshermit","removed_at":null,"state":null,"title":"Cross Hermit: Welcome to the Farthest (OpenCrossHermit)"},{"first_seen":"2026-11-17T13:50:26Z","game_title":"Geometry Dash","is_console":false,"listed":true,"platform":"Não classificado","play_host":"gd-webport.pages.dev","port_id":"ultimate-catalog:geometry-dash-ale7208","removed_at":null,"state":"online","title":"Geometry Dash (Ale7208)"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Grand Theft Auto IV","is_console":true,"listed":true,"platform":"Xbox 360","play_host":null,"port_id":"ultimate-catalog:grand-theft-auto-iv-regrandiv-v2","removed_at":null,"state":null,"title":"Grand Theft Auto IV (reGRANDIV-v2)"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Halo: Combat Evolved","is_console":true,"listed":true,"platform":"Xbox","play_host":null,"port_id":"ultimate-catalog:halo-combat-evolved-halo-ce-web-multiplayer","removed_at":null,"state":null,"title":"Halo: Combat Evolved (halo-ce-web-multiplayer)"},{"first_seen":"2026-11-17T13:50:26Z","game_title":"Heaven for Death","is_console":false,"listed":true,"platform":"Não classificado","play_host":"ymdryo.github.io","port_id":"ultimate-catalog:heaven-for-death","removed_at":null,"state":"online","title":"Heaven for Death"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Just Shapes & Beats","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:just-shapes-beats-web-port","removed_at":null,"state":null,"title":"Just Shapes & Beats (web port)"},{"first_seen":"2026-11-12T13:14:41Z","game_title":"Kagetsu Tohya","is_console":false,"listed":true,"platform":"Não classificado","play_host":"kagetsu.pages.dev","port_id":"ultimate-catalog:kagetsu-tohya","removed_at":null,"state":"online","title":"Kagetsu Tohya"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"LEGO Star Wars: The Video Game","is_console":false,"listed":true,"platform":"Não classificado","play_host":"down1oads.github.io","port_id":"ultimate-catalog:lego-star-wars-the-video-game","removed_at":null,"state":"online","title":"LEGO Star Wars: The Video Game"},{"first_seen":"2026-11-12T13:14:41Z","game_title":"Maisy's Playhouse","is_console":false,"listed":true,"platform":"Não classificado","play_host":"games.nostalgiarealm.com","port_id":"ultimate-catalog:maisy-s-playhouse","removed_at":null,"state":"online","title":"Maisy's Playhouse"},{"first_seen":"2026-11-16T13:07:50Z","game_title":"Marble Marcher","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:marble-marcher-webgpu-early-development","removed_at":null,"state":null,"title":"Marble Marcher (WebGPU; early development)"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Midnight Club 3: DUB Edition","is_console":true,"listed":true,"platform":"PS2","play_host":"dubedition.xyz","port_id":"ultimate-catalog:midnight-club-3-dub-edition-mc3-web-study","removed_at":null,"state":"online","title":"Midnight Club 3: DUB Edition (mc3-web-study)"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Passage","is_console":false,"listed":true,"platform":"Não classificado","play_host":"judooochp.github.io","port_id":"ultimate-catalog:passage","removed_at":null,"state":"online","title":"Passage"},{"first_seen":"2026-11-12T13:14:41Z","game_title":"Persona 1","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:persona-1","removed_at":null,"state":null,"title":"Persona 1"},{"first_seen":"2026-11-12T13:14:41Z","game_title":"PetWings","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:petwings","removed_at":null,"state":null,"title":"PetWings"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Please, Don't Touch Anything 3D","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:please-don-t-touch-anything-3d","removed_at":null,"state":null,"title":"Please, Don't Touch Anything 3D"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Pokémon Platinum","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:pokemon-platinum-open-sinnoh","removed_at":null,"state":null,"title":"Pokémon Platinum (open-sinnoh)"},{"first_seen":"2026-11-17T13:50:26Z","game_title":"Project Zomboid","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:project-zomboid-public-tech-demo-javascript-jvm-runtime","removed_at":null,"state":null,"title":"Project Zomboid (Public Tech Demo; JavaScript JVM runtime)"},{"first_seen":"2026-11-18T13:25:44Z","game_title":"Quake 2","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:quake-ii-qwasm2-rs-alpha","removed_at":null,"state":null,"title":"Quake II (qwasm2-rs; alpha)"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Rust Legacy","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:rust-legacy","removed_at":null,"state":null,"title":"Rust Legacy"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Slingshot","is_console":false,"listed":true,"platform":"Não classificado","play_host":"phoenox.github.io","port_id":"ultimate-catalog:slingshot","removed_at":null,"state":"online","title":"Slingshot"},{"first_seen":"2026-11-12T13:14:41Z","game_title":"Sobosuba","is_console":false,"listed":true,"platform":"Não classificado","play_host":"kn0tzer.work.gd","port_id":"ultimate-catalog:sobosuba","removed_at":null,"state":"online","title":"Sobosuba"},{"first_seen":"2026-11-16T13:07:50Z","game_title":"Sonic Robo Blast 2 Kart","is_console":false,"listed":true,"platform":"Não classificado","play_host":"kartweb.gvbvdxx.me","port_id":"ultimate-catalog:sonic-robo-blast-2-kart-srb2kartweb","removed_at":null,"state":"online","title":"Sonic Robo Blast 2 Kart (SRB2KartWeb)"},{"first_seen":"2026-11-17T13:50:26Z","game_title":"Soul of Darkness","is_console":false,"listed":true,"platform":"Não classificado","play_host":"jubayer-cmd.github.io","port_id":"ultimate-catalog:soul-of-darkness","removed_at":null,"state":"online","title":"Soul of Darkness"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Super Mario 64","is_console":true,"listed":true,"platform":"N64","play_host":"andrewnakas.github.io","port_id":"ultimate-catalog:super-mario-64-sm64-cleanroom","removed_at":null,"state":"online","title":"Super Mario 64 (sm64-cleanroom)"},{"first_seen":"2026-11-16T13:07:50Z","game_title":"SuperTuxKart","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:supertuxkart-webassembly-experimental","removed_at":null,"state":null,"title":"SuperTuxKart (WebAssembly; experimental)"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Tennis Game","is_console":false,"listed":true,"platform":"Não classificado","play_host":"kyleschichl0x16.github.io","port_id":"ultimate-catalog:tennis-game","removed_at":null,"state":"online","title":"Tennis Game"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"The Legend of Zelda: Ocarina of Time","is_console":false,"listed":true,"platform":"Não classificado","play_host":"andrewnakas.github.io","port_id":"ultimate-catalog:the-legend-of-zelda-ocarina-of-time-oot-cleanroom","removed_at":null,"state":"online","title":"The Legend of Zelda: Ocarina of Time (oot-cleanroom)"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Turok 2: Seeds of Evil","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:turok-2-seeds-of-evil-turok-2-recomp","removed_at":null,"state":null,"title":"Turok 2: Seeds of Evil (turok-2-recomp)"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Turok 3: Shadow of Oblivion","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:turok-3-shadow-of-oblivion-turok-3-recomp","removed_at":null,"state":null,"title":"Turok 3: Shadow of Oblivion (turok-3-recomp)"},{"first_seen":"2026-11-14T11:44:39Z","game_title":"Turok: Dinosaur Hunter","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:turok-dinosaur-hunter-turok-recomp","removed_at":null,"state":null,"title":"Turok: Dinosaur Hunter (turok-recomp)"},{"first_seen":"2026-11-18T13:25:44Z","game_title":"Ultima V: Warriors of Destiny","is_console":false,"listed":true,"platform":"Não classificado","play_host":"synthwave-pixel.github.io","port_id":"ultimate-catalog:ultima-v-warriors-of-destiny-ultima5","removed_at":null,"state":"online","title":"Ultima V: Warriors of Destiny (ultima5)"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Yar Arazi","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:yar-arazi","removed_at":null,"state":null,"title":"Yar Arazi"},{"first_seen":"2026-11-13T12:36:42Z","game_title":"Zanac EX","is_console":false,"listed":true,"platform":"Não classificado","play_host":null,"port_id":"ultimate-catalog:zanac-ex","removed_at":null,"state":null,"title":"Zanac EX"}],"broken":[{"title":"Amanda The Adventurer","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Andy's Apple Farm","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Baldi's Basics Classic Remastered","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Baldi's Basics Plus","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Bendy and The Ink Machine","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Bendy and The Ink Machine","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"BERGENTRUCK 201x","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"BLOODMONEY!","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Buckshot Roulette","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Call of Duty: Black Ops Zombies","platform":"Não classificado","is_console":false,"play_host":"vel.gg","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"Class of '09","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Cuphead","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Cut the Rope (H5DX)","platform":"Não classificado","is_console":false,"play_host":"yell0wsuit.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"Dead Plate","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Deadseat","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Deltarune","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Do NOT Take This Cat Home","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Dungeon Keeper","platform":"Não classificado","is_console":false,"play_host":"dk-browser.tiiny.site","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"Fears To Fathom","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Feed & Grow Fish","platform":"Não classificado","is_console":false,"play_host":"reeyukifish.pages.dev","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"FIFA 12","platform":"Não classificado","is_console":false,"play_host":"fifa12.online","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"FlatOut 2 (dezm0n web port)","platform":"Não classificado","is_console":false,"play_host":"itch.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"FNAF","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Getting Over It","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Half Life 2","platform":"Não classificado","is_console":false,"play_host":"hl2.slqnt.dev","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"Happy Sheepies","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Hollow Knight (dezm0n web port)","platform":"Não classificado","is_console":false,"play_host":"dezm0n.itch.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"Hotline Miami","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Human Expenditure Program","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"I Can't Believe It's Not Sonic 1","platform":"Não classificado","is_console":false,"play_host":"jojudge.com","started_at":"2026-11-14T11:44:40Z","started_basis":"observed","collective":false},{"title":"Jelly Drift","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Karlson","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Kindergarten 1 & 2","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Kino der Toten (theeagler1234 mirror)","platform":"Não classificado","is_console":false,"play_host":"theeagler1234-alt.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"koi/_flixel","platform":"Não classificado","is_console":false,"play_host":"oldgrounds.xyz","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"Lacey's Flash Games","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Milkman Karlson","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Minesweeper Plus","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Need for Speed: Most Wanted (2005) (dezm0n web port)","platform":"PS2","is_console":true,"play_host":"dezm0n.itch.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"OMORI","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"People Playground","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Pizza Tower","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"R.E.P.O","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"RAFT","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Schoolboy Runaway","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Slender: The Eight Pages","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"SONIC.EXE","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Speed Stars","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Tattletail","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"That's Not My Neighbor","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Deadseat","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"The Man From the Window","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Trombone Champ","platform":"Não classificado","is_console":false,"play_host":"wasm.rip","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":false},{"title":"Ultrakill Prelude","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Undertale","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Undertale Yellow","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Webfishing","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Witch's Heart","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Yandere Simulator","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true},{"title":"Yume Nikki","platform":"Não classificado","is_console":false,"play_host":"gn-math.github.io","started_at":"2026-11-12T01:29:08Z","started_basis":"before_first_check","collective":true}]}</script>
+<script>
+/* Funções que a vitrine e o observatório dividem: textos, datas e a regra da luz de status. */
+window.LOKGAM = (function () {
+  'use strict';
+  var L = {};
+
+  L.esc = function (s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+  L.plural = function (n, um, varios) { return n + ' ' + (n === 1 ? um : varios); };
+  L.lista = function (a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1]; };
+
+  L.ESTADO = { online: 'No ar', unstable: 'Instável', offline: 'Fora do ar', unverified: 'Não conferido' };
+  L.ESTADO_CURTO = { online: 'no ar', unstable: 'instável', offline: 'fora do ar', unverified: 'não conferido' };
+  L.TIPO = { launch: 'Lançamento', dmca_notice: 'Notificação de direitos autorais', removal: 'Remoção', outage: 'Queda', restored: 'Voltou ao ar', model_change: 'Mudou de modelo' };
+  L.TECNICA = {
+    native_web: 'Feito para a web',
+    source_port: 'Compilado a partir do código-fonte',
+    reimplementation: 'Motor reescrito do zero',
+    decompilation: 'Código reconstruído por engenharia reversa',
+    recompilation: 'Recompilação estática do código original',
+    emulation: 'Emulação no navegador',
+    unknown: 'Ainda não identificada'
+  };
+  L.MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+  /* "2026-11-10" vira 10/11/2026, "2026-09" vira set/2026, "2015" fica 2015 */
+  L.data = function (s) {
+    if (!s) return '';
+    var p = s.slice(0, 10).split('-');
+    if (p[2]) return p[2] + '/' + p[1] + '/' + p[0];
+    if (p[1]) return L.MES[+p[1] - 1] + '/' + p[0];
+    return p[0];
+  };
+  /* Data só com mês vai para o fim daquele mês na ordenação */
+  L.chave = function (d) { return d.length === 7 ? d + '-99' : d; };
+  L.temHora = function (s) { return s.length > 10; };
+  L.instante = function (s) { return Date.parse(L.temHora(s) ? s : s + 'T12:00:00Z'); };
+  L.dataHora = function (s) {
+    if (!L.temHora(s)) return L.data(s);
+    return new Date(s).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+  L.idadeCurta = function (ms) {
+    var min = Math.max(0, Math.round(ms / 60000));
+    if (min < 1) return 'agora';
+    if (min < 60) return min + ' min';
+    var h = Math.round(min / 60);
+    return h < 48 ? h + ' h' : Math.round(h / 24) + ' d';
+  };
+  L.ha = function (ms) {
+    var curta = L.idadeCurta(ms);
+    return curta === 'agora' ? 'agora há pouco' : 'há ' + curta;
+  };
+  /* Quando foi uma conferência: "há 3 h", ou "em 10/11" se ela só tem o dia */
+  L.quando = function (check, agora, curto) {
+    if (!check) return '';
+    if (!L.temHora(check.checked_at)) {
+      var p = check.checked_at.split('-');
+      return (curto ? '' : 'em ') + p[2] + '/' + p[1];
+    }
+    var ms = agora - Date.parse(check.checked_at);
+    return curto ? L.idadeCurta(ms) : L.ha(ms);
+  };
+
+  /* A regra da luz. Vale a última conferência que de fato viu o site, e ela vale
+     por 72 horas. Depois disso, ou sem nenhuma, a luz volta para "não conferido":
+     a página nunca afirma o estado de agora com base em dado velho. */
+  L.VALIDADE_MS = 72 * 3600 * 1000;
+  L.situacao = function (item, agora) {
+    var visto = item.seen;
+    if (visto && agora - L.instante(visto.checked_at) <= L.VALIDADE_MS) return { state: visto.state, check: visto, vencida: false };
+    return { state: 'unverified', check: visto || item.last || null, vencida: !!visto };
+  };
+
+  /* Faixa de conferências, da mais antiga para a mais recente. `vagas` completa
+     com traços à esquerda para todas as faixas de uma lista terem o mesmo tamanho. */
+  L.faixa = function (historico, vagas) {
+    var caixa = document.createElement('span');
+    caixa.className = 'faixa';
+    caixa.setAttribute('role', 'img');
+    var conta = { online: 0, unstable: 0, offline: 0, unverified: 0 };
+    for (var i = historico.length; i < (vagas || 0); i++) {
+      var vazio = document.createElement('i');
+      vazio.className = 'pulso pulso--vazio';
+      caixa.appendChild(vazio);
+    }
+    historico.forEach(function (h) {
+      var b = document.createElement('i');
+      b.className = 'pulso pulso--' + h[1];
+      b.title = L.dataHora(h[0]) + ': ' + L.ESTADO_CURTO[h[1]];
+      conta[h[1]]++;
+      caixa.appendChild(b);
+    });
+    var partes = Object.keys(conta).filter(function (k) { return conta[k]; }).map(function (k) { return conta[k] + ' ' + L.ESTADO_CURTO[k]; });
+    caixa.setAttribute('aria-label', historico.length
+      ? L.plural(historico.length, 'conferência', 'conferências') + ': ' + L.lista(partes)
+      : 'Nenhuma conferência ainda');
+    return caixa;
+  };
+
+  /* Letreiro: mantém a letra na largura máxima e ajusta o tamanho para ocupar a linha */
+  L.ajustarLetreiro = function (el, maximo) {
+    var letras = el.firstElementChild;
+    el.style.fontSize = '';
+    var fs = parseFloat(getComputedStyle(el).fontSize);
+    var w = letras.getBoundingClientRect().width;
+    if (w > 0) el.style.fontSize = Math.min(fs * el.clientWidth / w * 0.992, maximo || 190) + 'px';
+  };
+
+  L.aCadaMinuto = function (fn) { fn(); setInterval(fn, 60000); };
+
+  /* Colunas empilhadas, de uma ou duas séries, numa escala só a partir de zero.
+     opcoes: linhas, series [{valor: fn(linha), classe: 'seg-1'|'seg-2', rotulo}], rotulo(linha, i),
+     descricao(linha), dica(linha) -> {titulo, subtitulo, extra?}, titulo (para leitores de tela).
+     Devolve a função que redesenha; ela já é chamada de novo quando a janela muda de tamanho. */
+  L.colunas = function (plot, o) {
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(tag, attrs, texto) {
+      var n = document.createElementNS(NS, tag);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      if (texto != null) n.textContent = texto;
+      return n;
+    }
+    function div(classe, texto) { var n = document.createElement('div'); n.className = classe; if (texto != null) n.textContent = texto; return n; }
+    function topo(x, y, w, h) {
+      var r = Math.min(4, h, w / 2);
+      return 'M' + x + ',' + (y + h) + ' L' + x + ',' + (y + r) + ' Q' + x + ',' + y + ' ' + (x + r) + ',' + y +
+        ' L' + (x + w - r) + ',' + y + ' Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) + ' L' + (x + w) + ',' + (y + h) + ' Z';
+    }
+    var dica = div('dica');
+    dica.hidden = true;
+    function total(linha) { return o.series.reduce(function (t, s) { return t + s.valor(linha); }, 0); }
+    function mostrar(linha, x, y) {
+      var d = o.dica(linha);
+      dica.textContent = '';
+      dica.appendChild(div('dica__valor', d.titulo));
+      dica.appendChild(div('dica__rotulo', d.subtitulo));
+      if (o.series.length > 1) o.series.forEach(function (s, i) {
+        var l = div('dica__linha');
+        var chave = document.createElement('i');
+        chave.className = 'chave chave--' + (i + 1);
+        l.appendChild(chave);
+        var b = document.createElement('b');
+        b.textContent = s.valor(linha);
+        l.appendChild(b);
+        l.appendChild(document.createTextNode(s.rotulo));
+        dica.appendChild(l);
+      });
+      if (d.extra) dica.appendChild(div('dica__linha', d.extra));
+      dica.hidden = false;
+      var largura = dica.offsetWidth, altura = dica.offsetHeight, folga = 22;
+      var direita = x + folga, esquerda = x - folga - largura;
+      dica.style.left = Math.max(0, direita + largura <= plot.clientWidth ? direita : esquerda) + 'px';
+      dica.style.top = Math.max(0, Math.min(y - 6, plot.clientHeight - altura)) + 'px';
+    }
+    function desenhar() {
+      var linhas = o.linhas;
+      plot.textContent = '';
+      plot.appendChild(dica);
+      var W = Math.max(280, plot.clientWidth), esq = 34, dir = 6, alto = 24, alturaPlot = o.altura || 170, base = 22;
+      var H = alto + alturaPlot + base;
+      var banda = (W - esq - dir) / Math.max(1, linhas.length);
+      var larguraBarra = Math.min(28, Math.max(6, banda * 0.5));
+      var maior = Math.max.apply(null, linhas.map(total).concat([1]));
+      var passos = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
+      var passo = passos.filter(function (p) { return maior / p <= 5; })[0] || Math.ceil(maior / 5);
+      var teto = Math.ceil(maior / passo) * passo;
+      var y = function (v) { return alto + alturaPlot - v / teto * alturaPlot; };
+      var desenho = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': o.titulo });
+      for (var t = 0; t <= teto; t += passo) {
+        desenho.appendChild(el('line', { x1: esq, x2: W - dir, y1: y(t), y2: y(t), 'class': t ? 'grade' : 'eixo' }));
+        desenho.appendChild(el('text', { x: esq - 8, y: y(t) + 3.5, 'text-anchor': 'end' }, t));
+      }
+      var pico = 0;
+      linhas.forEach(function (l, i) { if (total(l) > total(linhas[pico])) pico = i; });
+      var pular = banda < 34 ? Math.ceil(34 / banda) : 1;
+      linhas.forEach(function (linha, i) {
+        var soma = total(linha), cx = esq + banda * (i + 0.5), x = cx - larguraBarra / 2;
+        var g = el('g', { 'class': 'coluna', tabindex: 0, role: 'img', 'aria-label': o.descricao(linha) });
+        g.appendChild(el('rect', { 'class': 'faixa-alvo', x: esq + banda * i, y: alto - 14, width: banda, height: alturaPlot + 14 }));
+        /* Segmentos de baixo para cima; 2px da cor da parede entre eles; só a ponta de cima é arredondada */
+        var acumulado = 0, visiveis = o.series.filter(function (s) { return s.valor(linha) > 0; });
+        visiveis.forEach(function (s, k) {
+          var v = s.valor(linha), h = v / teto * alturaPlot, ultimo = k === visiveis.length - 1;
+          var vao = visiveis.length > 1 ? (k === 0 || ultimo ? 1 : 2) : 0;
+          if (ultimo) g.appendChild(el('path', { 'class': s.classe, d: topo(x, y(acumulado + v), larguraBarra, Math.max(1, h - (k ? 1 : 0))) }));
+          else g.appendChild(el('rect', { 'class': s.classe, x: x, y: y(acumulado + v) + vao, width: larguraBarra, height: Math.max(1, h - vao) }));
+          acumulado += v;
+        });
+        if (i === pico && soma > 0) g.appendChild(el('text', { 'class': 'rotulo-valor', x: cx, y: y(soma) - 7, 'text-anchor': 'middle' }, soma));
+        if (i % pular === 0) g.appendChild(el('text', { x: cx, y: alto + alturaPlot + 15, 'text-anchor': 'middle' }, o.rotulo(linha, i)));
+        var ver = function () { var k = plot.clientWidth / W; mostrar(linha, cx * k, y(soma) * k); };
+        g.addEventListener('pointerenter', ver);
+        g.addEventListener('focus', ver);
+        g.addEventListener('pointerleave', function () { dica.hidden = true; });
+        g.addEventListener('blur', function () { dica.hidden = true; });
+        desenho.appendChild(g);
+      });
+      plot.appendChild(desenho);
+    }
+    desenhar();
+    L.aoRedimensionar(desenhar);
+    return desenhar;
+  };
+
+  /* Liga um botão a uma tabela escondida: "Ver os números em tabela" */
+  L.alternarTabela = function (botao, tabela) {
+    botao.addEventListener('click', function () {
+      tabela.hidden = !tabela.hidden;
+      botao.setAttribute('aria-expanded', String(!tabela.hidden));
+      botao.textContent = tabela.hidden ? 'Ver os números em tabela' : 'Esconder a tabela';
+    });
+  };
+  L.aoRedimensionar = function (fn) {
+    var espera;
+    window.addEventListener('resize', function () { clearTimeout(espera); espera = setTimeout(fn, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn);
+  };
+
+  return L;
+})();
+
+</script>
+<script>
+(function () {
+  var L = window.LOKGAM;
+  var D = JSON.parse(document.getElementById('dados').textContent);
+  var $ = function (s) { return document.querySelector(s); };
+  function no(tag, classe, texto) {
+    var n = document.createElement(tag);
+    if (classe) n.className = classe;
+    if (texto != null) n.textContent = texto;
+    return n;
+  }
+  var milhar = function (n) { return n.toLocaleString('pt-BR'); };
+  var NOME = { Arcade: 'Fliperama', 'Não classificado': 'Não classificado' };
+  var nome = function (p) { return NOME[p] || p; };
+  var dia = function (s, longo) { var p = s.slice(0, 10).split('-'); return p[2] + '/' + p[1] + (longo ? '/' + p[0] : ''); };
+
+  $('#link-repo').href = D.repo;
+  $('#dado-gold').href = D.repo + '/tree/main/data/gold';
+  L.ajustarLetreiro($('#marca-nome'));
+  L.aoRedimensionar(function () { L.ajustarLetreiro($('#marca-nome')); });
+
+  var E = D.days, ultimo = E[E.length - 1], primeiro = E[0];
+  L.aCadaMinuto(function () { $('#atualizado').textContent = 'coleta ' + L.quando({ checked_at: ultimo.run_at }, Date.now()); });
+
+  /* Resumo */
+  var semana = E.filter(function (d) { return L.instante(ultimo.run_at) - L.instante(d.run_at) < 7 * 86400000 && d !== primeiro; });
+  var novosSemana = semana.reduce(function (t, d) { return t + d.added; }, 0);
+  var consoles = D.platforms.filter(function (p) { return p.is_console; });
+  [
+    [milhar(ultimo.ports), 'ports listados', '+' + milhar(ultimo.ports - primeiro.ports) + ' desde ' + dia(primeiro.day, true)],
+    [milhar(novosSemana), 'novos em 7 dias', semana.reduce(function (t, d) { return t + d.added_console; }, 0) + ' de console ou fliperama'],
+    [milhar(ultimo.offline || 0), 'versões quebradas agora', 'de ' + milhar(ultimo.checked || 0) + ' conferidas'],
+    [consoles.length, 'consoles com ports', milhar(ultimo.console_ports) + ' ports de jogos de console']
+  ].forEach(function (x) {
+    var li = no('li');
+    li.appendChild(no('span', 'agora__rotulo', x[1]));
+    li.appendChild(no('span', 'agora__valor', x[0]));
+    li.appendChild(no('small', 'agora__detalhe', x[2]));
+    $('#resumo-numeros').appendChild(li);
+  });
+
+  /* Novos por coleta: o primeiro dia é o retrato inicial, e não entra */
+  var dias = E.slice(1);
+  $('#novos-dia-lide').textContent = 'Ports que entraram no catálogo em cada dia de coleta, desde o retrato inicial de ' + dia(primeiro.day, true) +
+    '. Em média, ' + (dias.reduce(function (t, d) { return t + d.added; }, 0) / Math.max(1, dias.length)).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' por dia.';
+  L.colunas($('#plot-novos'), {
+    linhas: dias,
+    titulo: 'Novos ports por dia de coleta, separados em console e outros',
+    series: [
+      { valor: function (d) { return d.added_console; }, classe: 'seg-1', rotulo: 'de console ou fliperama' },
+      { valor: function (d) { return d.added - d.added_console; }, classe: 'seg-2', rotulo: 'outros' }
+    ],
+    rotulo: function (d) { return dia(d.day); },
+    descricao: function (d) { return dia(d.day, true) + ': ' + L.plural(d.added, 'port novo', 'ports novos') + ', ' + d.added_console + ' de console'; },
+    dica: function (d) {
+      return { titulo: d.added ? L.plural(d.added, 'port novo', 'ports novos') : 'Nenhum port novo', subtitulo: dia(d.day, true),
+        extra: milhar(d.ports) + ' listados' + (d.removed ? ', ' + d.removed + ' saíram' : '') };
+    }
+  });
+  E.forEach(function (d, i) {
+    var tr = no('tr');
+    tr.appendChild(no('td', '', dia(d.day, true) + (i === 0 ? ' (retrato inicial)' : '')));
+    [i ? d.added : '—', i ? d.added_console : '—', i ? d.removed : '—', milhar(d.ports), d.offline == null ? '—' : d.offline].forEach(function (v) { tr.appendChild(no('td', 'num', v)); });
+    $('#tabela-novos-corpo').appendChild(tr);
+  });
+  L.alternarTabela($('#alternar-novos'), $('#tabela-novos'));
+
+  var naoClass = D.platforms.filter(function (p) { return p.platform === 'Não classificado'; })[0];
+  /* Por console: consoles primeiro, do maior para o menor; PC e não classificados no fim */
+  var ordem = D.platforms.slice().sort(function (a, b) {
+    var grupo = function (p) { return p.is_console ? 0 : p.platform === 'PC' ? 1 : 2; };
+    return grupo(a) - grupo(b) || b.ports - a.ports || a.platform.localeCompare(b.platform, 'pt-BR');
+  });
+  var maior = Math.max.apply(null, consoles.map(function (p) { return p.ports; }).concat([1]));
+  ordem.forEach(function (p) {
+    var tr = no('tr');
+    var td = no('td', 'plataforma', nome(p.platform));
+    if (p.games !== p.ports) td.appendChild(no('small', '', L.plural(p.games, 'jogo', 'jogos')));
+    tr.appendChild(td);
+    var celula = no('td', 'celula-barra');
+    if (p.is_console) {
+      var barra = no('span', 'barra');
+      barra.style.width = (p.ports / maior * 100) + '%';
+      celula.appendChild(barra);
+    }
+    tr.appendChild(celula);
+    [p.ports, p.playable, p.online, p.offline, p.added_since_baseline].forEach(function (v) { tr.appendChild(no('td', 'num', milhar(v))); });
+    $('#console-corpo').appendChild(tr);
+  });
+  var lider = consoles.slice().sort(function (a, b) { return b.ports - a.ports; })[0];
+  $('#console-lide').textContent = 'Os ' + milhar(ultimo.ports) + ' ports listados hoje, pela plataforma em que o jogo nasceu. ' +
+    (lider ? nome(lider.platform) + ' lidera entre os consoles, com ' + L.plural(lider.ports, 'port', 'ports') + '. ' : '') +
+    (naoClass && naoClass.ports > ultimo.ports / 2 ? 'A maior parte da lista ainda não tem origem conhecida.' : '');
+  $('#console-nota').textContent = (naoClass ? milhar(naoClass.ports) + ' ports são de jogos ainda não classificados, e por isso a barra só aparece nos consoles. ' : '') +
+    '"Jogáveis" são os que têm versão para abrir no navegador; os outros só têm código-fonte. "Novos" conta os que entraram depois do retrato inicial.';
+
+  /* Chegaram */
+  var novos = D.new_ports.slice().sort(function (a, b) { return a.first_seen < b.first_seen ? 1 : a.first_seen > b.first_seen ? -1 : a.title.localeCompare(b.title, 'pt-BR'); });
+  novos.slice(0, 20).forEach(function (p) {
+    var li = no('li');
+    li.appendChild(no('time', '', dia(p.first_seen)));
+    li.appendChild(no('b', '', p.title));
+    li.appendChild(no('small', '', [p.is_console ? nome(p.platform) : null, p.play_host || 'só código-fonte'].filter(Boolean).join(' · ')));
+    var s = no('span', 'situacao');
+    var estado = !p.listed ? null : p.state;
+    if (estado) s.appendChild(no('i', 'led led--' + estado));
+    s.appendChild(document.createTextNode(!p.listed ? 'saiu da lista' : estado ? L.ESTADO_CURTO[estado] : 'sem versão jogável'));
+    li.appendChild(s);
+    $('#novos-lista').appendChild(li);
+  });
+  if (novos.length > 20) $('#novos-lista').after(no('p', 'nota', 'E mais ' + (novos.length - 20) + ' em data/gold/new_ports.json.'));
+
+  /* Quebrados agora, agrupados por domínio */
+  var porDominio = {};
+  D.broken.forEach(function (b) {
+    var k = b.play_host;
+    var g = porDominio[k] = porDominio[k] || { host: k, n: 0, desde: b.started_at, antes: false };
+    g.n++;
+    if (b.started_at < g.desde) g.desde = b.started_at;
+    if (b.started_basis === 'before_first_check') g.antes = true;
+  });
+  var grupos = Object.keys(porDominio).map(function (k) { return porDominio[k]; })
+    .sort(function (a, b) { return b.n - a.n || a.host.localeCompare(b.host); });
+  var MOSTRAR = 8, resto = grupos.slice(MOSTRAR);
+  grupos.slice(0, MOSTRAR).forEach(function (g) {
+    var tr = no('tr');
+    tr.appendChild(no('td', 'dominio', g.host));
+    tr.appendChild(no('td', 'num', g.n));
+    tr.appendChild(no('td', '', g.antes ? 'antes da primeira conferência' : dia(g.desde, true)));
+    $('#quebrados-corpo').appendChild(tr);
+  });
+  if (resto.length) {
+    var tr = no('tr');
+    tr.appendChild(no('td', '', 'Outros ' + resto.length + ' domínios'));
+    tr.appendChild(no('td', 'num', resto.reduce(function (t, g) { return t + g.n; }, 0)));
+    tr.appendChild(no('td', '', 'um por domínio, em geral'));
+    $('#quebrados-corpo').appendChild(tr);
+  }
+  var vistas = D.broken.filter(function (b) { return b.started_basis === 'observed'; }).length;
+  $('#quebrados-lide').textContent = L.plural(D.broken.length, 'versão estava fora do ar', 'versões estavam fora do ar') + ' na última conferência, em ' +
+    L.plural(grupos.length, 'domínio', 'domínios') + '. ' + (vistas ? L.plural(vistas, 'caiu', 'caíram') + ' depois de a conferência começar; as outras já estavam fora no primeiro dia.' : 'Todas já estavam fora no primeiro dia de conferência.');
+})();
+</script>
+</body>
+</html>

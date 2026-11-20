@@ -70,6 +70,21 @@ def write_bronze(root):
     lines(folder / "status_changes.jsonl", changes)
     lines(folder / "status.jsonl", [current[k] for k in sorted(current)])
     lines(root / "bronze" / "status_runs.jsonl", runs)
+    # Prata mínima: um port por entrada, com o jogo; a, b e c são do mesmo jogo de console.
+    (root / "silver").mkdir()
+    game = {"a": "jogo-x", "b": "jogo-x", "c": "jogo-x", "d": "jogo-d", "e": "jogo-e", "f": "jogo-f", "g": "jogo-g"}
+    first = {"g": ADD_G}
+    lines(root / "silver" / "ports.jsonl", [
+        {"id": f"lista:{k}", "game_id": game[k], "title": k.upper(), "listings": [f"lista:{k}"], "play_host": HOSTS[k],
+         "first_seen": first.get(k, BASELINE), "first_seen_basis": "added" if k in first else "baseline",
+         "listed": k != "d", "removed_at": REMOVE_D if k == "d" else None,
+         "state": current[k]["state"] if k in current else None, "flags": []}
+        for k in "abcdefg"])
+    lines(root / "silver" / "games.jsonl", [
+        {"id": "jogo-x", "title": "Jogo X", "origin": "PS2", "console": True, "flags": []},
+        {"id": "jogo-e", "title": "Jogo E", "origin": "PC", "console": False, "flags": []},
+        {"id": "jogo-g", "title": "Jogo G", "origin": "N64", "console": True, "flags": []},
+    ])
 
 
 @pytest.fixture(scope="module")
@@ -120,6 +135,20 @@ def test_collective_outages_and_findings(tables):
     assert (f["checks"], f["days_observed"], f["observed_outages"], f["observed_collective"], f["observed_recovered"]) == (4, 3.0, 4, 3, 2)
     assert (f["median_hours_down"], f["down_since_first_check"], f["collective_events"]) == (24.0, 0, 1)
     assert (f["added_since_baseline"], f["removed_since_baseline"], f["checked_now"], f["offline_now"]) == (1, 1, 5, 2)
+
+
+def test_evolution_platforms_new_and_broken(tables):
+    days = by(tables["gold_evolution_daily"], "day")
+    assert (days["2026-11-11"]["ports"], days["2026-11-13"]["ports"], days["2026-11-13"]["added"], days["2026-11-13"]["added_console"]) == (6, 7, 1, 1)
+    assert (days["2026-11-14"]["removed"], days["2026-11-14"]["ports"]) == (1, 6)
+    assert sorted(days) == ["2026-11-11", "2026-11-13", "2026-11-14"]  # um dia por coleta do catálogo
+    assert (days["2026-11-11"]["offline"], days["2026-11-13"]["offline"], days["2026-11-14"]["offline"]) == (None, 4, 2)
+    platforms = by(tables["gold_platform_summary"], "platform")
+    assert (platforms["PS2"]["ports"], platforms["PS2"]["games"], platforms["PS2"]["online"], platforms["PS2"]["offline"]) == (3, 1, 2, 1)
+    assert (platforms["N64"]["added_since_baseline"], platforms["Não classificado"]["ports"], platforms["PC"]["offline"]) == (1, 1, 1)
+    assert [row["port_id"] for row in tables["gold_new_ports"]] == ["lista:g"]
+    broken = by(tables["gold_broken_ports"], "key")
+    assert sorted(broken) == ["c", "e"] and (broken["c"]["platform"], broken["c"]["collective"]) == ("PS2", True)
 
 
 def test_export_is_one_record_per_line(tables):

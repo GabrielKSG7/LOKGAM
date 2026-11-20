@@ -13,7 +13,7 @@ DATA = re.compile(r'<script type="application/json" id="dados">(.*?)</script>', 
 @pytest.fixture(scope="module")
 def pages():
     out = {}
-    for name in ("index.html", "vitrine/index.html"):
+    for name in ("index.html", "vitrine/index.html", "evolucao/index.html"):
         html = (validate.ROOT / "docs" / name).read_text(encoding="utf-8")
         out[name] = (html, json.loads(DATA.search(html).group(1).replace("<\\/", "</")))
     return out
@@ -69,3 +69,15 @@ def test_home_is_the_observatory_and_old_addresses_still_lead_somewhere(pages):
     approved = [p["id"] for p in ports if p["curation"]["state"] == "approved"]
     assert [row["id"] for row in data["storefront"]] == approved
     assert all(set(row) == {"id", "title", "status"} for row in data["storefront"])
+
+
+def test_evolution_page_receives_its_blocks_and_no_address(pages):
+    html, data = pages["evolucao/index.html"]
+    assert {"repo", "days", "platforms", "new_ports", "broken"} <= set(data) and data["days"]
+    assert "://" not in json.dumps({k: v for k, v in data.items() if k != "repo"})
+    assert all("key" not in row and "hidden" not in row for row in data["broken"])
+    script = html[html.rindex("<script>"):]
+    wanted = set(re.findall(r"\$\('#([A-Za-z0-9_-]+)'\)", script))
+    assert wanted <= set(re.findall(r'\bid="([^"]+)"', html))
+    for page in ("index.html", "vitrine/index.html"):
+        assert "evolucao/" in pages[page][0]

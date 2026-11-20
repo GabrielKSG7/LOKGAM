@@ -60,6 +60,22 @@ def gold_payload() -> dict | None:
     }
 
 
+def evolution_payload() -> dict:
+    """O que a página de evolução mostra: a base dia a dia, por plataforma, os novos e os quebrados."""
+    read = lambda name: json.loads((GOLD / f"{name}.json").read_text(encoding="utf-8"))
+    return {
+        "repo": REPO_URL,
+        "days": sorted(read("evolution_daily"), key=lambda row: row["day"]),
+        "platforms": read("platform_summary"),
+        "new_ports": read("new_ports"),
+        # Quebrados: sem os títulos marcados como adultos ou sensíveis, e sem chave nem endereço.
+        "broken": [
+            {k: row[k] for k in ("title", "platform", "is_console", "play_host", "started_at", "started_basis", "collective")}
+            for row in read("broken_ports") if not row["hidden"]
+        ],
+    }
+
+
 def embed(data: dict) -> str:
     """JSON pronto para ir dentro de uma tag <script>."""
     return json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -142,11 +158,13 @@ def main() -> int:
         "/*__BASE_CSS__*/": (ROOT / "web" / "base.css").read_text(encoding="utf-8"),
         "/*__BASE_JS__*/": (ROOT / "web" / "base.js").read_text(encoding="utf-8"),
     }
+    data_css = {"/*__DADOS_CSS__*/": (ROOT / "web" / "dados.css").read_text(encoding="utf-8")}
     pages = {
-        "index.html": render("observatorio.html", {**shared, "__DADOS__": embed(observatory_payload(ports, events, checks))}),
+        "index.html": render("observatorio.html", {**shared, **data_css, "__DADOS__": embed(observatory_payload(ports, events, checks))}),
         "vitrine/index.html": render(
             "vitrine.html", {**shared, "__DADOS__": embed(storefront_payload(ports, events, checks, load_catalogs()))}
         ),
+        "evolucao/index.html": render("evolucao.html", {**shared, **data_css, "__DADOS__": embed(evolution_payload())}),
         # O observatório morava aqui antes de virar a página inicial.
         "observatorio/index.html": MOVED,
     }

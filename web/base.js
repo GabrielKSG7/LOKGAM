@@ -109,6 +109,109 @@ window.LOKGAM = (function () {
   };
 
   L.aCadaMinuto = function (fn) { fn(); setInterval(fn, 60000); };
+
+  /* Colunas empilhadas, de uma ou duas séries, numa escala só a partir de zero.
+     opcoes: linhas, series [{valor: fn(linha), classe: 'seg-1'|'seg-2', rotulo}], rotulo(linha, i),
+     descricao(linha), dica(linha) -> {titulo, subtitulo, extra?}, titulo (para leitores de tela).
+     Devolve a função que redesenha; ela já é chamada de novo quando a janela muda de tamanho. */
+  L.colunas = function (plot, o) {
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(tag, attrs, texto) {
+      var n = document.createElementNS(NS, tag);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      if (texto != null) n.textContent = texto;
+      return n;
+    }
+    function div(classe, texto) { var n = document.createElement('div'); n.className = classe; if (texto != null) n.textContent = texto; return n; }
+    function topo(x, y, w, h) {
+      var r = Math.min(4, h, w / 2);
+      return 'M' + x + ',' + (y + h) + ' L' + x + ',' + (y + r) + ' Q' + x + ',' + y + ' ' + (x + r) + ',' + y +
+        ' L' + (x + w - r) + ',' + y + ' Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) + ' L' + (x + w) + ',' + (y + h) + ' Z';
+    }
+    var dica = div('dica');
+    dica.hidden = true;
+    function total(linha) { return o.series.reduce(function (t, s) { return t + s.valor(linha); }, 0); }
+    function mostrar(linha, x, y) {
+      var d = o.dica(linha);
+      dica.textContent = '';
+      dica.appendChild(div('dica__valor', d.titulo));
+      dica.appendChild(div('dica__rotulo', d.subtitulo));
+      if (o.series.length > 1) o.series.forEach(function (s, i) {
+        var l = div('dica__linha');
+        var chave = document.createElement('i');
+        chave.className = 'chave chave--' + (i + 1);
+        l.appendChild(chave);
+        var b = document.createElement('b');
+        b.textContent = s.valor(linha);
+        l.appendChild(b);
+        l.appendChild(document.createTextNode(s.rotulo));
+        dica.appendChild(l);
+      });
+      if (d.extra) dica.appendChild(div('dica__linha', d.extra));
+      dica.hidden = false;
+      var largura = dica.offsetWidth, altura = dica.offsetHeight, folga = 22;
+      var direita = x + folga, esquerda = x - folga - largura;
+      dica.style.left = Math.max(0, direita + largura <= plot.clientWidth ? direita : esquerda) + 'px';
+      dica.style.top = Math.max(0, Math.min(y - 6, plot.clientHeight - altura)) + 'px';
+    }
+    function desenhar() {
+      var linhas = o.linhas;
+      plot.textContent = '';
+      plot.appendChild(dica);
+      var W = Math.max(280, plot.clientWidth), esq = 34, dir = 6, alto = 24, alturaPlot = o.altura || 170, base = 22;
+      var H = alto + alturaPlot + base;
+      var banda = (W - esq - dir) / Math.max(1, linhas.length);
+      var larguraBarra = Math.min(28, Math.max(6, banda * 0.5));
+      var maior = Math.max.apply(null, linhas.map(total).concat([1]));
+      var passos = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000];
+      var passo = passos.filter(function (p) { return maior / p <= 5; })[0] || Math.ceil(maior / 5);
+      var teto = Math.ceil(maior / passo) * passo;
+      var y = function (v) { return alto + alturaPlot - v / teto * alturaPlot; };
+      var desenho = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': o.titulo });
+      for (var t = 0; t <= teto; t += passo) {
+        desenho.appendChild(el('line', { x1: esq, x2: W - dir, y1: y(t), y2: y(t), 'class': t ? 'grade' : 'eixo' }));
+        desenho.appendChild(el('text', { x: esq - 8, y: y(t) + 3.5, 'text-anchor': 'end' }, t));
+      }
+      var pico = 0;
+      linhas.forEach(function (l, i) { if (total(l) > total(linhas[pico])) pico = i; });
+      var pular = banda < 34 ? Math.ceil(34 / banda) : 1;
+      linhas.forEach(function (linha, i) {
+        var soma = total(linha), cx = esq + banda * (i + 0.5), x = cx - larguraBarra / 2;
+        var g = el('g', { 'class': 'coluna', tabindex: 0, role: 'img', 'aria-label': o.descricao(linha) });
+        g.appendChild(el('rect', { 'class': 'faixa-alvo', x: esq + banda * i, y: alto - 14, width: banda, height: alturaPlot + 14 }));
+        /* Segmentos de baixo para cima; 2px da cor da parede entre eles; só a ponta de cima é arredondada */
+        var acumulado = 0, visiveis = o.series.filter(function (s) { return s.valor(linha) > 0; });
+        visiveis.forEach(function (s, k) {
+          var v = s.valor(linha), h = v / teto * alturaPlot, ultimo = k === visiveis.length - 1;
+          var vao = visiveis.length > 1 ? (k === 0 || ultimo ? 1 : 2) : 0;
+          if (ultimo) g.appendChild(el('path', { 'class': s.classe, d: topo(x, y(acumulado + v), larguraBarra, Math.max(1, h - (k ? 1 : 0))) }));
+          else g.appendChild(el('rect', { 'class': s.classe, x: x, y: y(acumulado + v) + vao, width: larguraBarra, height: Math.max(1, h - vao) }));
+          acumulado += v;
+        });
+        if (i === pico && soma > 0) g.appendChild(el('text', { 'class': 'rotulo-valor', x: cx, y: y(soma) - 7, 'text-anchor': 'middle' }, soma));
+        if (i % pular === 0) g.appendChild(el('text', { x: cx, y: alto + alturaPlot + 15, 'text-anchor': 'middle' }, o.rotulo(linha, i)));
+        var ver = function () { var k = plot.clientWidth / W; mostrar(linha, cx * k, y(soma) * k); };
+        g.addEventListener('pointerenter', ver);
+        g.addEventListener('focus', ver);
+        g.addEventListener('pointerleave', function () { dica.hidden = true; });
+        g.addEventListener('blur', function () { dica.hidden = true; });
+        desenho.appendChild(g);
+      });
+      plot.appendChild(desenho);
+    }
+    desenhar();
+    L.aoRedimensionar(desenhar);
+    return desenhar;
+  };
+
+  /* Liga um botão a uma tabela escondida: "Ver os números em tabela" */
+  L.alternarTabela = function (botao, tabela) {
+    botao.addEventListener('click', function () {
+      tabela.hidden = !tabela.hidden;
+      botao.setAttribute('aria-expanded', String(!tabela.hidden));
+      botao.textContent = tabela.hidden ? 'Ver os números em tabela' : 'Esconder a tabela';
+    });
+  };
   L.aoRedimensionar = function (fn) {
     var espera;
     window.addEventListener('resize', function () { clearTimeout(espera); espera = setTimeout(fn, 120); });

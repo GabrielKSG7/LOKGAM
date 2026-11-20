@@ -1,0 +1,61 @@
+/* Peças de dados que mais de uma página usa: números grandes, gráfico de colunas e tabelas */
+.nota{margin:0;max-width:70ch;font-size:.88rem;color:var(--ink-2)}
+.agora{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.agora li{display:grid;gap:6px;padding:16px 18px 18px 0}
+.agora li + li{padding-left:18px;border-left:1px solid var(--wall-2)}
+.agora__rotulo{display:flex;align-items:flex-end;gap:8px;font-size:.9rem;color:var(--ink-2);line-height:1.2}
+.agora__valor{font-size:clamp(2rem,5vw,3.1rem);font-weight:700;line-height:1;letter-spacing:-.02em}
+.figura{margin:0;display:grid;gap:14px}
+.figura__topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.legenda{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0;padding:0;list-style:none;font-size:.86rem}
+.legenda li{display:inline-flex;align-items:center;gap:8px}
+.legenda small{color:var(--ink-2);font-size:.8rem}
+.amostra{flex:none;width:12px;height:12px;border-radius:3px}
+.amostra--1{background:var(--serie-1)}
+.amostra--2{background:var(--serie-2)}
+.plot{position:relative}
+.plot svg{display:block;width:100%;height:auto;overflow:visible}
+.plot .grade{stroke:var(--wall-2);stroke-width:1}
+.plot .eixo{stroke:var(--ink-2);stroke-width:1}
+.plot text{font-family:var(--font-mono);font-size:10px;fill:var(--ink-2)}
+.plot .rotulo-valor{font-family:var(--font-body);font-size:12px;font-weight:700;fill:var(--ink)}
+.plot .seg-1{fill:var(--serie-1)}
+.plot .seg-2{fill:var(--serie-2)}
+.plot .faixa-alvo{fill:var(--ink);opacity:0}
+.plot .coluna{cursor:default;outline:none}
+.plot .coluna:hover .faixa-alvo,.plot .coluna:focus-visible .faixa-alvo{opacity:.07}
+.plot .coluna:hover .seg-1,.plot .coluna:hover .seg-2,.plot .coluna:focus-visible .seg-1,.plot .coluna:focus-visible .seg-2{filter:brightness(1.14)}
+.plot .coluna:focus-visible .faixa-alvo{stroke:var(--ink);stroke-width:2;opacity:.1}
+.dica{position:absolute;z-index:3;pointer-events:none;min-width:11rem;padding:10px 12px;border-radius:6px;background:var(--ink);color:var(--wall);font-size:.82rem;line-height:1.35;box-shadow:0 8px 20px rgba(8,5,25,.3)}
+.dica__valor{font-size:1rem;font-weight:700}
+.dica__rotulo{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;opacity:.75;padding-bottom:6px}
+.dica__linha{display:flex;align-items:center;gap:8px}
+.dica__linha b{font-variant-numeric:tabular-nums}
+.chave{flex:none;width:12px;height:3px;border-radius:2px}
+.chave--1{background:var(--serie-1)}
+.chave--2{background:var(--serie-2)}
+.alternar{justify-self:start;font:inherit;font-family:var(--font-mono);font-size:.72rem;color:var(--ink);background:none;border:0;padding:.4em 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.tabela-rolagem{overflow-x:auto}
+.tabela{width:100%;border-collapse:collapse;font-size:.92rem}
+.tabela th{text-align:left;font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:0 14px 8px 0;border-bottom:2px solid var(--ink);vertical-align:bottom}
+.tabela td{vertical-align:top;padding:11px 14px 11px 0;border-bottom:1px solid var(--wall-2)}
+.tabela .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tabela th.num{text-align:right;white-space:normal}
+.tabela small{display:block;font-weight:400;color:var(--ink-2)}
+.tabela--estreita{max-width:34rem}
+.figura__titulo{margin:0;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.tabela__legenda{caption-side:top;text-align:left;padding-bottom:10px;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.agora__valor a{text-decoration:none}
+.agora__valor a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
+.agora__detalhe{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.02em;color:var(--ink-2)}
+.tabela td.dominio{font-family:var(--font-mono);font-size:.82rem;overflow-wrap:anywhere}
+.barra{display:block;height:8px;min-width:2px;border-radius:4px;background:var(--serie-1)}
+.celula-barra{width:26%;vertical-align:middle !important}
+.duas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(30px,5vw,60px) 48px;align-items:start}
+.duas > *{min-width:0}
+@media (max-width:760px){
+  .celula-barra,.coluna-barra{display:none}
+  .agora{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .agora li:nth-child(3){padding-left:0;border-left:0}
+  .agora li:nth-child(n+3){border-top:1px solid var(--wall-2)}
+}

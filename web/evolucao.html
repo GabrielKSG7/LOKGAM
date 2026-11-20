@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evolução · LOKGAM</title>
+<meta name="description" content="Como a base de ports de jogos no navegador muda, coleta a coleta: quantos entram, de quais consoles, e quais estão quebrados agora.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+/*__BASE_CSS__*/
+/*__DADOS_CSS__*/
+.lista-novos{margin:0;padding:0;list-style:none;border-top:2px solid var(--ink)}
+.lista-novos li{display:grid;grid-template-columns:5.2rem minmax(0,1fr) auto;gap:2px 14px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--wall-2)}
+.lista-novos time{font-family:var(--font-mono);font-size:.7rem;color:var(--ink-2)}
+.lista-novos b{font-weight:600;overflow-wrap:anywhere}
+.lista-novos small{grid-column:2;font-family:var(--font-mono);font-size:.66rem;color:var(--ink-2);overflow-wrap:anywhere}
+.lista-novos .situacao{grid-row:1/span 2;grid-column:3;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.66rem;color:var(--ink-2);white-space:nowrap}
+.tabela td.plataforma{font-weight:600;white-space:nowrap}
+.tabela td.plataforma small{display:inline;margin-left:6px;font-weight:400}
+.figura{margin-bottom:8px}
+@media (max-width:560px){.lista-novos li{grid-template-columns:minmax(0,1fr) auto}.lista-novos time{grid-column:1}.lista-novos small{grid-column:1}.lista-novos .situacao{grid-row:1/span 3;grid-column:2}}
+</style>
+</head>
+<body>
+<div class="pagina">
+  <nav class="trilho" aria-label="Páginas do site">
+    <a href="../">Observatório</a>
+    <a href="./" aria-current="page">Evolução</a>
+    <a href="../vitrine/">Onde jogar</a>
+    <a class="trilho__fora" id="link-repo" href="https://github.com/GabrielKSG7/LOKGAM" rel="noopener noreferrer">Código e dados no GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+
+  <header class="balcao">
+    <div class="marca">
+      <p class="marca__sobre">Observatório · <span id="atualizado"></span></p>
+      <h1 class="marca__nome" id="marca-nome"><span>Evolução</span></h1>
+      <p class="marca__sub">a base coleta a coleta</p>
+    </div>
+    <p class="tese">Como a lista de ports muda com o tempo: quantos entram a cada coleta, de quais consoles vêm os jogos e quais versões estão quebradas agora. Tudo sai do registro diário de mudanças, sem guardar uma cópia por dia.</p>
+  </header>
+
+  <section class="secao" id="resumo" aria-labelledby="resumo-titulo">
+    <h2 class="secao__titulo" id="resumo-titulo">Resumo</h2>
+    <ul class="agora" id="resumo-numeros"></ul>
+  </section>
+
+  <section class="secao" id="novos-por-dia" aria-labelledby="novos-dia-titulo">
+    <h2 class="secao__titulo" id="novos-dia-titulo">Novos ports por coleta</h2>
+    <p class="secao__lide" id="novos-dia-lide"></p>
+    <figure class="figura">
+      <div class="figura__topo">
+        <ul class="legenda">
+          <li><i class="amostra amostra--1"></i>Jogo de console ou fliperama</li>
+          <li><i class="amostra amostra--2"></i>Outros <small>PC ou ainda não classificado</small></li>
+        </ul>
+      </div>
+      <div class="plot" id="plot-novos"></div>
+      <button class="alternar" id="alternar-novos" type="button" aria-expanded="false" aria-controls="tabela-novos">Ver os números em tabela</button>
+      <div class="tabela-rolagem" id="tabela-novos" hidden>
+        <table class="tabela tabela--estreita">
+          <thead><tr><th scope="col">Dia</th><th scope="col" class="num">Entraram</th><th scope="col" class="num">De console</th><th scope="col" class="num">Saíram</th><th scope="col" class="num">Listados</th><th scope="col" class="num">Fora do ar</th></tr></thead>
+          <tbody id="tabela-novos-corpo"></tbody>
+        </table>
+      </div>
+    </figure>
+  </section>
+
+  <section class="secao" id="por-console" aria-labelledby="console-titulo">
+    <h2 class="secao__titulo" id="console-titulo">Ports por console</h2>
+    <p class="secao__lide" id="console-lide"></p>
+    <div class="tabela-rolagem">
+      <table class="tabela">
+        <thead><tr><th scope="col">Plataforma de origem</th><th scope="col" class="coluna-barra"><span class="sr">Ports em barra</span></th><th scope="col" class="num">Ports</th><th scope="col" class="num">Jogáveis</th><th scope="col" class="num">No ar</th><th scope="col" class="num">Fora do ar</th><th scope="col" class="num">Novos</th></tr></thead>
+        <tbody id="console-corpo"></tbody>
+      </table>
+    </div>
+    <p class="nota" id="console-nota"></p>
+  </section>
+
+  <div class="duas">
+    <section class="secao" id="novos" aria-labelledby="novos-titulo">
+      <h2 class="secao__titulo" id="novos-titulo">Chegaram</h2>
+      <p class="secao__lide">Os ports que a coleta viu entrar no catálogo, do mais novo para o mais antigo, com a situação na última conferência.</p>
+      <ol class="lista-novos" id="novos-lista"></ol>
+    </section>
+
+    <section class="secao" id="quebrados" aria-labelledby="quebrados-titulo">
+      <h2 class="secao__titulo" id="quebrados-titulo">Quebrados agora</h2>
+      <p class="secao__lide" id="quebrados-lide"></p>
+      <div class="tabela-rolagem">
+        <table class="tabela">
+          <thead><tr><th scope="col">Domínio</th><th scope="col" class="num">Versões</th><th scope="col">Fora do ar desde</th></tr></thead>
+          <tbody id="quebrados-corpo"></tbody>
+        </table>
+      </div>
+      <p class="nota">As quedas de cada dia, separadas em coletivas e isoladas, estão nos <a href="../#achados">Achados</a>.</p>
+    </section>
+  </div>
+
+  <section class="secao" id="metodo" aria-labelledby="metodo-titulo">
+    <h2 class="secao__titulo" id="metodo-titulo">Como isto é medido</h2>
+    <dl class="notas">
+      <div><dt>De onde vem</dt><dd>Um robô coleta o catálogo uma vez por dia e grava só o que mudou: entradas que chegaram, saíram ou trocaram de endereço. Outro confere se cada versão jogável responde e grava só as trocas de situação. A lista de cada dia é refeita a partir desses registros.</dd></div>
+      <div><dt>Um port</dt><dd>Entradas que apontam para o mesmo endereço jogável contam como um port. O jogo de cada port vem do nome, sem o que a lista põe entre parênteses.</dd></div>
+      <div><dt>Console de origem</dt><dd>Vem das fichas curadas e de uma tabela de referência mantida à mão. O que não está em nenhuma das duas aparece como "Não classificado": é a maior parte, e muita coisa ali é jogo de PC.</dd></div>
+      <div><dt>"Chegaram"</dt><dd>Só conta como novo o port que apareceu depois da primeira coleta, de 11/11/2026. Os que já estavam lá têm data desconhecida.</dd></div>
+      <div><dt>Quebrado</dt><dd>Versão que respondeu com erro ou não respondeu na última conferência. Não diz se o jogo funciona quando a página abre.</dd></div>
+      <div><dt>Os números</dt><dd>Tabelas em <a id="dado-gold" href="#">data/gold</a>, geradas por modelos dbt sobre DuckDB, com testes que conferem as contas contra o que os robôs registraram.</dd></div>
+    </dl>
+  </section>
+
+  <footer class="rodape">
+    <p>Jogos, nomes e marcas pertencem aos seus donos. Esta página mostra domínios como texto, sem link para os ports.</p>
+  </footer>
+</div>
+
+<script type="application/json" id="dados">__DADOS__</script>
+<script>
+/*__BASE_JS__*/
+</script>
+<script>
+(function () {
+  var L = window.LOKGAM;
+  var D = JSON.parse(document.getElementById('dados').textContent);
+  var $ = function (s) { return document.querySelector(s); };
+  function no(tag, classe, texto) {
+    var n = document.createElement(tag);
+    if (classe) n.className = classe;
+    if (texto != null) n.textContent = texto;
+    return n;
+  }
+  var milhar = function (n) { return n.toLocaleString('pt-BR'); };
+  var NOME = { Arcade: 'Fliperama', 'Não classificado': 'Não classificado' };
+  var nome = function (p) { return NOME[p] || p; };
+  var dia = function (s, longo) { var p = s.slice(0, 10).split('-'); return p[2] + '/' + p[1] + (longo ? '/' + p[0] : ''); };
+
+  $('#link-repo').href = D.repo;
+  $('#dado-gold').href = D.repo + '/tree/main/data/gold';
+  L.ajustarLetreiro($('#marca-nome'));
+  L.aoRedimensionar(function () { L.ajustarLetreiro($('#marca-nome')); });
+
+  var E = D.days, ultimo = E[E.length - 1], primeiro = E[0];
+  L.aCadaMinuto(function () { $('#atualizado').textContent = 'coleta ' + L.quando({ checked_at: ultimo.run_at }, Date.now()); });
+
+  /* Resumo */
+  var semana = E.filter(function (d) { return L.instante(ultimo.run_at) - L.instante(d.run_at) < 7 * 86400000 && d !== primeiro; });
+  var novosSemana = semana.reduce(function (t, d) { return t + d.added; }, 0);
+  var consoles = D.platforms.filter(function (p) { return p.is_console; });
+  [
+    [milhar(ultimo.ports), 'ports listados', '+' + milhar(ultimo.ports - primeiro.ports) + ' desde ' + dia(primeiro.day, true)],
+    [milhar(novosSemana), 'novos em 7 dias', semana.reduce(function (t, d) { return t + d.added_console; }, 0) + ' de console ou fliperama'],
+    [milhar(ultimo.offline || 0), 'versões quebradas agora', 'de ' + milhar(ultimo.checked || 0) + ' conferidas'],
+    [consoles.length, 'consoles com ports', milhar(ultimo.console_ports) + ' ports de jogos de console']
+  ].forEach(function (x) {
+    var li = no('li');
+    li.appendChild(no('span', 'agora__rotulo', x[1]));
+    li.appendChild(no('span', 'agora__valor', x[0]));
+    li.appendChild(no('small', 'agora__detalhe', x[2]));
+    $('#resumo-numeros').appendChild(li);
+  });
+
+  /* Novos por coleta: o primeiro dia é o retrato inicial, e não entra */
+  var dias = E.slice(1);
+  $('#novos-dia-lide').textContent = 'Ports que entraram no catálogo em cada dia de coleta, desde o retrato inicial de ' + dia(primeiro.day, true) +
+    '. Em média, ' + (dias.reduce(function (t, d) { return t + d.added; }, 0) / Math.max(1, dias.length)).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' por dia.';
+  L.colunas($('#plot-novos'), {
+    linhas: dias,
+    titulo: 'Novos ports por dia de coleta, separados em console e outros',
+    series: [
+      { valor: function (d) { return d.added_console; }, classe: 'seg-1', rotulo: 'de console ou fliperama' },
+      { valor: function (d) { return d.added - d.added_console; }, classe: 'seg-2', rotulo: 'outros' }
+    ],
+    rotulo: function (d) { return dia(d.day); },
+    descricao: function (d) { return dia(d.day, true) + ': ' + L.plural(d.added, 'port novo', 'ports novos') + ', ' + d.added_console + ' de console'; },
+    dica: function (d) {
+      return { titulo: d.added ? L.plural(d.added, 'port novo', 'ports novos') : 'Nenhum port novo', subtitulo: dia(d.day, true),
+        extra: milhar(d.ports) + ' listados' + (d.removed ? ', ' + d.removed + ' saíram' : '') };
+    }
+  });
+  E.forEach(function (d, i) {
+    var tr = no('tr');
+    tr.appendChild(no('td', '', dia(d.day, true) + (i === 0 ? ' (retrato inicial)' : '')));
+    [i ? d.added : '—', i ? d.added_console : '—', i ? d.removed : '—', milhar(d.ports), d.offline == null ? '—' : d.offline].forEach(function (v) { tr.appendChild(no('td', 'num', v)); });
+    $('#tabela-novos-corpo').appendChild(tr);
+  });
+  L.alternarTabela($('#alternar-novos'), $('#tabela-novos'));
+
+  var naoClass = D.platforms.filter(function (p) { return p.platform === 'Não classificado'; })[0];
+  /* Por console: consoles primeiro, do maior para o menor; PC e não classificados no fim */
+  var ordem = D.platforms.slice().sort(function (a, b) {
+    var grupo = function (p) { return p.is_console ? 0 : p.platform === 'PC' ? 1 : 2; };
+    return grupo(a) - grupo(b) || b.ports - a.ports || a.platform.localeCompare(b.platform, 'pt-BR');
+  });
+  var maior = Math.max.apply(null, consoles.map(function (p) { return p.ports; }).concat([1]));
+  ordem.forEach(function (p) {
+    var tr = no('tr');
+    var td = no('td', 'plataforma', nome(p.platform));
+    if (p.games !== p.ports) td.appendChild(no('small', '', L.plural(p.games, 'jogo', 'jogos')));
+    tr.appendChild(td);
+    var celula = no('td', 'celula-barra');
+    if (p.is_console) {
+      var barra = no('span', 'barra');
+      barra.style.width = (p.ports / maior * 100) + '%';
+      celula.appendChild(barra);
+    }
+    tr.appendChild(celula);
+    [p.ports, p.playable, p.online, p.offline, p.added_since_baseline].forEach(function (v) { tr.appendChild(no('td', 'num', milhar(v))); });
+    $('#console-corpo').appendChild(tr);
+  });
+  var lider = consoles.slice().sort(function (a, b) { return b.ports - a.ports; })[0];
+  $('#console-lide').textContent = 'Os ' + milhar(ultimo.ports) + ' ports listados hoje, pela plataforma em que o jogo nasceu. ' +
+    (lider ? nome(lider.platform) + ' lidera entre os consoles, com ' + L.plural(lider.ports, 'port', 'ports') + '. ' : '') +
+    (naoClass && naoClass.ports > ultimo.ports / 2 ? 'A maior parte da lista ainda não tem origem conhecida.' : '');
+  $('#console-nota').textContent = (naoClass ? milhar(naoClass.ports) + ' ports são de jogos ainda não classificados, e por isso a barra só aparece nos consoles. ' : '') +
+    '"Jogáveis" são os que têm versão para abrir no navegador; os outros só têm código-fonte. "Novos" conta os que entraram depois do retrato inicial.';
+
+  /* Chegaram */
+  var novos = D.new_ports.slice().sort(function (a, b) { return a.first_seen < b.first_seen ? 1 : a.first_seen > b.first_seen ? -1 : a.title.localeCompare(b.title, 'pt-BR'); });
+  novos.slice(0, 20).forEach(function (p) {
+    var li = no('li');
+    li.appendChild(no('time', '', dia(p.first_seen)));
+    li.appendChild(no('b', '', p.title));
+    li.appendChild(no('small', '', [p.is_console ? nome(p.platform) : null, p.play_host || 'só código-fonte'].filter(Boolean).join(' · ')));
+    var s = no('span', 'situacao');
+    var estado = !p.listed ? null : p.state;
+    if (estado) s.appendChild(no('i', 'led led--' + estado));
+    s.appendChild(document.createTextNode(!p.listed ? 'saiu da lista' : estado ? L.ESTADO_CURTO[estado] : 'sem versão jogável'));
+    li.appendChild(s);
+    $('#novos-lista').appendChild(li);
+  });
+  if (novos.length > 20) $('#novos-lista').after(no('p', 'nota', 'E mais ' + (novos.length - 20) + ' em data/gold/new_ports.json.'));
+
+  /* Quebrados agora, agrupados por domínio */
+  var porDominio = {};
+  D.broken.forEach(function (b) {
+    var k = b.play_host;
+    var g = porDominio[k] = porDominio[k] || { host: k, n: 0, desde: b.started_at, antes: false };
+    g.n++;
+    if (b.started_at < g.desde) g.desde = b.started_at;
+    if (b.started_basis === 'before_first_check') g.antes = true;
+  });
+  var grupos = Object.keys(porDominio).map(function (k) { return porDominio[k]; })
+    .sort(function (a, b) { return b.n - a.n || a.host.localeCompare(b.host); });
+  var MOSTRAR = 8, resto = grupos.slice(MOSTRAR);
+  grupos.slice(0, MOSTRAR).forEach(function (g) {
+    var tr = no('tr');
+    tr.appendChild(no('td', 'dominio', g.host));
+    tr.appendChild(no('td', 'num', g.n));
+    tr.appendChild(no('td', '', g.antes ? 'antes da primeira conferência' : dia(g.desde, true)));
+    $('#quebrados-corpo').appendChild(tr);
+  });
+  if (resto.length) {
+    var tr = no('tr');
+    tr.appendChild(no('td', '', 'Outros ' + resto.length + ' domínios'));
+    tr.appendChild(no('td', 'num', resto.reduce(function (t, g) { return t + g.n; }, 0)));
+    tr.appendChild(no('td', '', 'um por domínio, em geral'));
+    $('#quebrados-corpo').appendChild(tr);
+  }
+  var vistas = D.broken.filter(function (b) { return b.started_basis === 'observed'; }).length;
+  $('#quebrados-lide').textContent = L.plural(D.broken.length, 'versão estava fora do ar', 'versões estavam fora do ar') + ' na última conferência, em ' +
+    L.plural(grupos.length, 'domínio', 'domínios') + '. ' + (vistas ? L.plural(vistas, 'caiu', 'caíram') + ' depois de a conferência começar; as outras já estavam fora no primeiro dia.' : 'Todas já estavam fora no primeiro dia de conferência.');
+})();
+</script>
+</body>
+</html>
