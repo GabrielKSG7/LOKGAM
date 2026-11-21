@@ -8,5 +8,6 @@
 {"added": 10, "baseline": false, "changed": 1, "entries": 1039, "removed": 0, "run_at": "2026-11-14T11:44:39Z", "source": "ultimate-catalog"},
 {"added": 5, "baseline": false, "changed": 2, "entries": 1044, "removed": 0, "run_at": "2026-11-16T13:07:50Z", "source": "ultimate-catalog"},
 {"added": 5, "baseline": false, "changed": 0, "entries": 1048, "removed": 1, "run_at": "2026-11-17T13:50:26Z", "source": "ultimate-catalog"},
-{"added": 3, "baseline": false, "changed": 0, "entries": 1051, "removed": 0, "run_at": "2026-11-18T13:25:44Z", "source": "ultimate-catalog"}
+{"added": 3, "baseline": false, "changed": 0, "entries": 1051, "removed": 0, "run_at": "2026-11-18T13:25:44Z", "source": "ultimate-catalog"},
+{"added": 17, "baseline": false, "changed": 2, "entries": 1067, "removed": 1, "run_at": "2026-11-21T12:59:43Z", "source": "ultimate-catalog"}
 ]

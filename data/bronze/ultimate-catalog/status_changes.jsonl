@@ -80,3 +80,4 @@
 {"source": "ultimate-catalog", "at": "2026-11-20T13:35:32Z", "key": "doom-3-d3wasm", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-20T13:35:32Z", "key": "phantasy-star-online-pso-reborn", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-20T13:35:32Z", "key": "super-mario-64~2", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-21T12:59:43Z", "key": "doom-wasoom", "from": "online", "to": "offline", "reason": "dns_error", "http_status": null}
