@@ -81,3 +81,7 @@
 {"source": "ultimate-catalog", "at": "2026-11-20T13:35:32Z", "key": "phantasy-star-online-pso-reborn", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-20T13:35:32Z", "key": "super-mario-64~2", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-21T12:59:43Z", "key": "doom-wasoom", "from": "online", "to": "offline", "reason": "dns_error", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-22T12:51:02Z", "key": "dos-zone", "from": "online", "to": "unstable", "reason": "timeout", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-22T12:51:02Z", "key": "gta-v-gta5-web-webgpu", "from": "online", "to": "offline", "reason": "not_found", "http_status": 404}
+{"source": "ultimate-catalog", "at": "2026-11-22T12:51:02Z", "key": "hexen-ii", "from": "online", "to": "unstable", "reason": "timeout", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-22T12:51:02Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 530}

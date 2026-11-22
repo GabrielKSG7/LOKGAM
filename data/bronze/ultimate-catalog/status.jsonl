@@ -130,7 +130,7 @@
 {"key": "doom-multiplayer", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "doom-wasoom", "state": "offline", "reason": "dns_error", "http_status": null, "since": "2026-11-21T12:59:43Z"}
 {"key": "doom-webdoom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "dos-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "dos-zone", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-22T12:51:02Z"}
 {"key": "downhill-domination", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "dragon-ball-z-budokai-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "dragon-ball-z-budokai-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -223,7 +223,7 @@
 {"key": "gta-3-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-v", "state": "unverified", "reason": "bot_blocked", "http_status": 401, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-v-grandv-v2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "gta-v-gta5-web-webgpu", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "gta-v-gta5-web-webgpu", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-22T12:51:02Z"}
 {"key": "gta-v-playgta5-to-rust", "state": "unstable", "reason": "tls_error", "http_status": null, "since": "2026-11-19T13:53:18Z"}
 {"key": "gta-vice-city-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "gta-vice-city-projetoescola", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -247,7 +247,7 @@
 {"key": "heretic-hexen", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "heroes-of-might-and-magic-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "heroes-of-might-and-magic-ii-fheroes2-rgc-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "hexen-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "hexen-ii", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-22T12:51:02Z"}
 {"key": "hexen-ii-hexenwail", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "hollow-knight", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "hollow-knight-dezm0n-web-port", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
@@ -308,7 +308,7 @@
 {"key": "medabots-ax", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "metal-gear-solid-shadow-moses-web", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "midnight-club-3-dub-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-17T13:50:27Z"}
+{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "unstable", "reason": "server_error", "http_status": 530, "since": "2026-11-22T12:51:02Z"}
 {"key": "midnight-shift", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-inside-a-bag-of-milk-inside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-outside-a-bag-of-milk-outside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -374,7 +374,7 @@
 {"key": "perfect-dark", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "phantasy-star-online-episode-i-ii-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "phantasy-star-online-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-20T13:35:32Z"}
-{"key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
 {"key": "pikmin", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "pizza-tower", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "pizza-tower-scoutdigo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -410,7 +410,7 @@
 {"key": "r-e-p-o", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "raft", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "raft-wars-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "rain-world", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "rain-world", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
 {"key": "raldi-s-crackhouse", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ratchet-clank", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ratchet-clank-size-matters", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -569,7 +569,7 @@
 {"key": "virtua-fighter", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "virtua-tennis-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "virtual-on-cyber-troopers", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "vvvvvv", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-12T01:29:08Z"}
+{"key": "vvvvvv", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
 {"key": "wadcmd", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "warcraft-ii-wargus", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "warzone-2100-web-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
