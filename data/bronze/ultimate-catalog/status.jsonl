@@ -9,6 +9,7 @@
 {"key": "alley-cat", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "amanda-the-adventurer", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "amazing-alex", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "ambidextro", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "american-mcgees-alice", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "among-us", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
 {"key": "andy-s-apple-farm", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
@@ -19,6 +20,7 @@
 {"key": "arthur-s-nightmare", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "arx-fatalis-arxwasm-demo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "arx-fatalis-rgc-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "astral-siege", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "atlantis-the-lost-tales", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "bad-parenting-1", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "bad-piggies", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -51,7 +53,6 @@
 {"key": "burnout-3-takedown", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "buster-jam", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "caesar-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "call-of-duty-black-ops-zombies", "state": "offline", "reason": "legal_block", "http_status": 451, "since": "2026-11-12T01:29:08Z"}
 {"key": "call-of-duty-black-ops-zombies-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "call-of-duty-modern-warfare-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "call-of-duty-web-collection", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -69,6 +70,7 @@
 {"key": "cheese-rolling", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "cheese-rolling~2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
 {"key": "christmas-massacre", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "chromium-b-s-u", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "class-of-09", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "claude-of-duty-vibe-slops-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "claude-of-duty-vibe-slops-ii-goofyahhbro69420-mirror", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -130,7 +132,7 @@
 {"key": "doom-multiplayer", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "doom-wasoom", "state": "offline", "reason": "dns_error", "http_status": null, "since": "2026-11-21T12:59:43Z"}
 {"key": "doom-webdoom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "dos-zone", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-22T12:51:02Z"}
+{"key": "dos-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "downhill-domination", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "dragon-ball-z-budokai-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "dragon-ball-z-budokai-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -239,7 +241,7 @@
 {"key": "happy-room", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
 {"key": "happy-sheepies", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "hard-truck-hard-truck-2-1-2-279b24", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "harry-potter-and-the-chamber-of-secrets", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "harry-potter-and-the-chamber-of-secrets", "state": "unstable", "reason": "server_error", "http_status": 530, "since": "2026-11-23T15:20:50Z"}
 {"key": "heaven-for-death", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-17T13:50:27Z"}
 {"key": "hedgewars-webwars", "state": "unstable", "reason": "tls_error", "http_status": null, "since": "2026-11-16T13:07:51Z"}
 {"key": "helltaker", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -247,7 +249,8 @@
 {"key": "heretic-hexen", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "heroes-of-might-and-magic-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "heroes-of-might-and-magic-ii-fheroes2-rgc-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "hexen-ii", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-22T12:51:02Z"}
+{"key": "heroes-of-might-and-magic-iv-homm4recomp", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
+{"key": "hexen-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "hexen-ii-hexenwail", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "hollow-knight", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "hollow-knight-dezm0n-web-port", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
@@ -308,7 +311,7 @@
 {"key": "medabots-ax", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "metal-gear-solid-shadow-moses-web", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "midnight-club-3-dub-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "unstable", "reason": "server_error", "http_status": 530, "since": "2026-11-22T12:51:02Z"}
+{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "midnight-shift", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-inside-a-bag-of-milk-inside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-outside-a-bag-of-milk-outside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -346,6 +349,7 @@
 {"key": "need-for-speed-most-wanted-2005-dezm0n-web-port", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "need-for-speed-most-wanted-2005-nfsmw-online", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "need-for-speed-most-wanted-2005-nfsmw-online-web", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "need-for-speed-most-wanted-most-wanted-revived", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "need-for-speed-most-wanted-nfsmw-webport", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "need-for-speed-underground-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "need-for-speed-underground-2-nfsunderground2-site", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -485,6 +489,7 @@
 {"key": "spider-man-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ssx-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "star-fox-adventures", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "star-wars-battlefront-ii-swbf2o", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "star-wars-empire-at-war-browser-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "star-wars-jedi-knight-dark-forces-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "star-wars-jedi-knight-jedi-academy", "state": "unverified", "reason": "bot_blocked", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -526,6 +531,7 @@
 {"key": "that-s-not-my-neighbor", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "the-binding-of-isaac-repentance", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "the-deadseat", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
+{"key": "the-elder-scrolls-adventures-redguard-cyrus", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "the-elder-scrolls-iii-morrowind-openmw", "state": "unverified", "reason": "bot_blocked", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "the-legend-of-zelda-ocarina-of-time-oot-cleanroom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "the-legend-of-zelda-twilight-princess-dusklight", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}

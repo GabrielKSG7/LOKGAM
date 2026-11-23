@@ -85,3 +85,8 @@
 {"source": "ultimate-catalog", "at": "2026-11-22T12:51:02Z", "key": "gta-v-gta5-web-webgpu", "from": "online", "to": "offline", "reason": "not_found", "http_status": 404}
 {"source": "ultimate-catalog", "at": "2026-11-22T12:51:02Z", "key": "hexen-ii", "from": "online", "to": "unstable", "reason": "timeout", "http_status": null}
 {"source": "ultimate-catalog", "at": "2026-11-22T12:51:02Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 530}
+{"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "call-of-duty-black-ops-zombies", "from": "offline", "to": "unlisted", "reason": null, "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "dos-zone", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "harry-potter-and-the-chamber-of-secrets", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 530}
+{"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "hexen-ii", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
