@@ -8,7 +8,7 @@
 {"key": "ages-of-conflict", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
 {"key": "alley-cat", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "amanda-the-adventurer", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
-{"key": "amazing-alex", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "amazing-alex", "state": "unverified", "reason": "bot_blocked", "http_status": 429, "since": "2026-11-24T15:15:59Z"}
 {"key": "ambidextro", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
 {"key": "american-mcgees-alice", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "among-us", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
@@ -110,7 +110,7 @@
 {"key": "deadseat", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "def-jam-fight-for-ny", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "deltarune", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
-{"key": "deltarune-chapters-1-4", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "deltarune-chapters-1-4", "state": "unverified", "reason": "bot_blocked", "http_status": 429, "since": "2026-11-24T15:15:59Z"}
 {"key": "deltatraveler", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "descent", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "descent-d1wasm", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -387,7 +387,7 @@
 {"key": "plants-vs-zombies", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "plants-vs-zombies-goty-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "plunder-pillage", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "pokemon-mystery-dungeon-web-mystery-dungeon", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "pokemon-mystery-dungeon-web-mystery-dungeon", "state": "unverified", "reason": "bot_blocked", "http_status": 429, "since": "2026-11-24T15:15:59Z"}
 {"key": "portal", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "postal-2-kahnstation", "state": "unverified", "reason": "bot_blocked", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "power-hover", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -485,7 +485,7 @@
 {"key": "spaceflight-simulator", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "speed-stars", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "speedy-blupi-speedy-eggbert-2-planet-blupi", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "spelunky-classic-hd", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "spelunky-classic-hd", "state": "unverified", "reason": "bot_blocked", "http_status": 429, "since": "2026-11-24T15:15:59Z"}
 {"key": "spider-man-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ssx-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "star-fox-adventures", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}

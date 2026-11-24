@@ -90,3 +90,7 @@
 {"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "harry-potter-and-the-chamber-of-secrets", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 530}
 {"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "hexen-ii", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-23T15:20:50Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-24T15:15:59Z", "key": "amazing-alex", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 429}
+{"source": "ultimate-catalog", "at": "2026-11-24T15:15:59Z", "key": "deltarune-chapters-1-4", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 429}
+{"source": "ultimate-catalog", "at": "2026-11-24T15:15:59Z", "key": "pokemon-mystery-dungeon-web-mystery-dungeon", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 429}
+{"source": "ultimate-catalog", "at": "2026-11-24T15:15:59Z", "key": "spelunky-classic-hd", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 429}
