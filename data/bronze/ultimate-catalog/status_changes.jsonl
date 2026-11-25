@@ -94,3 +94,8 @@
 {"source": "ultimate-catalog", "at": "2026-11-24T15:15:59Z", "key": "deltarune-chapters-1-4", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 429}
 {"source": "ultimate-catalog", "at": "2026-11-24T15:15:59Z", "key": "pokemon-mystery-dungeon-web-mystery-dungeon", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 429}
 {"source": "ultimate-catalog", "at": "2026-11-24T15:15:59Z", "key": "spelunky-classic-hd", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 429}
+{"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "amazing-alex", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "deltarune-chapters-1-4", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "geometry-dash-ale7208", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 403}
+{"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "pokemon-mystery-dungeon-web-mystery-dungeon", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "spelunky-classic-hd", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
