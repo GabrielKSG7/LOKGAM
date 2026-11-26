@@ -99,3 +99,6 @@
 {"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "geometry-dash-ale7208", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 403}
 {"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "pokemon-mystery-dungeon-web-mystery-dungeon", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-25T14:55:23Z", "key": "spelunky-classic-hd", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-26T14:25:20Z", "key": "geometry-dash-ale7208", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-26T14:25:20Z", "key": "gta-v-gta5-web-webgpu", "from": "offline", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-26T14:25:20Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 530}
