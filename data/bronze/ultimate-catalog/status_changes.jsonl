@@ -102,3 +102,6 @@
 {"source": "ultimate-catalog", "at": "2026-11-26T14:25:20Z", "key": "geometry-dash-ale7208", "from": "unverified", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-26T14:25:20Z", "key": "gta-v-gta5-web-webgpu", "from": "offline", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-26T14:25:20Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "online", "to": "unstable", "reason": "server_error", "http_status": 530}
+{"source": "ultimate-catalog", "at": "2026-11-27T14:19:23Z", "key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-27T14:19:23Z", "key": "rain-world", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-27T14:19:23Z", "key": "vvvvvv", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}

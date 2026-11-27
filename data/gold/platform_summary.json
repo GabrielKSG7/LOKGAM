@@ -10,10 +10,10 @@
 {"added_since_baseline": 0, "games": 3, "is_console": true, "offline": 0, "online": 1, "platform": "Mega Drive", "playable": 1, "ports": 3, "unstable": 0, "unverified": 0},
 {"added_since_baseline": 2, "games": 12, "is_console": true, "offline": 0, "online": 12, "platform": "N64", "playable": 12, "ports": 22, "unstable": 0, "unverified": 0},
 {"added_since_baseline": 0, "games": 3, "is_console": true, "offline": 0, "online": 3, "platform": "NES", "playable": 3, "ports": 3, "unstable": 0, "unverified": 0},
-{"added_since_baseline": 50, "games": 763, "is_console": false, "offline": 57, "online": 379, "platform": "Não classificado", "playable": 454, "ports": 871, "unstable": 11, "unverified": 7},
+{"added_since_baseline": 50, "games": 763, "is_console": false, "offline": 57, "online": 380, "platform": "Não classificado", "playable": 454, "ports": 871, "unstable": 11, "unverified": 6},
 {"added_since_baseline": 0, "games": 13, "is_console": false, "offline": 0, "online": 13, "platform": "PC", "playable": 14, "ports": 15, "unstable": 0, "unverified": 1},
 {"added_since_baseline": 0, "games": 10, "is_console": true, "offline": 0, "online": 6, "platform": "PS1", "playable": 7, "ports": 11, "unstable": 0, "unverified": 1},
-{"added_since_baseline": 2, "games": 39, "is_console": true, "offline": 1, "online": 50, "platform": "PS2", "playable": 51, "ports": 62, "unstable": 0, "unverified": 0},
+{"added_since_baseline": 2, "games": 39, "is_console": true, "offline": 1, "online": 49, "platform": "PS2", "playable": 51, "ports": 62, "unstable": 1, "unverified": 0},
 {"added_since_baseline": 0, "games": 1, "is_console": true, "offline": 0, "online": 0, "platform": "PS3", "playable": 0, "ports": 1, "unstable": 0, "unverified": 0},
 {"added_since_baseline": 0, "games": 10, "is_console": true, "offline": 0, "online": 9, "platform": "PSP", "playable": 10, "ports": 10, "unstable": 1, "unverified": 0},
 {"added_since_baseline": 0, "games": 2, "is_console": true, "offline": 0, "online": 1, "platform": "SNES", "playable": 1, "ports": 3, "unstable": 0, "unverified": 0},
@@ -21,5 +21,5 @@
 {"added_since_baseline": 0, "games": 2, "is_console": true, "offline": 0, "online": 1, "platform": "Switch", "playable": 2, "ports": 3, "unstable": 0, "unverified": 1},
 {"added_since_baseline": 0, "games": 4, "is_console": true, "offline": 0, "online": 0, "platform": "Wii", "playable": 0, "ports": 4, "unstable": 0, "unverified": 0},
 {"added_since_baseline": 1, "games": 1, "is_console": true, "offline": 0, "online": 3, "platform": "Xbox", "playable": 3, "ports": 4, "unstable": 0, "unverified": 0},
-{"added_since_baseline": 1, "games": 7, "is_console": true, "offline": 1, "online": 6, "platform": "Xbox 360", "playable": 9, "ports": 12, "unstable": 1, "unverified": 1}
+{"added_since_baseline": 1, "games": 7, "is_console": true, "offline": 0, "online": 7, "platform": "Xbox 360", "playable": 9, "ports": 12, "unstable": 1, "unverified": 1}
 ]

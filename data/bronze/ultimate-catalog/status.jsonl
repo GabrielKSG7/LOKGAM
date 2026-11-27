@@ -98,6 +98,7 @@
 {"key": "crisis-core-final-fantasy-vii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "cro-mag-rally", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "cruelty-squad", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "cry-of-fear-web-alpha", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-27T14:19:23Z"}
 {"key": "cube-2-sauerbraten-bananabread-demo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-21T12:59:43Z"}
 {"key": "cuphead", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "cuphead-4", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
@@ -378,7 +379,7 @@
 {"key": "perfect-dark", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "phantasy-star-online-episode-i-ii-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "phantasy-star-online-pso-reborn", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-20T13:35:32Z"}
-{"key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
+{"key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-27T14:19:23Z"}
 {"key": "pikmin", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-14T11:44:40Z"}
 {"key": "pizza-tower", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "pizza-tower-scoutdigo", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -414,7 +415,7 @@
 {"key": "r-e-p-o", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "raft", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "raft-wars-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "rain-world", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
+{"key": "rain-world", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-27T14:19:23Z"}
 {"key": "raldi-s-crackhouse", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ratchet-clank", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "ratchet-clank-size-matters", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -575,7 +576,7 @@
 {"key": "virtua-fighter", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "virtua-tennis-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "virtual-on-cyber-troopers", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "vvvvvv", "state": "unstable", "reason": "server_error", "http_status": 523, "since": "2026-11-12T01:29:08Z"}
+{"key": "vvvvvv", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-27T14:19:23Z"}
 {"key": "wadcmd", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "warcraft-ii-wargus", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "warzone-2100-web-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
