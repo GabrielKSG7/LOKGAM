@@ -15,5 +15,6 @@
 {"added": 0, "added_console": 0, "checked": 605, "console_ports": 179, "day": "2026-11-24", "offline": 61, "ports": 1064, "removed": 0, "run_at": "2026-11-24T15:15:59Z"},
 {"added": 1, "added_console": 0, "checked": 605, "console_ports": 179, "day": "2026-11-25", "offline": 61, "ports": 1065, "removed": 0, "run_at": "2026-11-25T14:55:22Z"},
 {"added": 0, "added_console": 0, "checked": 605, "console_ports": 179, "day": "2026-11-26", "offline": 60, "ports": 1065, "removed": 0, "run_at": "2026-11-26T14:25:20Z"},
-{"added": 0, "added_console": 0, "checked": 606, "console_ports": 179, "day": "2026-11-27", "offline": 60, "ports": 1065, "removed": 0, "run_at": "2026-11-27T14:19:23Z"}
+{"added": 3, "added_console": 0, "checked": 606, "console_ports": 179, "day": "2026-11-27", "offline": 60, "ports": 1068, "removed": 0, "run_at": "2026-11-27T14:19:23Z"},
+{"added": 0, "added_console": 0, "checked": 606, "console_ports": 179, "day": "2026-11-28", "offline": 61, "ports": 1068, "removed": 0, "run_at": "2026-11-28T13:35:13Z"}
 ]

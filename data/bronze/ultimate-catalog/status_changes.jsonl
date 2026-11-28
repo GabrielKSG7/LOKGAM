@@ -105,3 +105,8 @@
 {"source": "ultimate-catalog", "at": "2026-11-27T14:19:23Z", "key": "phineas-and-ferb-in-the-transport-inators-of-doooom", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-27T14:19:23Z", "key": "rain-world", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
 {"source": "ultimate-catalog", "at": "2026-11-27T14:19:23Z", "key": "vvvvvv", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-28T13:35:14Z", "key": "command-conquer-red-alert-2", "from": "online", "to": "unverified", "reason": "bot_blocked", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-28T13:35:14Z", "key": "dos-zone", "from": "online", "to": "unstable", "reason": "timeout", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-28T13:35:14Z", "key": "hexen-ii", "from": "online", "to": "unstable", "reason": "timeout", "http_status": null}
+{"source": "ultimate-catalog", "at": "2026-11-28T13:35:14Z", "key": "midnight-club-3-dub-edition-mc3-web-study", "from": "unstable", "to": "online", "reason": "ok", "http_status": 200}
+{"source": "ultimate-catalog", "at": "2026-11-28T13:35:14Z", "key": "unreal-tournament-surrealengine-web", "from": "online", "to": "offline", "reason": "not_found", "http_status": 404}

@@ -16,5 +16,6 @@
 {"checked": 605, "offline": 61, "offline_collective": 47, "offline_isolated": 14, "online": 516, "run_at": "2026-11-24T15:15:59Z", "source": "ultimate-catalog", "unstable": 13, "unverified": 15},
 {"checked": 605, "offline": 61, "offline_collective": 47, "offline_isolated": 14, "online": 519, "run_at": "2026-11-25T14:55:23Z", "source": "ultimate-catalog", "unstable": 13, "unverified": 12},
 {"checked": 605, "offline": 60, "offline_collective": 47, "offline_isolated": 13, "online": 520, "run_at": "2026-11-26T14:25:20Z", "source": "ultimate-catalog", "unstable": 14, "unverified": 11},
-{"checked": 606, "offline": 60, "offline_collective": 47, "offline_isolated": 13, "online": 524, "run_at": "2026-11-27T14:19:23Z", "source": "ultimate-catalog", "unstable": 11, "unverified": 11}
+{"checked": 606, "offline": 60, "offline_collective": 47, "offline_isolated": 13, "online": 524, "run_at": "2026-11-27T14:19:23Z", "source": "ultimate-catalog", "unstable": 11, "unverified": 11},
+{"checked": 606, "offline": 61, "offline_collective": 47, "offline_isolated": 14, "online": 521, "run_at": "2026-11-28T13:35:14Z", "source": "ultimate-catalog", "unstable": 12, "unverified": 12}
 ]

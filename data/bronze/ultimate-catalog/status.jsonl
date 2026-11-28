@@ -78,7 +78,7 @@
 {"key": "clustertruck", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-16T13:07:51Z"}
 {"key": "command-conquer-generals-wasm-com-br", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "command-conquer-generals-zero-hour", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "command-conquer-red-alert-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "command-conquer-red-alert-2", "state": "unverified", "reason": "bot_blocked", "http_status": 200, "since": "2026-11-28T13:35:14Z"}
 {"key": "command-conquer-renegade-open-commando", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "commander-keen", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "counter-strike-1-6-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -133,7 +133,7 @@
 {"key": "doom-multiplayer", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "doom-wasoom", "state": "offline", "reason": "dns_error", "http_status": null, "since": "2026-11-21T12:59:43Z"}
 {"key": "doom-webdoom", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "dos-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
+{"key": "dos-zone", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-28T13:35:14Z"}
 {"key": "downhill-domination", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "dragon-ball-z-budokai-2", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "dragon-ball-z-budokai-3", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -251,7 +251,7 @@
 {"key": "heroes-of-might-and-magic-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "heroes-of-might-and-magic-ii-fheroes2-rgc-zone", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "heroes-of-might-and-magic-iv-homm4recomp", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
-{"key": "hexen-ii", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-23T15:20:50Z"}
+{"key": "hexen-ii", "state": "unstable", "reason": "timeout", "http_status": null, "since": "2026-11-28T13:35:14Z"}
 {"key": "hexen-ii-hexenwail", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "hollow-knight", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "hollow-knight-dezm0n-web-port", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
@@ -312,7 +312,7 @@
 {"key": "medabots-ax", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "metal-gear-solid-shadow-moses-web", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "midnight-club-3-dub-edition", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
-{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "unstable", "reason": "server_error", "http_status": 530, "since": "2026-11-26T14:25:20Z"}
+{"key": "midnight-club-3-dub-edition-mc3-web-study", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-28T13:35:14Z"}
 {"key": "midnight-shift", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-inside-a-bag-of-milk-inside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "milk-outside-a-bag-of-milk-outside-a-bag-of-milk", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
@@ -568,7 +568,7 @@
 {"key": "ultrapool", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "undertale", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
 {"key": "undertale-yellow", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-12T01:29:08Z"}
-{"key": "unreal-tournament-surrealengine-web", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
+{"key": "unreal-tournament-surrealengine-web", "state": "offline", "reason": "not_found", "http_status": 404, "since": "2026-11-28T13:35:14Z"}
 {"key": "untitled-goose-game", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "urban-chaos-openchaos", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
 {"key": "urban-terror", "state": "online", "reason": "ok", "http_status": 200, "since": "2026-11-12T01:29:08Z"}
